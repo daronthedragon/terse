@@ -39,20 +39,25 @@ Same answer. The receipt is the command, not three sentences restating the probl
 
 terse is a Claude Code **output style** — a single file that gets folded into the system prompt. No hook, no runtime, no dependency.
 
-**User-wide** (every project):
-
 ```bash
-git clone https://github.com/daronthedragon/terse.git
-cp terse/output-styles/terse.md ~/.claude/output-styles/terse.md
+git clone https://github.com/daronthedragon/terse.git && node terse/install.mjs
 ```
 
-Then turn it on by adding one line to `~/.claude/settings.json`:
+That copies the style into `~/.claude/output-styles/` and sets one key in `~/.claude/settings.json`. It merges rather than overwrites — your other settings survive, the previous file is kept as `settings.json.bak`, and a malformed settings file is refused rather than clobbered. Undo restores exactly what `outputStyle` was before:
+
+```bash
+node terse/install.mjs --uninstall
+```
+
+Useful flags: `--level lite|full|ultra` picks how hard it cuts, `--project` installs into `./.claude` instead of your home directory, and `--dry-run` prints the two changes without touching anything.
+
+**By hand**, if you would rather see it: copy `output-styles/terse.md` into `~/.claude/output-styles/`, then add one line to `~/.claude/settings.json`:
 
 ```json
 { "outputStyle": "terse" }
 ```
 
-**Per-project** — drop the file in `.claude/output-styles/terse.md` and set the same `outputStyle` field in the project's `.claude/settings.json`. Off again by removing the field (or setting it to `"default"`).
+Off again by setting it to `"default"`.
 
 Other agents (Cursor, Windsurf, Cline, or anything that reads [`AGENTS.md`](AGENTS.md)) get the same reflex from the platform rule files in this repo — see [Everywhere else](#everywhere-else).
 
@@ -108,6 +113,27 @@ That change was A/B'd, not assumed. Both rule sets were run against the same eig
 | answer still present | 40/40 | 40/40 |
 
 Head-to-head on identical prompts, the new rules cut **another −46%** off what the old rules left — Mann-Whitney U = 299.5, **p = 1.5e-6**, n = 40 per arm — with no loss on answer presence in that pair of runs. The old rules are not in the repo; this table is why.
+
+## The other two benchmarks
+
+Cutting is the easy half. The half that decides whether terse is safe to leave on is what it does when brevity is the *wrong* answer, so two more benchmarks exist and both are gated in CI:
+
+- **Safety** ([`bench-safety.json`](bench-safety.json)) — four prompts where the user explicitly asked for length (a tutorial, a detailed explanation, a design doc, a step-by-step walkthrough), and four where a short answer is only correct if it keeps one caveat (float precision, XSS on `localStorage`, an unset variable in `rm -rf`, MD5 for passwords). terse is not supposed to *win* here; it is supposed not to break what already worked.
+- **Context** ([`bench-context.json`](bench-context.json)) — the risk no single-turn eval can see. An agent's own replies are the context its later turns read, so making every reply shorter can delete the working notes the conversation depends on. [`bench/multiturn.mjs`](bench/multiturn.mjs) runs real three-turn conversations through `claude -p --resume` and scores **only the final turn**: once where the agent must recall a number it computed two turns earlier, once where it must recall a specific the user gave.
+
+Full methodology, and why a checklist cannot measure a brevity skill at all, is in [BENCHMARKS.md](BENCHMARKS.md).
+
+## Keeping the claims honest
+
+Measured claims rot: the eval gets re-run, the effect moves, and the README keeps quoting the old number. Two things stop that here.
+
+[`verify.mjs`](verify.mjs) recomputes the medians from the committed report and fails if the README quotes anything else — it also checks that the four platform rule files have not drifted apart, that every output style's frontmatter `name` matches its filename, and that each benchmark spec points at a style file that exists. It costs nothing to run, so it runs on every push:
+
+```bash
+node verify.mjs
+```
+
+And the [benchmarks workflow](.github/workflows/benchmarks.yml) re-runs the real thing on demand with thresholds attached — `--min-reduction` for the headline effect, `--min-pass` for the safety and context floors — so if terse ever stops cutting, or starts truncating what it should not, the run fails instead of quietly reporting a smaller number.
 
 ## Why an output style, not a hook
 

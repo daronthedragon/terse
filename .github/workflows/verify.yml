@@ -1,0 +1,22 @@
+name: verify
+
+# Free to run - no API calls, no model. This is the check that runs on every
+# push: it asserts the README still quotes the numbers the committed report
+# actually measured, and that the rule files have not drifted apart.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Check claims against evidence
+        run: node verify.mjs
+      - name: Installer dry run (must not touch anything)
+        run: node install.mjs --dry-run

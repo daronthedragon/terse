@@ -1,0 +1,162 @@
+{
+  "outputStyle": {
+    "name": "terse",
+    "file": "output-styles/terse.md"
+  },
+  "runner": "cd {skill} && claude -p {prompt} --output-format text --dangerously-skip-permissions --no-session-persistence",
+  "repeat": 5,
+  "concurrency": 4,
+  "timeoutMs": 240000,
+  "cases": [
+    {
+      "id": "asked-tutorial",
+      "prompt": "Write a beginner's tutorial on Git branching: cover creating, switching, merging, and deleting branches, with example commands.",
+      "checks": [
+        {
+          "id": "long-enough",
+          "describe": "long enough",
+          "pattern": "[\\s\\S]{800,}",
+          "expect": true
+        },
+        {
+          "id": "covers-create",
+          "describe": "covers create",
+          "pattern": "(branch |checkout -b|switch -c)",
+          "expect": true
+        },
+        {
+          "id": "covers-merge",
+          "describe": "covers merge",
+          "pattern": "\\bmerge\\b",
+          "expect": true
+        },
+        {
+          "id": "covers-delete",
+          "describe": "covers delete",
+          "pattern": "(branch -d|branch -D|delet)",
+          "expect": true
+        }
+      ]
+    },
+    {
+      "id": "asked-detail",
+      "prompt": "Explain in detail how a bloom filter works - I want the full explanation, including the false positive rate math.",
+      "checks": [
+        {
+          "id": "long-enough",
+          "describe": "long enough",
+          "pattern": "[\\s\\S]{800,}",
+          "expect": true
+        },
+        {
+          "id": "covers-hash",
+          "describe": "covers hash",
+          "pattern": "hash",
+          "expect": true
+        },
+        {
+          "id": "covers-fp-math",
+          "describe": "covers fp math",
+          "pattern": "(false positive|\\bk\\b.*\\bm\\b|1 ?- ?e|\\(1)",
+          "expect": true
+        }
+      ]
+    },
+    {
+      "id": "asked-design-doc",
+      "prompt": "Write a short design doc for a rate limiter service: goals, approach, tradeoffs, and rollout plan.",
+      "checks": [
+        {
+          "id": "long-enough",
+          "describe": "long enough",
+          "pattern": "[\\s\\S]{800,}",
+          "expect": true
+        },
+        {
+          "id": "covers-tradeoffs",
+          "describe": "covers tradeoffs",
+          "pattern": "(trade-?off|drawback|cost)",
+          "expect": true
+        },
+        {
+          "id": "covers-rollout",
+          "describe": "covers rollout",
+          "pattern": "(rollout|roll out|deploy|phase|stage)",
+          "expect": true
+        }
+      ]
+    },
+    {
+      "id": "asked-step-by-step",
+      "prompt": "Walk me step by step through debugging a memory leak in a Node.js service - I want every step.",
+      "checks": [
+        {
+          "id": "long-enough",
+          "describe": "long enough",
+          "pattern": "[\\s\\S]{800,}",
+          "expect": true
+        },
+        {
+          "id": "covers-heap",
+          "describe": "covers heap",
+          "pattern": "(heap|snapshot|--inspect|profil)",
+          "expect": true
+        },
+        {
+          "id": "multi-step",
+          "describe": "multi step",
+          "pattern": "(1\\.|2\\.|3\\.|step 2|second|then\\b)",
+          "expect": true
+        }
+      ]
+    },
+    {
+      "id": "float-equality",
+      "prompt": "Can I use == to compare two floats in Python?",
+      "checks": [
+        {
+          "id": "keeps-caveat",
+          "describe": "keeps caveat",
+          "pattern": "(precision|round|epsilon|isclose|floating[- ]point|exact)",
+          "expect": true
+        }
+      ]
+    },
+    {
+      "id": "jwt-localstorage",
+      "prompt": "Should I store JWTs in localStorage?",
+      "checks": [
+        {
+          "id": "keeps-caveat",
+          "describe": "keeps caveat",
+          "pattern": "(XSS|cross-site script|httpOnly|http-only)",
+          "expect": true
+        }
+      ]
+    },
+    {
+      "id": "rm-rf-var",
+      "prompt": "Is `rm -rf $DIR/` safe in a shell script?",
+      "checks": [
+        {
+          "id": "keeps-caveat",
+          "describe": "keeps caveat",
+          "pattern": "(unset|empty|\\bset -u\\b|quote|\\\"\\$DIR\\\"|:-|expand)",
+          "expect": true
+        }
+      ]
+    },
+    {
+      "id": "md5-passwords",
+      "prompt": "Can I use MD5 to hash passwords?",
+      "checks": [
+        {
+          "id": "keeps-caveat",
+          "describe": "keeps caveat",
+          "pattern": "(bcrypt|argon2|scrypt|PBKDF2|not for passwords|never|insecure|broken)",
+          "expect": true
+        }
+      ]
+    }
+  ]
+}

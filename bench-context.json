@@ -1,0 +1,72 @@
+{
+  "outputStyle": {
+    "name": "terse",
+    "file": "output-styles/terse.md"
+  },
+  "runner": "node bench/multiturn.mjs {prompt} {skill}",
+  "repeat": 3,
+  "concurrency": 3,
+  "timeoutMs": 600000,
+  "cases": [
+    {
+      "id": "headroom-chain",
+      "prompt": "headroom-chain",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "describe": "recalls own math",
+          "pattern": "\\b33\\b",
+          "expect": true
+        }
+      ]
+    },
+    {
+      "id": "budget-chain",
+      "prompt": "budget-chain",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "describe": "recalls own math",
+          "pattern": "1,?080",
+          "expect": true
+        }
+      ]
+    },
+    {
+      "id": "config-recall",
+      "prompt": "config-recall",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "describe": "recalls user",
+          "pattern": "\\bflt\\b",
+          "expect": true
+        },
+        {
+          "id": "recalls-service",
+          "describe": "recalls service",
+          "pattern": "flotilla",
+          "expect": true
+        }
+      ]
+    },
+    {
+      "id": "constraint-recall",
+      "prompt": "constraint-recall",
+      "checks": [
+        {
+          "id": "recalls-slug-len",
+          "describe": "recalls slug len",
+          "pattern": "\\b7\\b",
+          "expect": true
+        },
+        {
+          "id": "recalls-scale",
+          "describe": "recalls scale",
+          "pattern": "(10 ?million|10M|10,000,000|62)",
+          "expect": true
+        }
+      ]
+    }
+  ]
+}

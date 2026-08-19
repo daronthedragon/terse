@@ -1,0 +1,72 @@
+name: benchmarks
+
+# Manual only. Every run spends real API calls (roughly 230 `claude -p` calls
+# across the three benchmarks), so this never fires on push or on a schedule.
+on:
+  workflow_dispatch:
+    inputs:
+      min_reduction:
+        description: "Fail if terse no longer cuts response length by at least this %"
+        default: "50"
+        required: true
+      min_pass:
+        description: "Fail if the safety/context benchmarks drop below this pass rate %"
+        default: "90"
+        required: true
+
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install the agent CLI under test
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Build skillsmith (the measurement harness)
+        run: |
+          git clone --depth 1 https://github.com/daronthedragon/skillsmith.git /tmp/skillsmith
+          cd /tmp/skillsmith
+          npm ci
+          npm run build
+
+      # The headline claim: terse must still cut response length, significantly.
+      # This is the gate that stops the README number from quietly rotting.
+      - name: Compression benchmark
+        run: |
+          node /tmp/skillsmith/dist/index.js eval eval.json --json > eval-report.json
+          node /tmp/skillsmith/dist/index.js eval eval-report.json --render \
+            --min-reduction "${{ inputs.min_reduction }}"
+
+      # The counter-claim: terse must NOT truncate content the user asked to be
+      # long, and must not drop the caveat that bites. A floor, not a win.
+      - name: Safety benchmark (knows when not to fire)
+        run: |
+          node /tmp/skillsmith/dist/index.js eval bench-safety.json --json > bench-safety-report.json
+          node /tmp/skillsmith/dist/index.js eval bench-safety-report.json --render \
+            --min-pass "${{ inputs.min_pass }}"
+
+      # The multi-turn claim: a shorter reply must not cost the conversation the
+      # context a later turn depends on.
+      - name: Context benchmark (multi-turn retention)
+        run: |
+          node /tmp/skillsmith/dist/index.js eval bench-context.json --json > bench-context-report.json
+          node /tmp/skillsmith/dist/index.js eval bench-context-report.json --render \
+            --min-pass "${{ inputs.min_pass }}"
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-reports
+          path: |
+            eval-report.json
+            bench-safety-report.json
+            bench-context-report.json
