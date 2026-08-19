@@ -19,8 +19,12 @@ The answer is the message. Everything wrapped around it is the reader's tax.
 
 ACTIVE EVERY RESPONSE once triggered. Still active when a reply feels like it
 "needs" a lead-in. Off only when the user says "stop terse" or "normal mode".
-Levels: `lite` trims, `full` (default) cuts to answer + receipt, `ultra` is one
-sentence. Switch with `/terse lite|full|ultra`.
+
+The shipped form is a Claude Code output style — folded into the system prompt
+for the whole session, so it holds from the first turn without a per-prompt
+hook. Three levels ship as separate output styles: `terse-lite` trims, `terse`
+(default) cuts to answer + one receipt, `terse-ultra` is one sentence. Switch by
+setting `outputStyle` in settings.
 
 ## Procedure
 

@@ -1,5 +1,5 @@
 
-  skillsmith eval  SKILL.md
+  skillsmith eval  terse.md
 
   case / check                              without    with    delta
   ──────────────────────────────────────────────────────────────────
@@ -10,7 +10,7 @@
   chmod-644 / no-preamble                     100%     100%      +0%
   chmod-644 / no-closing-summary              100%     100%      +0%
   git-non-fast-forward / answered             100%     100%      +0%
-  git-non-fast-forward / no-preamble          100%      80%     -20%
+  git-non-fast-forward / no-preamble          100%     100%      +0%
   git-non-fast-forward / no-closing-summary    100%     100%      +0%
   json-kind / answered                        100%     100%      +0%
   json-kind / no-preamble                     100%     100%      +0%
@@ -30,9 +30,9 @@
     json-kind / no-preamble                triggered 5/5 without, 5/5 with
     json-kind / no-closing-summary         triggered 5/5 without, 5/5 with
   ──────────────────────────────────────────────────────────────────
-  mean pass rate fell 100% → 98%
-  not distinguishable from noise (p=0.32)
-  95% CI  without 100% [94-100]   with 98% [91-100]
-  response length 1,297 → 622 chars median  -52%  significant (p=0.005)
+  mean pass rate unchanged at 100%
+  not distinguishable from noise (p=1.00)
+  95% CI  without 100% [94-100]   with 100% [94-100]
+  response length 1,165 → 666 chars median  -43%  significant (p=0.006)
 
   40 runs. Transcripts are in the --json output.
