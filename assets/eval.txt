@@ -1,0 +1,37 @@
+
+  skillsmith eval  SKILL.md
+
+  case / check                              without    with    delta
+  ──────────────────────────────────────────────────────────────────
+  postgres-port / answered                    100%     100%      +0%
+  postgres-port / no-preamble                 100%     100%      +0%
+  postgres-port / no-closing-summary          100%     100%      +0%
+  chmod-644 / answered                        100%     100%      +0%
+  chmod-644 / no-preamble                     100%     100%      +0%
+  chmod-644 / no-closing-summary              100%     100%      +0%
+  git-non-fast-forward / answered             100%     100%      +0%
+  git-non-fast-forward / no-preamble          100%      80%     -20%
+  git-non-fast-forward / no-closing-summary    100%     100%      +0%
+  json-kind / answered                        100%     100%      +0%
+  json-kind / no-preamble                     100%     100%      +0%
+  json-kind / no-closing-summary              100%     100%      +0%
+
+  guarded checks (implication) only count runs that triggered the guard:
+    postgres-port / answered               triggered 5/5 without, 5/5 with
+    postgres-port / no-preamble            triggered 5/5 without, 5/5 with
+    postgres-port / no-closing-summary     triggered 5/5 without, 5/5 with
+    chmod-644 / answered                   triggered 5/5 without, 5/5 with
+    chmod-644 / no-preamble                triggered 5/5 without, 5/5 with
+    chmod-644 / no-closing-summary         triggered 5/5 without, 5/5 with
+    git-non-fast-forward / answered        triggered 5/5 without, 5/5 with
+    git-non-fast-forward / no-preamble     triggered 5/5 without, 5/5 with
+    git-non-fast-forward / no-closing-summary triggered 5/5 without, 5/5 with
+    json-kind / answered                   triggered 5/5 without, 5/5 with
+    json-kind / no-preamble                triggered 5/5 without, 5/5 with
+    json-kind / no-closing-summary         triggered 5/5 without, 5/5 with
+  ──────────────────────────────────────────────────────────────────
+  mean pass rate fell 100% → 98%
+  not distinguishable from noise (p=0.32)
+  95% CI  without 100% [94-100]   with 98% [91-100]
+
+  40 runs. Transcripts are in the --json output.

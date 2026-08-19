@@ -1,0 +1,1365 @@
+{
+  "spec": {
+    "skill": "C:\\Users\\malik\\New folder (12)\\terse\\SKILL.md",
+    "runner": "cd {skill} && claude -p {prompt} --output-format text --dangerously-skip-permissions --no-session-persistence",
+    "repeat": 5,
+    "timeoutMs": 180000,
+    "concurrency": 4,
+    "cases": [
+      {
+        "id": "postgres-port",
+        "prompt": "What port does PostgreSQL listen on by default?",
+        "checks": [
+          {
+            "id": "answered",
+            "describe": "the correct answer (5432) is present",
+            "pattern": "\\b5432\\b",
+            "expect": true
+          },
+          {
+            "id": "no-preamble",
+            "describe": "no lead-in boilerplate",
+            "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question)\\b",
+            "expect": false
+          },
+          {
+            "id": "no-closing-summary",
+            "describe": "no recap tail",
+            "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you)\\b",
+            "expect": false
+          }
+        ]
+      },
+      {
+        "id": "chmod-644",
+        "prompt": "What does chmod 644 do to a file?",
+        "checks": [
+          {
+            "id": "answered",
+            "describe": "mentions read/owner semantics",
+            "pattern": "\\b(owner|read|write)\\b",
+            "expect": true
+          },
+          {
+            "id": "no-preamble",
+            "describe": "no lead-in boilerplate",
+            "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question)\\b",
+            "expect": false
+          },
+          {
+            "id": "no-closing-summary",
+            "describe": "no recap tail",
+            "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you)\\b",
+            "expect": false
+          }
+        ]
+      },
+      {
+        "id": "git-non-fast-forward",
+        "prompt": "A git push is rejected with '! [rejected] main -> main (non-fast-forward)'. What is the fix?",
+        "checks": [
+          {
+            "id": "answered",
+            "describe": "mentions pull/rebase/fetch",
+            "pattern": "\\b(pull|rebase|fetch)\\b",
+            "expect": true
+          },
+          {
+            "id": "no-preamble",
+            "describe": "no lead-in boilerplate",
+            "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question)\\b",
+            "expect": false
+          },
+          {
+            "id": "no-closing-summary",
+            "describe": "no recap tail",
+            "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you)\\b",
+            "expect": false
+          }
+        ]
+      },
+      {
+        "id": "json-kind",
+        "prompt": "Is JSON a data format or a programming language?",
+        "checks": [
+          {
+            "id": "answered",
+            "describe": "says data format",
+            "pattern": "\\bformat\\b",
+            "expect": true
+          },
+          {
+            "id": "no-preamble",
+            "describe": "no lead-in boilerplate",
+            "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question)\\b",
+            "expect": false
+          },
+          {
+            "id": "no-closing-summary",
+            "describe": "no recap tail",
+            "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you)\\b",
+            "expect": false
+          }
+        ]
+      }
+    ]
+  },
+  "results": [
+    {
+      "id": "postgres-port",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "5432.\n\nThat's a knowledge answer, not a verified one — there's no PostgreSQL installation here to check against. Unverified locally.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "postgres-port",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "**5432** (TCP), configurable via the `port` setting in `postgresql.conf` or the `PGPORT` environment variable.\n\nThis is a documentation fact, not something I ran a command to verify on this machine — no PostgreSQL install was checked here.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "postgres-port",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "5432.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "postgres-port",
+      "arm": "baseline",
+      "run": 4,
+      "transcript": "5432.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "postgres-port",
+      "arm": "baseline",
+      "run": 5,
+      "transcript": "PostgreSQL listens on TCP port **5432** by default.\n\nThat's the value of the `port` setting in `postgresql.conf`, and the compiled-in default (`DEF_PGPORT`) used by clients like `psql` when neither `-p` nor `$PGPORT` is set.\n\nTwo related notes:\n- On Unix systems, the matching Unix-domain socket file is `/var/run/postgresql/.s.PGSQL.5432` (or `/tmp/.s.PGSQL.5432`, depending on the build/distro) — the port number is part of the socket filename.\n- Running multiple clusters on one host is done by giving each a distinct port, conventionally 5432, 5433, 5434, and so on. Debian/Ubuntu's `pg_ctlcluster` assigns these automatically.\n\nThis is general knowledge, not a claim about anything in your environment — **unverified** against this machine. If you want it confirmed for a specific install, say the word and I'll check the live config (e.g. `psql -c \"SHOW port;\"` or grepping the relevant `postgresql.conf`).\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "chmod-644",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "`chmod 644` sets the file's permission bits to `rw-r--r--`:\n\n| Digit | Who | Value | Meaning |\n|---|---|---|---|\n| 6 | owner | 4+2 | read + write |\n| 4 | group | 4 | read only |\n| 4 | others | 4 | read only |\n\nSo the owner can read and modify the file; everyone else can only read it. Nobody gets execute permission — which is why 644 is the standard mode for ordinary data files (config, source, HTML, images) and 755 is used instead for scripts and binaries that need to run.\n\nTwo details worth knowing:\n\n- It sets the bits absolutely, not additively — any existing execute or group-write bits are cleared, and the setuid/setgid/sticky bits are zeroed too (unless you pass a 4-digit mode like `0644` vs `4644`).\n- Permissions on the file don't override the directory's. You need execute (search) permission on every parent directory to reach the file at all, and write permission on the containing directory to delete or rename it — a 644 file in a world-writable directory can still be removed by anyone.\n\nNote: this is an explanation, not a verified run — no command was executed. (This is a Windows environment, where `chmod` has no real effect on the NTFS ACLs that actually govern access.)\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 10,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "chmod-644",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "`chmod 644 file` sets the permission bits to `rw-r--r--`:\n\n| Who | Digit | Bits | Meaning |\n|---|---|---|---|\n| Owner | 6 | `rw-` | read + write, no execute |\n| Group | 4 | `r--` | read only |\n| Others | 4 | `r--` | read only |\n\nEach digit is a sum of 4 (read) + 2 (write) + 1 (execute), so 6 = 4+2 and 4 = 4+0+0.\n\nPractically: only the owner can modify the file, everyone else can only read it, and nobody can execute it. It's the standard mode for regular data files — config files, source code, HTML/images served by a web server. Scripts and binaries want 755 instead, since 644 strips the execute bit and running the file gives \"Permission denied\".\n\nNote it replaces the bits outright rather than adding to them — going from 777 to 644 removes group/other write and all execute. It also doesn't touch the setuid/setgid/sticky bits (those are the optional fourth leading digit), and it does not affect directories usefully: a directory at 644 can be listed but not entered, since traversal needs the execute bit.\n\nReceipt from a live run:\n\n```\n$ chmod 777 demo.txt && ls -l demo.txt\n-rw-r--r-- 1 malik 197610 3 Aug 20 00:32 demo.txt\n\n$ chmod 644 demo.txt && stat -c '%a %A' demo.txt\n644 -rw-r--r--\n```\n\nOne caveat on that receipt: this ran under Git Bash on Windows/NTFS, which is why `chmod 777` did not actually show `rwxrwxrwx` — Windows doesn't carry real Unix mode bits. The final `644 -rw-r--r--` matches the answer, but the demo is not a clean confirmation of chmod's behavior; on a real Unix filesystem the 777 line would have read `-rwxrwxrwx`.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 11,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "chmod-644",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "`chmod 644 file` sets the permission bits to `rw-r--r--`:\n\n| Digit | Who | Value | Meaning |\n|-------|-----|-------|---------|\n| `6` | owner | 4+2 | read + write |\n| `4` | group | 4 | read only |\n| `4` | others | 4 | read only |\n\nSo the owner can read and modify the file; everyone else can only read it. Nobody gets execute permission — which is why 644 is the standard mode for regular data files (configs, source, HTML, images) while 755 (`rwxr-xr-x`) is used for scripts and binaries that need to run.\n\nTwo related notes:\n\n- It's an absolute set, not a delta — any existing bits, including setuid/setgid/sticky, are cleared unless you spell them out (e.g. `chmod 4644`).\n- What you actually get on disk is unaffected by umask; umask only masks the default bits at file *creation* time, not an explicit `chmod`.\n\nAlso worth knowing: `chmod 644` is equivalent to the symbolic form `chmod u=rw,go=r file`.\n\nI have not run a command here — this box is Windows, and `chmod` has no meaningful effect on an NTFS path — so the above is from the POSIX permission model, not a local execution receipt. If you want a live demonstration, run it on a Linux/macOS shell or WSL:\n\n```\ntouch demo.txt && chmod 644 demo.txt && ls -l demo.txt\n# -rw-r--r-- 1 you you 0 ... demo.txt\n```\n\nThat expected output line is unverified in this session.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "chmod-644",
+      "arm": "baseline",
+      "run": 4,
+      "transcript": "`chmod 644` sets a file's permission bits to `rw-r--r--`:\n\n| Digit | Who | Value | Meaning |\n|---|---|---|---|\n| 6 | owner | 4+2 | read + write |\n| 4 | group | 4 | read only |\n| 4 | others | 4 | read only |\n\nSo the owner can read and modify the file; everyone else can only read it. **Nobody gets execute permission** — which is why 644 is the standard mode for regular data files (source code, configs, HTML, images) and why you'd use `755` instead for scripts and binaries that need to run.\n\nA couple of practical notes:\n\n- It's an absolute set, not a delta — any existing bits (including setuid/setgid/sticky, and execute) are wiped. `chmod 644 script.sh` will break that script's ability to run directly.\n- On a *directory*, 644 is almost always a mistake: without the execute bit you can't `cd` into it or stat anything inside it, so `ls` on it gives permission errors. Directories want `755`.\n- The effective result is still filtered by ownership — \"group\" means the file's group, and 644 does nothing to stop root, who bypasses these checks.\n\nThis is an explanatory answer, not a change to your system — no command was run, so nothing here is machine-verified. If you want a receipt on a Linux/macOS box, `touch /tmp/f && chmod 644 /tmp/f && ls -l /tmp/f` will show `-rw-r--r--`. Worth noting your environment here is Windows, where the filesystem doesn't implement POSIX mode bits, so `chmod` inside Git Bash is largely a no-op on native paths.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "chmod-644",
+      "arm": "baseline",
+      "run": 5,
+      "transcript": "`chmod 644 file` sets the permission bits to `-rw-r--r--`:\n\n| Digit | Who | Value | Meaning |\n|---|---|---|---|\n| `6` | owner | 4+2 | read + write |\n| `4` | group | 4 | read only |\n| `4` | others | 4 | read only |\n\nEach digit is a sum of read=4, write=2, execute=1. So the owner can read and modify the file; everyone else can only read it. Nobody gets execute, which is why 644 is the normal mode for data files, configs, source files, and web assets — while scripts and binaries get 755 (`-rwxr-xr-x`).\n\nTwo things worth knowing:\n- It's absolute, not additive — it overwrites whatever the bits were, including clearing setuid/setgid/sticky bits.\n- On a directory, 644 is almost always wrong: without the execute bit you can list the names but can't `cd` into it or stat what's inside. Directories want 755.\n\nDemonstration attempt — **the check failed on this machine**, so treat the table above as unverified-by-execution:\n\n```\n$ chmod 600 demo.txt; stat -c '%a %A' demo.txt   →  644 -rw-r--r--\n$ chmod 644 demo.txt; stat -c '%a %A' demo.txt   →  644 -rw-r--r--\n$ chmod 755 demo.txt; stat -c '%a %A' demo.txt   →  644 -rw-r--r--\n```\n\nEvery mode reports 644 because this is Git Bash on NTFS — POSIX bits aren't stored, so `chmod` is a no-op here regardless of argument. I can't produce a real receipt for chmod semantics on this platform; it would need a Linux/macOS filesystem or WSL.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 10,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "git-non-fast-forward",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "**Cause:** the remote `main` has commits your local `main` doesn't. Git refuses to overwrite them.\n\n**Fix — pick based on whether you *intended* to rewrite history.**\n\nNormal case (you just fell behind):\n```\ngit fetch origin\ngit log --oneline HEAD..origin/main     # see what you're missing\ngit pull --rebase origin main           # replay your commits on top\ngit push origin main\n```\nUse plain `git pull origin main` instead if your team prefers merge commits over rebase.\n\nYou deliberately rewrote history (amend, rebase, squash, reset) and the remote commits are the *old* versions of your own work:\n```\ngit push --force-with-lease origin main\n```\n`--force-with-lease` aborts if someone else pushed since your last fetch; plain `-f` silently discards their work. On a shared `main`, don't force at all — prefer `git revert` and a normal push.\n\nVerification note: this directory isn't a repo, so I couldn't demonstrate the commands against a live remote:\n\n```\n$ git rev-parse --is-inside-work-tree\nfatal: not a git repository (or any of the parent directories): .git\n```\n\nThe behavior described above is **unverified in this environment**. If you point me at the actual repo, I'll run `git fetch` + `git log HEAD..origin/main` there and show which of the two cases you're in before touching anything.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "git-non-fast-forward",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "## What it means\n\nThe remote branch has commits your local branch doesn't contain. Git refuses to move `main` to a commit that isn't a descendant of the current tip, because that would drop the remote's commits. Reproduced above: alice pushed `two`, bob committed `three` on the old tip, and the branches diverged.\n\n## The fix\n\nIntegrate the remote work, then push:\n\n```\ngit pull --rebase origin main\ngit push origin main\n```\n\nReceipt from the repro:\n\n```\n=== git pull --rebase ===\nRebasing (1/1)Successfully rebased and updated refs/heads/main.\n\n=== git push ===\n   ea3e956..5463630  main -> main\n\n=== history now ===\n* 5463630 (HEAD -> main, origin/main, origin/HEAD) three (bob)\n* ea3e956 two (alice)\n* 2d78436 one\n```\n\nYour commit gets replayed on top of the remote's, giving a linear history. If the rebase hits conflicts, resolve them, `git add` the files, and `git rebase --continue`.\n\n## Variants\n\n- **`git pull` (merge instead of rebase)** also clears the rejection; it produces a merge commit rather than a linear history. *Unverified — I only ran the rebase path.*\n- **The two wordings.** `(fetch first)` means your remote-tracking ref is stale; `(non-fast-forward)` means you've already fetched and the branches genuinely diverged. Both have the same fix — the first push in my repro produced `(fetch first)`, and after `git fetch` the identical push produced `(non-fast-forward)`.\n- **You rewrote history on purpose** (amend, rebase, squash) and *want* to overwrite the remote: `git push --force-with-lease`. Use `--force-with-lease` rather than `--force` — it aborts if someone else pushed since your last fetch. On a shared branch like `main` this discards other people's commits, so only do it if you're certain the remote commits are yours. *Unverified — not exercised in the repro.*\n\nBefore force-pushing, `git log --oneline --graph --all --decorate` shows exactly which commits are on each side; in the repro it made the divergence visible as two branches off `2d78436`.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 14,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "git-non-fast-forward",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "The remote has commits your local branch doesn't contain, so your push would erase them. Two cases:\n\n**Normal case — you're just behind:**\n```bash\ngit pull --rebase origin main   # replay your commits on top of remote's\ngit push origin main\n```\nUse `git pull origin main` (merge) instead if your team prefers merge commits. Resolve any conflicts, `git rebase --continue`, then push.\n\n**You rewrote history on purpose** (amended, squashed, or reset a commit that was already pushed) — the divergence is intended, so overwrite the remote:\n```bash\ngit push --force-with-lease origin main\n```\n`--force-with-lease` refuses the push if someone else added commits since your last fetch; plain `--force` doesn't and will silently destroy their work. Never do this on a shared `main` unless everyone knows.\n\nTo decide which case you're in before acting:\n```bash\ngit fetch origin\ngit log --oneline --graph --left-right main...origin/main\n```\nCommits marked `>` exist only on the remote. If there are none, you rewrote history (case 2). If there are some, you're behind (case 1).\n\nNot verified against your repo — this session isn't in a git repository, so I ran none of these commands. The `log --left-right` check above is what settles which case applies; paste its output if you want me to read it.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 6,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "git-non-fast-forward",
+      "arm": "baseline",
+      "run": 4,
+      "transcript": "## The cause\n\nThe remote's `main` has commits your local `main` doesn't. Git refuses to move the remote branch to a commit that isn't a descendant of what's there, because that would discard those commits.\n\n`git status -sb` names it exactly:\n\n```\n## main...origin/main [ahead 1, behind 1]\n```\n\n**Behind ≠ 0 is the whole problem.** Ahead-1/behind-1 means the histories diverged.\n\n## The fix (the normal case)\n\nIntegrate the remote work first, then push:\n\n```\ngit pull --rebase origin main\ngit push origin main\n```\n\nProven end to end in a scratch repo — the rejection, then the fix:\n\n```\n ! [rejected]        main -> main (non-fast-forward)\nhint: Updates were rejected because the tip of your current branch is behind\n      its remote counterpart.\n\n$ git pull --rebase origin main\nRebasing (1/1)Successfully rebased and updated refs/heads/main.\n\n$ git push origin main\n   477fdca..c31d365  main -> main          <- exit 0\n```\n\nRemote state read directly, not inferred from local:\n\n```\n$ git ls-remote origin refs/heads/main\nc31d3659d9a2f076c080669fe32a3fe18efb950d\trefs/heads/main\n```\n\nThat hash is your new commit, so the push landed.\n\nIf the rebase stops on a conflict: fix the files, `git add <file>`, `git rebase --continue`. `git rebase --abort` puts you back where you started.\n\n## The other case\n\nIf you got here by rewriting history you had already pushed (`commit --amend`, `rebase -i`, `reset --hard`), pulling would resurrect the commits you meant to replace. Force instead — but with the lease, never bare `--force`:\n\n```\ngit push --force-with-lease origin main\n```\n\n`--force-with-lease` aborts if someone else pushed since your last fetch; plain `--force` silently deletes their work. Only do this on a branch that is yours; on a shared `main` it destroys other people's commits.\n\nNot verified in this session: the conflict path and `--force-with-lease` — I reproduced only the clean-rebase case above.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 10,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "git-non-fast-forward",
+      "arm": "baseline",
+      "run": 5,
+      "transcript": "**Fix: `git pull --rebase origin main`, resolve any conflicts, then push again.**\n\nThe remote has commits your local branch doesn't. Git refuses to overwrite them, so you integrate first.\n\n```bash\ngit pull --rebase origin main   # replay your commits on top of the remote's\n# if it stops on a conflict: fix the files, git add them, git rebase --continue\ngit push origin main\n```\n\nReproduced and fixed it in a throwaway repo — receipts:\n\n```\n ! [rejected]        main -> main (non-fast-forward)\nhint: Updates were rejected because the tip of your current branch is behind\n```\nafter `git pull --rebase` + conflict resolution:\n```\n   377f81d..46579b3  main -> main\n46579b3 mine\n377f81d two\n1c25363 one\n```\nYour commit ends up on top of the remote's, linear history, nothing lost.\n\nNotes on the variants:\n- **`git pull` (merge, no `--rebase`)** also works; it just adds a merge commit.\n- **`git push --force-with-lease`** — only when you *intended* to discard the remote commits (e.g. after an amend or interactive rebase of your own branch). It deletes others' work on a shared branch. Never plain `--force` here; `--force-with-lease` aborts if someone pushed since your last fetch.\n- If the rejection appeared right after you amended or rebased your *own* feature branch and nobody else uses it, `--force-with-lease` is the correct answer rather than pulling — pulling would resurrect the commits you just rewrote.\n\nOne thing I did not check: which of those two situations you're actually in. Run `git log --oneline HEAD..origin/main` — if it lists commits you don't recognize, someone else pushed, so pull; if it lists your own pre-rewrite commits, force-with-lease.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 12,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "json-kind",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "JSON is a data format, not a programming language.\n\nSpecifically, it's a text-based serialization format for structured data. It defines a syntax for representing values — objects, arrays, strings, numbers, booleans, and null — and nothing more.\n\nWhat makes it *not* a programming language:\n\n- **No computation.** There are no operators, expressions, or arithmetic. `{\"a\": 1 + 1}` isn't valid JSON.\n- **No control flow.** No conditionals, loops, or branching.\n- **No functions or abstraction.** You can't define or invoke anything.\n- **Not Turing-complete.** A JSON document has no execution semantics at all — it's parsed, not run.\n\nThe confusion usually comes from its origin: JSON's syntax is derived from a subset of JavaScript object literal notation (hence the name, JavaScript Object Notation). But it was deliberately stripped down to just the data-describing parts. It's now specified independently of JavaScript, in ECMA-404 and RFC 8259, and is language-agnostic — essentially every language has a JSON parser.\n\nThe right mental peer group is YAML, TOML, XML, CSV, or Protocol Buffers — formats for expressing data — not Python, Go, or JavaScript.\n\n*(No claims here required running a command — this is a factual question with no artifact to verify.)*\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "json-kind",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "JSON is a data format, not a programming language.\n\nIt's a syntax for representing structured data — objects, arrays, strings, numbers, booleans, and null. It has no way to express computation: no variables, no functions, no control flow, no operators. A JSON document doesn't *do* anything; it just describes values.\n\nThe name is a bit misleading: \"JavaScript Object Notation\" comes from the fact that Douglas Crockford derived the syntax from JavaScript's object literal notation in the early 2000s. But JSON is only a *subset* of that syntax, and it's now completely language-independent — standardized as ECMA-404 and RFC 8259, with parsers in essentially every language.\n\nA few things that follow from it being a format rather than a language:\n\n- **JSON is not valid JavaScript-in-general, and JavaScript is not JSON.** JS object literals allow unquoted keys, trailing commas, comments, single quotes, and expressions as values. JSON allows none of these.\n- **Turing-completeness isn't relevant.** JSON can't loop or branch, so it can't compute. Things layered *on top* of JSON (JsonLogic, JSONata, Kubernetes manifests, CloudFormation) do express logic — but the logic lives in the interpreter reading the JSON, not in JSON itself.\n- **Its peers are other formats**: XML, YAML, TOML, CSV, Protocol Buffers, MessagePack — not Python or Go.\n\nOne nuance worth knowing: YAML 1.2 is a superset of JSON, so any valid JSON file is also valid YAML. That's a relationship between two data formats, which is the family JSON belongs to.\n\n*(No commands run — this was a conceptual question with no artifact to execute. The claims above are from knowledge of the JSON specs, not verified in this session.)*\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "json-kind",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "JSON is a data format, not a programming language.\n\n**JSON** (JavaScript Object Notation) is a text-based format for representing structured data — objects, arrays, strings, numbers, booleans, and null. It has no variables, no control flow, no functions, no computation. A JSON document is inert; it describes values, and something else has to interpret it.\n\nThe name is a bit misleading: it borrows its syntax from JavaScript object literals, but it's not JavaScript and isn't tied to it. Every mainstream language has a JSON parser.\n\nThe distinction matters practically:\n\n| | JSON | Programming language |\n|---|---|---|\n| Executes | no | yes |\n| Has logic/branching | no | yes |\n| Turing complete | no | typically yes |\n| Purpose | interchange & storage | describing behavior |\n\nRelated things that *are* config formats too: YAML, TOML, XML, CSV. Things that look configuration-ish but *do* execute: Python files used as config, Jsonnet, Dhall, HCL (partially — it has functions and expressions).\n\nOne nuance worth knowing: JSON is a *subset* of neither JavaScript nor YAML in the strictest sense historically, though YAML 1.2 was defined to be a JSON superset. And JSON deliberately has no comments, no trailing commas, and no date type — omissions that trip people up constantly and spawned variants like JSON5 and JSONC.\n\n*No verification receipts here — this is a conceptual question with no artifact to run.*\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "json-kind",
+      "arm": "baseline",
+      "run": 4,
+      "transcript": "JSON is a data format — specifically a text-based serialization format for structured data.\n\nIt's not a programming language: it has no statements, no control flow, no functions, no variables, and no evaluation semantics. A JSON document doesn't *do* anything; it just describes values.\n\nWhat it does have:\n- **Value types**: object, array, string, number, `true`, `false`, `null`\n- **A grammar** (ECMA-404 / RFC 8259) for writing those values as text\n\nThe confusion usually comes from its origin: JSON's syntax is derived from a subset of JavaScript object literals, and it was historically parsed by `eval()`. But the subset was deliberately chosen to exclude anything executable — no expressions, no method calls, not even comments. Note that it isn't a strict subset of JavaScript in the other direction either (JS object keys can be bare identifiers; JSON keys must be quoted strings).\n\nFor contrast, YAML and TOML are also data formats; a *configuration language* like Dhall or Jsonnet sits in between, since those do have functions and evaluation but still produce data as output.\n\nNo commands were run for this answer — it's a definitional question with no artifact to execute.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "json-kind",
+      "arm": "baseline",
+      "run": 5,
+      "transcript": "JSON is a data format, not a programming language.\n\nIt's a serialization format — a syntax for representing structured data as text. It has values (objects, arrays, strings, numbers, booleans, null) and nothing else: no variables, no functions, no control flow, no evaluation. A JSON document doesn't *do* anything; it just *is* something that a program reads.\n\nA few clarifying points:\n\n- **Origin**: JSON stands for JavaScript Object Notation, and its syntax is a subset of JavaScript's object/array literal syntax. That heritage is why people sometimes conflate the two, but JSON is deliberately language-independent — there are parsers for essentially every language.\n- **Not Turing-complete**: A programming language can express computation. JSON can't express any. It's in the same category as CSV, XML, YAML, TOML, or Protocol Buffers.\n- **The confusing edge cases**: Some tools build *configuration languages* on top of JSON syntax (Jsonnet, CUE, JSON-e), and some formats *encode* programs as JSON (an AST serialized to JSON, or GitHub Actions workflows in YAML/JSON). In those cases the language is the thing layered on top — JSON is just the transport.\n\nNo commands run for this answer — it's a conceptual question with no artifact to execute against, so there's nothing to verify.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "postgres-port",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "5432.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "postgres-port",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "5432.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "postgres-port",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "5432.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "postgres-port",
+      "arm": "skill",
+      "run": 4,
+      "transcript": "5432.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "postgres-port",
+      "arm": "skill",
+      "run": 5,
+      "transcript": "5432.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "chmod-644",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "`chmod 644 file` sets permissions to **rw-r--r--**:\n\n| Who | Permission | Octal |\n|---|---|---|\n| Owner | read + write | 6 (4+2) |\n| Group | read only | 4 |\n| Others | read only | 4 |\n\nNo execute bit for anyone — so it's the standard mode for regular data files (configs, HTML, source that's run via an interpreter command rather than executed directly). Scripts you want to run as `./script.sh` need 755 instead.\n\nIt's an absolute set, not a modification: any existing execute or group-write bits are cleared.\n\n*(Explanation only — no command run to verify, since this is a Windows environment without chmod.)*\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 6,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "chmod-644",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "`chmod 644 file` sets permissions to `rw-r--r--`:\n\n- **Owner**: read + write (6 = 4+2)\n- **Group**: read only (4)\n- **Others**: read only (4)\n\nNo execute bit for anyone — the standard mode for regular data files (configs, source, documents). Directories and scripts need 755 instead, since they require the execute bit to be traversed/run.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 5,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "chmod-644",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "`chmod 644 file` sets permissions to `rw-r--r--`:\n\n| Who | Digit | Permissions |\n|---|---|---|\n| Owner | 6 | read + write (4+2) |\n| Group | 4 | read only |\n| Others | 4 | read only |\n\nSo the owner can view and edit the file; everyone else can only read it. Nobody gets execute — which is why 644 is the standard mode for regular data files (configs, HTML, source that isn't run directly), while scripts and binaries use 755.\n\nNote it's an absolute set, not a delta: any existing execute or group-write bits are cleared. It also doesn't touch setuid/setgid/sticky bits unless you pass a 4-digit mode (`chmod 0644` explicitly clears them).\n\nA related one you'll see for secrets: `600` (`rw-------`), e.g. SSH private keys, which OpenSSH refuses to use if group/other can read them.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 9,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "chmod-644",
+      "arm": "skill",
+      "run": 4,
+      "transcript": "`chmod 644 file` sets the permission bits to `rw-r--r--`:\n\n| Who | Digit | Permissions |\n|---|---|---|\n| Owner | 6 = 4+2 | read + write |\n| Group | 4 | read only |\n| Others | 4 | read only |\n\nSo the owner can read and modify the file; everyone else can only read it. Nobody gets execute, which is why 644 is the standard mode for regular data files (configs, HTML, source that isn't run directly) while scripts and binaries use 755.\n\nTwo caveats worth knowing:\n- It's absolute, not additive — it wipes any existing bits, including setuid/setgid and the execute bit. `chmod 644` on a script makes it non-runnable via `./script`.\n- On directories, 644 is almost always wrong: without execute you can list names but not `cd` in or stat the contents. Directories want 755.\n\nYour actual result also depends on the filesystem — ACLs, `noexec` mounts, or Windows/WSL DrvFs can ignore or override the bits.\n\n(No command run here — this is a knowledge answer, unverified against your system. Say the word and I'll create a scratch file, run `chmod 644` on it, and show the `ls -l` before/after.)\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "chmod-644",
+      "arm": "skill",
+      "run": 5,
+      "transcript": "`chmod 644 file` sets permissions to `rw-r--r--`:\n\n| Who | Permissions | Meaning |\n|---|---|---|\n| Owner (6) | `rw-` | read + write |\n| Group (4) | `r--` | read only |\n| Others (4) | `r--` | read only |\n\nEach digit is a sum: 4 = read, 2 = write, 1 = execute. So 6 = 4+2 (read+write), 4 = read.\n\nNo one gets execute, so it's the standard mode for regular data files — source code, configs, HTML, images. Scripts and binaries need 755 (`rwxr-xr-x`) instead, and private files like SSH keys need 600 (`rw-------`).\n\nIt also clears any setuid/setgid/sticky bits, since you gave three digits instead of four (`chmod 0644` is equivalent).\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 10,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "git-non-fast-forward",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "Your local `main` is missing commits that exist on the remote. Integrate them first, then push.\n\n```bash\ngit fetch origin\ngit rebase origin/main     # or: git merge origin/main\ngit push origin main\n```\n\nPick between them:\n- **`rebase`** — replays your commits on top of the remote's. Clean history. Use this if your commits aren't pushed anywhere yet.\n- **`merge`** — creates a merge commit. Safer if others have already pulled your branch.\n\nIf a rebase hits conflicts: fix the files, `git add` them, `git rebase --continue`. Bail out with `git rebase --abort`.\n\n**The case where this isn't the fix:** if you *intentionally* rewrote history (amended a commit, squashed, `git reset`), then the remote commits are the ones you're trying to discard. There you want:\n\n```bash\ngit push --force-with-lease origin main\n```\n\n`--force-with-lease` over `--force` — it aborts if someone else pushed since your last fetch, instead of silently destroying their work.\n\nTo check which situation you're in before doing anything:\n\n```bash\ngit fetch origin\ngit log --oneline --graph HEAD origin/main\n```\n\nIf `origin/main` has commits you've never seen, rebase/merge. If it has old versions of commits you rewrote, force-with-lease.\n\nI have no repo here to run these against, so the commands above are unverified in this session — they're the standard resolution, not output from your repo. If you paste the `git log --oneline --graph HEAD origin/main` output I'll tell you which branch of the fix applies.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 9,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "git-non-fast-forward",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "**Fix: `git pull --rebase` then push again.** The remote has commits your branch doesn't contain.\n\nReproduced and fixed it end-to-end in a throwaway repo:\n\n```\n=== push ===\n ! [rejected]        main -> main (non-fast-forward)\nhint: Updates were rejected because the tip of your current branch is behind\nhint: its remote counterpart.\n\n=== git status (the diagnosis) ===\n## main...origin/main [ahead 1, behind 1]\n\n=== fix ===\nRebasing (1/1)Successfully rebased and updated refs/heads/main.\n   972b446..c469779  main -> main\n```\n\nSteps:\n\n1. `git status -sb` — confirm you're `behind N`. That number is what the remote has and you don't.\n2. `git pull --rebase` (replays your commits on top; use plain `git pull` if your team prefers merge commits).\n3. Resolve conflicts if any → `git rebase --continue`.\n4. `git push origin main`.\n\nWhen *not* to do that: if you deliberately rewrote history (amend, squash, `reset --hard`), rebasing onto the remote re-imports what you meant to drop. Then use `git push --force-with-lease origin main` — it refuses if someone else pushed since your last fetch, unlike bare `--force`. On a shared `main` this rewrites other people's history, so only do it on your own branch or with the team's agreement.\n\nCaveat: the `--force-with-lease` path is reasoning, not a run — I reproduced and verified only the `pull --rebase` fix above.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 9,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "git-non-fast-forward",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "**Cause:** the remote `main` has commits your local `main` doesn't contain, so your push isn't a fast-forward.\n\n**Default fix — integrate, then push:**\n```\ngit fetch origin\ngit rebase origin/main     # or: git merge origin/main\ngit push origin main\n```\n`git pull --rebase origin main` does the fetch+rebase in one step. Resolve any conflicts, `git rebase --continue`, then push.\n\n**If you deliberately rewrote history** (amend, squash, `reset --hard`) and want the remote to match yours:\n```\ngit push --force-with-lease origin main\n```\n`--force-with-lease` aborts if someone else pushed since your last fetch; plain `--force` silently destroys their commits. Never force-push a shared branch without telling collaborators.\n\n**Which one applies** — check before choosing:\n```\ngit fetch origin && git log --oneline --graph --left-right main...origin/main\n```\nCommits marked `>` are on the remote only. If there are any and you didn't intend to discard them, use the rebase path, not force.\n\nUnverified: this directory isn't a git repository, so I ran none of these against your repo. Point me at the repo and I'll run the diagnostic and show the output.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 10,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "git-non-fast-forward",
+      "arm": "skill",
+      "run": 4,
+      "transcript": "`git pull --rebase origin main && git push` — the remote has commits your local `main` doesn't contain, so the push would discard them.\n\nThe rejection is git refusing to make remote history diverge. Three cases:\n\n**1. Someone else pushed (normal case)**\n```bash\ngit pull --rebase origin main   # replay your commits on top of theirs\ngit push origin main\n```\n\n**2. You rewrote history on purpose** (amend, rebase, `reset --hard`) and *want* to overwrite the remote:\n```bash\ngit push --force-with-lease origin main\n```\nUse `--force-with-lease`, not `--force`: it aborts if the remote moved since your last fetch, so you can't silently clobber a teammate's push.\n\n**3. You're not sure which** — look before you act:\n```bash\ngit fetch origin\ngit log --oneline --left-right --graph HEAD...origin/main\n```\nCommits marked `<` are yours only, `>` are on the remote only. If there are `>` commits you don't recognize, that's case 1 — rebase, don't force.\n\nOn a shared branch like `main`, prefer case 1. Force-pushing `main` breaks every other clone.\n\nUnverified in this session: no git repository is present at `C:\\Users\\malik\\AppData\\Local\\Temp\\skillsmith-skill-F5f2Ug`, so I ran none of these against your actual remote. If you point me at the repo, I'll run the `git log --left-right` diagnostic and show which case you're in.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": false,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "git-non-fast-forward",
+      "arm": "skill",
+      "run": 5,
+      "transcript": "The remote has commits your local branch doesn't. Git refuses to overwrite them.\n\n**Normal case — integrate first, then push:**\n```bash\ngit fetch origin\ngit rebase origin/main      # or: git merge origin/main\ngit push origin main\n```\nResolve any conflicts, `git rebase --continue`, then push.\n\n**If you deliberately rewrote history** (amend, rebase, squash, reset) and want the remote to match yours:\n```bash\ngit push --force-with-lease origin main\n```\nUse `--force-with-lease`, not `--force` — it aborts if someone else pushed since your last fetch instead of destroying their work.\n\nPick by checking what's actually on the remote first:\n```bash\ngit fetch origin && git log --oneline HEAD..origin/main\n```\nCommits listed there are ones you'd lose by force-pushing. Empty output plus a rejection means your local history was rewritten → force-with-lease is safe.\n\nNote: I ran the diagnosis commands against your working directory and it's `fatal: not a git repository`, so the above is general guidance — unverified against your actual repo. Point me at the repo path and I'll run the fetch/log check and tell you which branch applies.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 7,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "json-kind",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "A data format.\n\nJSON is a syntax for representing structured data (objects, arrays, strings, numbers, booleans, null). It has no variables, control flow, functions, or evaluation — nothing to execute.\n\nThe confusion comes from its origin: JSON is a subset of JavaScript's object literal syntax, which is why `JSON.parse` exists and why old code abused `eval()` on it. But the subset itself is inert.\n\n*No commands run — this is a factual question with no artifact to verify.*\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "json-kind",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "JSON is a data format — specifically a text-based data interchange format. It has no execution semantics: no statements, no control flow, no functions, no variables. It only describes values (objects, arrays, strings, numbers, booleans, null).\n\nThe confusion comes from its origin: JSON's syntax is a subset of JavaScript object literal notation (the name stands for JavaScript Object Notation), and early code parsed it by calling `eval()`. But the format itself was standardized independently (RFC 8259, ECMA-404) and is language-agnostic — every major language has a JSON parser.\n\nWorth noting: JSON is not quite a strict subset of JavaScript either. The characters U+2028 and U+2029 are legal unescaped in JSON strings but were illegal in JavaScript string literals until ES2019.\n\nFor contrast, \"data format, not programming language\" is the same distinction that separates HTML, CSS, YAML, and XML from Python, Go, or Rust. Turing-completeness isn't the dividing line people usually mean, but it's a useful sanity check: you can't write a loop in JSON.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "json-kind",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "JSON is a data format — a syntax for representing structured data (objects, arrays, strings, numbers, booleans, null). It has no variables, no control flow, no functions, no computation.\n\nThe name is misleading: \"JavaScript Object Notation.\" It was derived from a subset of JavaScript's object literal syntax, but it's now an independent standard (RFC 8259 / ECMA-404) with parsers in every language.\n\nNothing to verify here — no code was written or run.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "json-kind",
+      "arm": "skill",
+      "run": 4,
+      "transcript": "JSON is a data format — specifically a text-based serialization format for structured data (objects, arrays, strings, numbers, booleans, null). It has no variables, control flow, functions, or evaluation semantics, so it is not a programming language.\n\nTwo clarifications worth having:\n\n- **It came from a programming language.** JSON's syntax is a subset of JavaScript object literal notation, which is why `JSON.parse` on valid JSON looks so natural in JS. But being parseable as a JS expression doesn't make JSON itself a language — the same way a CSV row isn't a program.\n- **It's not Turing-complete, and that's the point.** Formats like YAML and JSON are deliberately inert: parsing one cannot execute anything. Compare that to formats that *did* blur the line (e.g. Python's `pickle`, or YAML tags that instantiate arbitrary objects) — those became security holes precisely because deserialization turned into execution.\n\nThe standard is ECMA-404 / RFC 8259.\n\n(No commands run — this is a definitional question with no artifact to execute against.)\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    },
+    {
+      "id": "json-kind",
+      "arm": "skill",
+      "run": 5,
+      "transcript": "JSON is a data format — a text-based notation for representing structured data. It has no execution model: no statements, control flow, functions, or evaluation.\n\nThe confusion comes from its origin: JSON's syntax is a subset of JavaScript's object literal notation, and old code parsed it with `eval()`. But the notation itself is inert; something else has to read it.\n\nBy its own definition, ECMA-404 titles it \"The JSON Data Interchange Syntax.\" No claims here needed a command to verify — this is definitional, not a state of your system.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null
+    }
+  ],
+  "summary": [
+    {
+      "caseId": "postgres-port",
+      "checkId": "answered",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 5,
+      "skillApplicable": 5
+    },
+    {
+      "caseId": "postgres-port",
+      "checkId": "no-preamble",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 5,
+      "skillApplicable": 5
+    },
+    {
+      "caseId": "postgres-port",
+      "checkId": "no-closing-summary",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 5,
+      "skillApplicable": 5
+    },
+    {
+      "caseId": "chmod-644",
+      "checkId": "answered",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 5,
+      "skillApplicable": 5
+    },
+    {
+      "caseId": "chmod-644",
+      "checkId": "no-preamble",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 5,
+      "skillApplicable": 5
+    },
+    {
+      "caseId": "chmod-644",
+      "checkId": "no-closing-summary",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 5,
+      "skillApplicable": 5
+    },
+    {
+      "caseId": "git-non-fast-forward",
+      "checkId": "answered",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 5,
+      "skillApplicable": 5
+    },
+    {
+      "caseId": "git-non-fast-forward",
+      "checkId": "no-preamble",
+      "baseline": 1,
+      "skill": 0.8,
+      "delta": -0.19999999999999996,
+      "baselineApplicable": 5,
+      "skillApplicable": 5
+    },
+    {
+      "caseId": "git-non-fast-forward",
+      "checkId": "no-closing-summary",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 5,
+      "skillApplicable": 5
+    },
+    {
+      "caseId": "json-kind",
+      "checkId": "answered",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 5,
+      "skillApplicable": 5
+    },
+    {
+      "caseId": "json-kind",
+      "checkId": "no-preamble",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 5,
+      "skillApplicable": 5
+    },
+    {
+      "caseId": "json-kind",
+      "checkId": "no-closing-summary",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 5,
+      "skillApplicable": 5
+    }
+  ],
+  "baselineScore": 1,
+  "skillScore": 0.9833333333333334,
+  "significance": {
+    "delta": -0.01666666666666672,
+    "p": 0.31528567130350904,
+    "significant": false,
+    "suggestMoreRuns": false,
+    "baseline": {
+      "point": 1,
+      "low": 0.93982814785791,
+      "high": 0.9999999999999998
+    },
+    "skill": {
+      "point": 0.9833333333333333,
+      "low": 0.9114487027240993,
+      "high": 0.9970518402052136
+    },
+    "baselinePassed": 60,
+    "skillPassed": 59,
+    "total": 60
+  },
+  "cost": {
+    "baselineMedian": null,
+    "skillMedian": null,
+    "delta": null
+  }
+}

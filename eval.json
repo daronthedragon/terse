@@ -1,0 +1,45 @@
+{
+  "skill": "SKILL.md",
+  "runner": "cd {skill} && claude -p {prompt} --output-format text --dangerously-skip-permissions --no-session-persistence",
+  "repeat": 5,
+  "timeoutMs": 180000,
+  "concurrency": 4,
+  "cases": [
+    {
+      "id": "postgres-port",
+      "prompt": "What port does PostgreSQL listen on by default?",
+      "checks": [
+        { "id": "answered", "describe": "the correct answer (5432) is present", "pattern": "\\b5432\\b", "expect": true },
+        { "id": "no-preamble", "describe": "no lead-in boilerplate", "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question)\\b", "expect": false },
+        { "id": "no-closing-summary", "describe": "no recap tail", "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you)\\b", "expect": false }
+      ]
+    },
+    {
+      "id": "chmod-644",
+      "prompt": "What does chmod 644 do to a file?",
+      "checks": [
+        { "id": "answered", "describe": "mentions read/owner semantics", "pattern": "\\b(owner|read|write)\\b", "expect": true },
+        { "id": "no-preamble", "describe": "no lead-in boilerplate", "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question)\\b", "expect": false },
+        { "id": "no-closing-summary", "describe": "no recap tail", "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you)\\b", "expect": false }
+      ]
+    },
+    {
+      "id": "git-non-fast-forward",
+      "prompt": "A git push is rejected with '! [rejected] main -> main (non-fast-forward)'. What is the fix?",
+      "checks": [
+        { "id": "answered", "describe": "mentions pull/rebase/fetch", "pattern": "\\b(pull|rebase|fetch)\\b", "expect": true },
+        { "id": "no-preamble", "describe": "no lead-in boilerplate", "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question)\\b", "expect": false },
+        { "id": "no-closing-summary", "describe": "no recap tail", "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you)\\b", "expect": false }
+      ]
+    },
+    {
+      "id": "json-kind",
+      "prompt": "Is JSON a data format or a programming language?",
+      "checks": [
+        { "id": "answered", "describe": "says data format", "pattern": "\\bformat\\b", "expect": true },
+        { "id": "no-preamble", "describe": "no lead-in boilerplate", "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question)\\b", "expect": false },
+        { "id": "no-closing-summary", "describe": "no recap tail", "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you)\\b", "expect": false }
+      ]
+    }
+  ]
+}
