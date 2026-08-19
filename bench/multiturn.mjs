@@ -63,30 +63,57 @@ if (!turns) {
  * mangled. The npm package ships a native binary; prefer it, and let
  * CLAUDE_BIN override for other install layouts.
  */
-function resolveCli() {
-  if (process.env.CLAUDE_BIN) return process.env.CLAUDE_BIN
+function cliCandidates() {
+  const out = []
+  if (process.env.CLAUDE_BIN) out.push(process.env.CLAUDE_BIN)
   if (process.platform === 'win32' && process.env.APPDATA) {
-    const exe = join(process.env.APPDATA, 'npm', 'node_modules', '@anthropic-ai', 'claude-code', 'bin', 'claude.exe')
-    if (existsSync(exe)) return exe
+    out.push(join(process.env.APPDATA, 'npm', 'node_modules', '@anthropic-ai', 'claude-code', 'bin', 'claude.exe'))
   }
-  return 'claude'
+  if (process.env.HOME) {
+    out.push(join(process.env.HOME, '.local', 'bin', 'claude'))
+    out.push(join(process.env.HOME, 'AppData', 'Roaming', 'npm', 'node_modules', '@anthropic-ai', 'claude-code', 'bin', 'claude.exe'))
+  }
+  out.push('claude')
+  return out.filter((p, i, a) => a.indexOf(p) === i)
 }
 
-const CLI = resolveCli()
+/**
+ * Run one turn, tolerating a CLI that cannot be found or spawned on the first
+ * try. An earlier version resolved the binary once and gave up on ENOENT; two
+ * runs of a benchmark died that way and their empty transcripts scored as
+ * "the agent forgot the context", which is a measurement reporting a harness
+ * failure as a finding. Try each candidate path, and retry a transient failure
+ * once before believing it.
+ */
+function runTurn(args, cwd) {
+  let lastErr = 'no candidate ran'
+  for (const cli of cliCandidates()) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const res = spawnSync(cli, args, {
+        encoding: 'utf8',
+        maxBuffer: 32 * 1024 * 1024,
+        shell: false,
+        cwd,
+      })
+      if (res.error?.code === 'ENOENT') {
+        lastErr = `ENOENT for ${cli}`
+        break // this path does not exist; try the next candidate, not again
+      }
+      if (!res.error && res.status === 0) return { ok: true, stdout: res.stdout }
+      lastErr = res.error?.message ?? `exit ${res.status}: ${String(res.stderr).slice(0, 300)}`
+    }
+  }
+  return { ok: false, error: lastErr }
+}
 let sessionId = null
 let final = ''
 
 for (const [i, prompt] of turns.entries()) {
   const args = ['-p', prompt, '--output-format', 'json', '--dangerously-skip-permissions']
   if (sessionId) args.push('--resume', sessionId)
-  const res = spawnSync(CLI, args, {
-    encoding: 'utf8',
-    maxBuffer: 32 * 1024 * 1024,
-    shell: false,
-    cwd: workDir,
-  })
-  if (res.error || res.status !== 0) {
-    console.error(`turn ${i + 1} failed: ${res.error?.message ?? res.stderr?.slice(0, 400)}`)
+  const res = runTurn(args, workDir)
+  if (!res.ok) {
+    console.error(`turn ${i + 1} failed: ${res.error}`)
     process.exit(1)
   }
   let parsed

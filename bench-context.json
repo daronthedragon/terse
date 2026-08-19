@@ -57,13 +57,13 @@
         {
           "id": "recalls-slug-len",
           "describe": "recalls slug len",
-          "pattern": "\\b7\\b",
+          "pattern": "(\b7\b|⁷|62^7|3,?521,?614,?606,?208|3.5d* ?trillion|\bseven\b)",
           "expect": true
         },
         {
           "id": "recalls-scale",
           "describe": "recalls scale",
-          "pattern": "(10 ?million|10M|10,000,000|62)",
+          "pattern": "(10 ?million|10M\b|10,000,000|352,161)",
           "expect": true
         }
       ]
