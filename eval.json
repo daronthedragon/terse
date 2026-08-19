@@ -9,97 +9,193 @@
   "timeoutMs": 180000,
   "cases": [
     {
-      "id": "postgres-port",
-      "prompt": "What port does PostgreSQL listen on by default?",
+      "id": "git-merge-vs-rebase",
+      "prompt": "What's the difference between git merge and git rebase?",
       "checks": [
         {
           "id": "answered",
           "describe": "correct answer present",
-          "pattern": "\\b5432\\b",
+          "pattern": "\\b(history|linear|merge commit|rewrit)\\b",
           "expect": true
         },
         {
           "id": "no-preamble",
           "describe": "no lead-in boilerplate",
-          "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question)\\b",
+          "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
           "expect": false
         },
         {
           "id": "no-closing-summary",
           "describe": "no recap tail",
-          "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you)\\b",
+          "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
           "expect": false
         }
       ]
     },
     {
-      "id": "chmod-644",
-      "prompt": "What does chmod 644 do to a file?",
+      "id": "dockerfile-cache",
+      "prompt": "Why does reordering lines in a Dockerfile sometimes bust the build cache?",
       "checks": [
         {
           "id": "answered",
           "describe": "correct answer present",
-          "pattern": "\\b(owner|read|write)\\b",
+          "pattern": "\\b(layer|cache|invalidat|order)\\b",
           "expect": true
         },
         {
           "id": "no-preamble",
           "describe": "no lead-in boilerplate",
-          "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question)\\b",
+          "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
           "expect": false
         },
         {
           "id": "no-closing-summary",
           "describe": "no recap tail",
-          "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you)\\b",
+          "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
           "expect": false
         }
       ]
     },
     {
-      "id": "git-non-fast-forward",
-      "prompt": "A git push is rejected with '! [rejected] main -> main (non-fast-forward)'. What is the fix?",
+      "id": "force-push-shared",
+      "prompt": "Is it safe to use git push --force on a shared branch?",
       "checks": [
         {
           "id": "answered",
           "describe": "correct answer present",
-          "pattern": "\\b(pull|rebase|fetch)\\b",
+          "pattern": "(\\bno\\b|force-with-lease|overwrit|don'?t|shouldn'?t|avoid)",
           "expect": true
         },
         {
           "id": "no-preamble",
           "describe": "no lead-in boilerplate",
-          "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question)\\b",
+          "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
           "expect": false
         },
         {
           "id": "no-closing-summary",
           "describe": "no recap tail",
-          "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you)\\b",
+          "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
           "expect": false
         }
       ]
     },
     {
-      "id": "json-kind",
-      "prompt": "Is JSON a data format or a programming language?",
+      "id": "json-number-keys",
+      "prompt": "Can JSON object keys be numbers?",
       "checks": [
         {
           "id": "answered",
           "describe": "correct answer present",
-          "pattern": "\\bformat\\b",
+          "pattern": "(\\bno\\b|string|must be)",
           "expect": true
         },
         {
           "id": "no-preamble",
           "describe": "no lead-in boilerplate",
-          "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question)\\b",
+          "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
           "expect": false
         },
         {
           "id": "no-closing-summary",
           "describe": "no recap tail",
-          "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you)\\b",
+          "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
+          "expect": false
+        }
+      ]
+    },
+    {
+      "id": "python-gil-parallel",
+      "prompt": "Does Python's GIL prevent all parallelism?",
+      "checks": [
+        {
+          "id": "answered",
+          "describe": "correct answer present",
+          "pattern": "(\\bno\\b|process|multiprocess|I/?O|release|C ext)",
+          "expect": true
+        },
+        {
+          "id": "no-preamble",
+          "describe": "no lead-in boilerplate",
+          "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
+          "expect": false
+        },
+        {
+          "id": "no-closing-summary",
+          "describe": "no recap tail",
+          "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
+          "expect": false
+        }
+      ]
+    },
+    {
+      "id": "put-vs-post-id",
+      "prompt": "For creating a resource where the client chooses the ID, should I use PUT or POST?",
+      "checks": [
+        {
+          "id": "answered",
+          "describe": "correct answer present",
+          "pattern": "\\bPUT\\b",
+          "expect": true
+        },
+        {
+          "id": "no-preamble",
+          "describe": "no lead-in boilerplate",
+          "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
+          "expect": false
+        },
+        {
+          "id": "no-closing-summary",
+          "describe": "no recap tail",
+          "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
+          "expect": false
+        }
+      ]
+    },
+    {
+      "id": "semver-optional-param",
+      "prompt": "I added a new optional parameter to a public function. Which semver bump - major, minor, or patch?",
+      "checks": [
+        {
+          "id": "answered",
+          "describe": "correct answer present",
+          "pattern": "\\bminor\\b",
+          "expect": true
+        },
+        {
+          "id": "no-preamble",
+          "describe": "no lead-in boilerplate",
+          "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
+          "expect": false
+        },
+        {
+          "id": "no-closing-summary",
+          "describe": "no recap tail",
+          "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
+          "expect": false
+        }
+      ]
+    },
+    {
+      "id": "node-eaddrinuse",
+      "prompt": "Node throws EADDRINUSE when my server starts. What's the cause?",
+      "checks": [
+        {
+          "id": "answered",
+          "describe": "correct answer present",
+          "pattern": "(port|in use|bound|already|another (process|program|server))",
+          "expect": true
+        },
+        {
+          "id": "no-preamble",
+          "describe": "no lead-in boilerplate",
+          "pattern": "\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
+          "expect": false
+        },
+        {
+          "id": "no-closing-summary",
+          "describe": "no recap tail",
+          "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
           "expect": false
         }
       ]

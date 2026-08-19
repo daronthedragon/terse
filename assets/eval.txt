@@ -3,36 +3,60 @@
 
   case / check                              without    with    delta
   ──────────────────────────────────────────────────────────────────
-  postgres-port / answered                    100%     100%      +0%
-  postgres-port / no-preamble                 100%     100%      +0%
-  postgres-port / no-closing-summary          100%     100%      +0%
-  chmod-644 / answered                        100%     100%      +0%
-  chmod-644 / no-preamble                     100%     100%      +0%
-  chmod-644 / no-closing-summary              100%     100%      +0%
-  git-non-fast-forward / answered             100%     100%      +0%
-  git-non-fast-forward / no-preamble          100%     100%      +0%
-  git-non-fast-forward / no-closing-summary    100%     100%      +0%
-  json-kind / answered                        100%     100%      +0%
-  json-kind / no-preamble                     100%     100%      +0%
-  json-kind / no-closing-summary              100%     100%      +0%
+  git-merge-vs-rebase / answered              100%     100%      +0%
+  git-merge-vs-rebase / no-preamble            80%     100%     +20%
+  git-merge-vs-rebase / no-closing-summary    100%     100%      +0%
+  dockerfile-cache / answered                 100%     100%      +0%
+  dockerfile-cache / no-preamble              100%     100%      +0%
+  dockerfile-cache / no-closing-summary       100%     100%      +0%
+  force-push-shared / answered                100%     100%      +0%
+  force-push-shared / no-preamble             100%     100%      +0%
+  force-push-shared / no-closing-summary      100%     100%      +0%
+  json-number-keys / answered                 100%      80%     -20%
+  json-number-keys / no-preamble              100%     100%      +0%
+  json-number-keys / no-closing-summary       100%     100%      +0%
+  python-gil-parallel / answered              100%     100%      +0%
+  python-gil-parallel / no-preamble           100%     100%      +0%
+  python-gil-parallel / no-closing-summary    100%     100%      +0%
+  put-vs-post-id / answered                   100%     100%      +0%
+  put-vs-post-id / no-preamble                100%     100%      +0%
+  put-vs-post-id / no-closing-summary         100%     100%      +0%
+  semver-optional-param / answered            100%     100%      +0%
+  semver-optional-param / no-preamble         100%     100%      +0%
+  semver-optional-param / no-closing-summary    100%     100%      +0%
+  node-eaddrinuse / answered                  100%     100%      +0%
+  node-eaddrinuse / no-preamble                80%     100%     +20%
+  node-eaddrinuse / no-closing-summary        100%     100%      +0%
 
   guarded checks (implication) only count runs that triggered the guard:
-    postgres-port / answered               triggered 5/5 without, 5/5 with
-    postgres-port / no-preamble            triggered 5/5 without, 5/5 with
-    postgres-port / no-closing-summary     triggered 5/5 without, 5/5 with
-    chmod-644 / answered                   triggered 5/5 without, 5/5 with
-    chmod-644 / no-preamble                triggered 5/5 without, 5/5 with
-    chmod-644 / no-closing-summary         triggered 5/5 without, 5/5 with
-    git-non-fast-forward / answered        triggered 5/5 without, 5/5 with
-    git-non-fast-forward / no-preamble     triggered 5/5 without, 5/5 with
-    git-non-fast-forward / no-closing-summary triggered 5/5 without, 5/5 with
-    json-kind / answered                   triggered 5/5 without, 5/5 with
-    json-kind / no-preamble                triggered 5/5 without, 5/5 with
-    json-kind / no-closing-summary         triggered 5/5 without, 5/5 with
+    git-merge-vs-rebase / answered         triggered 5/5 without, 5/5 with
+    git-merge-vs-rebase / no-preamble      triggered 5/5 without, 5/5 with
+    git-merge-vs-rebase / no-closing-summary triggered 5/5 without, 5/5 with
+    dockerfile-cache / answered            triggered 5/5 without, 5/5 with
+    dockerfile-cache / no-preamble         triggered 5/5 without, 5/5 with
+    dockerfile-cache / no-closing-summary  triggered 5/5 without, 5/5 with
+    force-push-shared / answered           triggered 5/5 without, 5/5 with
+    force-push-shared / no-preamble        triggered 5/5 without, 5/5 with
+    force-push-shared / no-closing-summary triggered 5/5 without, 5/5 with
+    json-number-keys / answered            triggered 5/5 without, 5/5 with
+    json-number-keys / no-preamble         triggered 5/5 without, 5/5 with
+    json-number-keys / no-closing-summary  triggered 5/5 without, 5/5 with
+    python-gil-parallel / answered         triggered 5/5 without, 5/5 with
+    python-gil-parallel / no-preamble      triggered 5/5 without, 5/5 with
+    python-gil-parallel / no-closing-summary triggered 5/5 without, 5/5 with
+    put-vs-post-id / answered              triggered 5/5 without, 5/5 with
+    put-vs-post-id / no-preamble           triggered 5/5 without, 5/5 with
+    put-vs-post-id / no-closing-summary    triggered 5/5 without, 5/5 with
+    semver-optional-param / answered       triggered 5/5 without, 5/5 with
+    semver-optional-param / no-preamble    triggered 5/5 without, 5/5 with
+    semver-optional-param / no-closing-summary triggered 5/5 without, 5/5 with
+    node-eaddrinuse / answered             triggered 5/5 without, 5/5 with
+    node-eaddrinuse / no-preamble          triggered 5/5 without, 5/5 with
+    node-eaddrinuse / no-closing-summary   triggered 5/5 without, 5/5 with
   ──────────────────────────────────────────────────────────────────
-  mean pass rate unchanged at 100%
-  not distinguishable from noise (p=1.00)
-  95% CI  without 100% [94-100]   with 100% [94-100]
-  response length 1,165 → 666 chars median  -43%  significant (p=0.006)
+  mean pass rate 98% → 99%
+  not distinguishable from noise (p=0.56)
+  95% CI  without 98% [94-100]   with 99% [95-100]
+  response length 2,069 → 654 chars median  -68%  significant (p=0.000)
 
-  40 runs. Transcripts are in the --json output.
+  80 runs. Transcripts are in the --json output.
