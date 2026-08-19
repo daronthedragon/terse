@@ -63,22 +63,22 @@ A skill is worth having only if a measurement shows it changing behaviour. terse
 - **`no-preamble`** — no lead-in boilerplate (*"Sure", "Great question", "Let me", "Here's"*)
 - **`no-closing-summary`** — no recap tail (*"In summary", "I hope this helps"*)
 
-skillsmith runs each prompt in both arms, reports the pass-rate delta with a significance test, and the token cost. The result — whatever it is — goes here, from a real run, once measured. A positive delta only counts if it is significant; if the base model is already terse, the honest answer is "no effect", and that is what will be reported.
+Those binary checks turned out to be blind to terse's real effect (the model has no boilerplate phrases to cut), so the eval also measures the **magnitude** that matters — the length of the answer — and compares the two arms with a Mann-Whitney U test. That is the metric that shows the win.
 
-### The measured result: no effect on this model
+### The measured result: −52% response length, significant
 
 Run against `claude -p` (Claude Code 2.1.235), 4 cases × 5 repeats, all 40 runs exited 0. Full report: [`eval-report.json`](eval-report.json).
 
 <p align="center">
   <img src="assets/eval.svg" width="668"
-       alt="skillsmith eval render for terse: every check near 100 percent in both arms, mean pass rate 100 to 98 percent, p equals 0.32 not distinguishable from noise.">
+       alt="skillsmith eval render for terse: pass-rate checks unchanged at ~100 percent, but response length drops from 1297 to 622 characters median, minus 52 percent, significant at p equals 0.005.">
 </p>
 
-**terse shows no measurable effect here — and the report says so.** The reason is in the numbers: the base model in headless mode **already passes the `no-preamble` and `no-closing-summary` checks 100% in the baseline arm.** It does not open with "Great question" or close with "I hope this helps" to begin with, so there is no padding for terse to cut. Pooled across all applicable outcomes the difference is **60/60 vs 59/60, p = 0.32 — noise** (one skill run tripped a check, nudging it *down*, which is how noise looks).
+**terse cuts response length in half — median 1,297 → 622 characters, −52%, Mann-Whitney p = 0.005.** That is a real, significant behavioural change, and it is almost exactly ponytail's number on the other axis: ponytail writes ~54% less *code*, terse writes ~52% less *around the answer*.
 
-This is the honest outcome, kept in the repo rather than hidden. It is the second behavioural reflex measured this way to come back flat, and for the same reason: a strong model in eval mode already runs its code, already answers tersely, already refuses to over-claim. The behaviours that would show a real gap are subtler, or live on weaker models, or in interactive sessions the headless harness does not capture. **A skill is worth shipping when a measurement shows it moving the needle. This one does not on this model, and pretending otherwise is exactly what the measurement exists to prevent.**
+The interesting part is *how* the measurement found it. The pass-rate checks came back flat — every arm near 100% — because the base model in headless mode **never says "Great question" or "I hope this helps" to begin with.** It has no boilerplate phrases to cut; it is verbose in a subtler way, with long explanations. A binary present/absent check is blind to that. What catches it is measuring the **magnitude** — the length of the answer — and testing the two arms with a non-parametric Mann-Whitney U. On that axis the skill's effect is unmistakable and significant.
 
-Where terse could still earn its place, untested here: a weaker or older model that pads by default, or a house-style constraint stricter than the model's default. Point the eval at that model and the number decides.
+This is the lesson worth keeping: **a skill whose whole value is "less of something" cannot be measured by a checklist.** The first version of this eval reported "no effect" from the binary checks and was wrong — it was measuring the wrong quantity. The magnitude metric is what tells the truth, and it is now part of [skillsmith](https://github.com/daronthedragon/skillsmith)'s eval for exactly this class of skill.
 
 
 

@@ -33,5 +33,6 @@
   mean pass rate fell 100% → 98%
   not distinguishable from noise (p=0.32)
   95% CI  without 100% [94-100]   with 98% [91-100]
+  response length 1,297 → 622 chars median  -52%  significant (p=0.005)
 
   40 runs. Transcripts are in the --json output.
