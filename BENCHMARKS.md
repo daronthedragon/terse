@@ -33,6 +33,12 @@ clock) are compared with a **Mann-Whitney U test** — non-parametric, because
 reply lengths are not normally distributed and a mean would be dragged around by
 one long answer.
 
+The wall-clock figure needs one caveat stated plainly: runs execute through a
+bounded concurrency pool, so the absolute milliseconds are inflated by load and
+are not a latency benchmark you could quote for a single interactive request.
+Both arms interleave through *the same* pool, so the load applies equally and
+the ratio between them is the part worth reading.
+
 ## Why pass/fail checks are not enough
 
 The first version of this eval reported "no effect" and was wrong. It checked
@@ -79,6 +85,53 @@ context. Two kinds of scenario, because context is lost in two ways:
   intermediate value was compressed away, the chain breaks.
 - **The agent must recall what the user said.** A service name, a config path, a
   slug format and a row cap, stated once and needed two turns later.
+
+## Results
+
+### Compression — replicated
+
+Two independent 80-run passes of [`eval.json`](eval.json), all runs exit 0:
+
+| pass | median without | median with | change | p |
+|---|---|---|---|---|
+| first | 2,069 | 654 | −68.4% | 2.7e-14 |
+| second | 1,980 | 634 | −68.0% | 2.2e-14 |
+
+One run is an anecdote; two that agree within half a point are a result. The
+second pass also carried the wall-clock metric: **24,765 → 11,593 ms median,
+−53%, p = 4.6e-14** — the shorter reply is roughly 2.1× faster to produce, with
+the concurrency caveat above.
+
+### Caveat retention — no loss
+
+Four questions where a short answer is only correct if it keeps one caveat.
+40 runs, all exit 0:
+
+| question | caveat that must survive | without | with terse |
+|---|---|---|---|
+| `==` on floats | precision / `isclose` | 100% | **100%** |
+| JWTs in `localStorage` | XSS | 100% | **100%** |
+| `rm -rf $DIR/` | unset or empty variable | 100% | **100%** |
+| MD5 for passwords | use bcrypt/argon2/scrypt | 100% | **100%** |
+
+terse cut these replies from 2,188 to 528 characters median and kept every
+caveat. This is the result the whole safety benchmark exists to check: the
+compression comes out of the explanation, not out of the warning.
+
+### What a timeout taught the harness
+
+The first pass of the preservation half was invalid, and it is worth recording
+why. Twenty of eighty runs exited 124 — killed at a 240-second timeout — and
+every one was a long-form case. The baseline hit the limit nearly twice as
+often as terse (13 runs to 7), because it writes more and therefore takes
+longer. A killed run leaves a near-empty transcript, which scored as *"the
+reply was too short"*: the harness's own limit, reported as the skill
+truncating. The timeout is now 900 seconds.
+
+The runs that did finish already answer the question the benchmark was built to
+ask. Asked for a tutorial, a design doc or a step-by-step walkthrough, terse
+produced **2,900 to 10,199 characters**. Whatever else it does, it does not
+answer "write me a tutorial" with one line.
 
 ## Reproducing
 
