@@ -5,8 +5,8 @@
   },
   "runner": "cd {skill} && claude -p {prompt} --output-format text --dangerously-skip-permissions --no-session-persistence",
   "repeat": 5,
-  "concurrency": 4,
-  "timeoutMs": 240000,
+  "concurrency": 2,
+  "timeoutMs": 900000,
   "cases": [
     {
       "id": "asked-tutorial",

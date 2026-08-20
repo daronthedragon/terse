@@ -87,12 +87,16 @@ Those binary checks turned out to be blind to terse's real effect (the model has
 
 This eval measures the **shipped artifact** — the output style, staged exactly as you install it (`.claude/output-styles/terse.md` + `outputStyle` in settings), not a different form of the rules. Run against `claude -p` (Claude Code 2.1.236), 8 cases × 5 repeats, all 80 runs exited 0. Full report: [`eval-report.json`](eval-report.json), captured with [runshot](https://github.com/daronthedragon/runshot).
 
+The effect replicates: an earlier 80-run pass of the same eval measured 2,069 → 654 (−68.4%), this one 1,980 → 634 (−68.0%).
+
 <p align="center">
   <img src="assets/eval.svg" width="765"
        alt="skillsmith eval render for terse: pass-rate checks flat near 100 percent, and response length drops from 2069 to 654 characters median, minus 68 percent, significant.">
 </p>
 
-**terse cuts replies to a third — median 2,069 → 654 characters, −68%, Mann-Whitney p = 2.7e-14.** That is a real, significant behavioural change, and it is the same order as ponytail's number on the other axis: ponytail writes ~54% less *code*, terse writes ~68% less *around the answer*.
+**terse cuts replies to a third — median 1,980 → 634 characters, −68%, Mann-Whitney p = 2.2e-14.** That is a real, significant behavioural change, and it is the same order as ponytail's number on the other axis: ponytail writes ~54% less *code*, terse writes ~68% less *around the answer*.
+
+It is also **~2.1× faster**: wall clock per reply fell 24,765 → 11,593 ms median, −53%, p = 4.6e-14. Fewer characters take less time to generate, which is the one benefit of brevity you feel rather than read. Those runs execute through a concurrency pool, so the absolute milliseconds are inflated by load and are not a single-request latency figure — both arms interleave through the same pool, so the ratio is the part that carries.
 
 Two details the table shows that the headline does not. The padding checks are not entirely flat: on the two questions where the base model *did* reach for a lead-in (`git-merge-vs-rebase`, `node-eaddrinuse` — 80% clean without), terse took them to 100%. And one run cost an `answered` check: on `json-number-keys` terse replied *"`json.dumps` coerces the int `1` into `"1"` — the value survives, the type doesn't"*, which is correct but never plainly says "no, keys must be strings", so the answer-presence regex did not credit it. **39/40** on answer presence, not a clean sweep — that is the honest number, and it is the kind of thing a brevity skill has to be watched for.
 
