@@ -118,6 +118,28 @@ terse cut these replies from 2,188 to 528 characters median and kept every
 caveat. This is the result the whole safety benchmark exists to check: the
 compression comes out of the explanation, not out of the warning.
 
+### Multi-turn context — no degradation
+
+The question this benchmark was built for: does making every reply shorter cost
+the conversation the context a later turn needs? Three-turn conversations, only
+the final turn scored, 24 runs, all exit 0:
+
+| scenario | what turn 3 needs | without | with terse |
+|---|---|---|---|
+| `headroom-chain` | a number the agent computed in turn 2 | 100% | **100%** |
+| `budget-chain` | a rate the agent derived in turn 2 | 100% | **100%** |
+| `config-recall` | the service name and user from turn 1 | 100% | **100%** |
+| `constraint-recall` | the slug format and row cap from turn 1 | 100% | **100%** |
+
+**Mean retention 100% in both arms.** The final turn was shorter with terse
+(157 vs 282 characters median) and still carried everything the question needed.
+On these scenarios, the compression comes out of the prose, not the thread.
+
+That is a bounded claim, and worth stating as one: four scenarios, three turns
+each. It shows no degradation where a chain of computed values and a set of
+stated constraints have to survive two turns. It does not prove nothing is ever
+lost in a fifty-turn session, and no result here should be read that way.
+
 ### What a timeout taught the harness
 
 The first pass of the preservation half was invalid, and it is worth recording

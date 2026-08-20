@@ -1,0 +1,667 @@
+{
+  "spec": {
+    "outputStyle": {
+      "name": "terse",
+      "file": "C:\\Users\\malik\\New folder (12)\\terse\\output-styles\\terse.md"
+    },
+    "runner": "node bench/multiturn.mjs {prompt} {skill}",
+    "repeat": 3,
+    "concurrency": 3,
+    "timeoutMs": 600000,
+    "cases": [
+      {
+        "id": "headroom-chain",
+        "prompt": "headroom-chain",
+        "checks": [
+          {
+            "id": "recalls-own-math",
+            "describe": "recalls own math",
+            "pattern": "\\b33\\b",
+            "expect": true
+          }
+        ]
+      },
+      {
+        "id": "budget-chain",
+        "prompt": "budget-chain",
+        "checks": [
+          {
+            "id": "recalls-own-math",
+            "describe": "recalls own math",
+            "pattern": "1,?080",
+            "expect": true
+          }
+        ]
+      },
+      {
+        "id": "config-recall",
+        "prompt": "config-recall",
+        "checks": [
+          {
+            "id": "recalls-user",
+            "describe": "recalls user",
+            "pattern": "\\bflt\\b",
+            "expect": true
+          },
+          {
+            "id": "recalls-service",
+            "describe": "recalls service",
+            "pattern": "flotilla",
+            "expect": true
+          }
+        ]
+      },
+      {
+        "id": "constraint-recall",
+        "prompt": "constraint-recall",
+        "checks": [
+          {
+            "id": "recalls-slug-len",
+            "describe": "recalls slug len",
+            "pattern": "(\b7\b|⁷|62^7|3,?521,?614,?606,?208|3.5d* ?trillion|\bseven\b)",
+            "expect": true
+          },
+          {
+            "id": "recalls-scale",
+            "describe": "recalls scale",
+            "pattern": "(10 ?million|10M\b|10,000,000|352,161)",
+            "expect": true
+          }
+        ]
+      }
+    ],
+    "skill": "C:\\Users\\malik\\New folder (12)\\terse\\output-styles\\terse.md"
+  },
+  "results": [
+    {
+      "id": "headroom-chain",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "**33**\n\n```\n$ python -c \"print(250-180-12-25)\"\n33\n```",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 245880
+    },
+    {
+      "id": "headroom-chain",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "**33**\n\n```\n$ python -c \"print(250-180-12-25)\"\n33\n```",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 40370
+    },
+    {
+      "id": "headroom-chain",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "**33**\n\n```\n$ echo $((250 - 180 - 12 - 25))\n33\n```",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 31879
+    },
+    {
+      "id": "budget-chain",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "**$1,080.00**\n\n```\n$ python -c \"print(36.0*30)\"\n1080.0\n```",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 30624
+    },
+    {
+      "id": "budget-chain",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "**$1,080.00** — `python -c \"print(36.0*30)\"` → `1080.0`",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 29987
+    },
+    {
+      "id": "budget-chain",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "**$1,080**\n\n```\n$ python -c \"print(36.0*30)\"\n1080.0\n```",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 204450
+    },
+    {
+      "id": "config-recall",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "Only one of those two lines is something I actually know.\n\n```ini\nUser=flt\n```\n\nThat one is grounded — you told me the service runs as `flt`.\n\n```ini\nExecStart=/usr/local/bin/flotilla-api --config /etc/flotilla/api.yaml\n```\n\n**That line is a guess and you should not paste it as-is.** Two pieces of it I invented:\n\n- `/usr/local/bin/flotilla-api` — I have no idea where your binary lives. It could be `/usr/bin`, `/opt/flotilla/bin`, a Python entrypoint, a `java -jar`, a `node server.js`.\n- `--config` — the flag spelling is made up. `-c`, `--config-file`, `--conf`, or a `FLOTILLA_CONFIG` env var are all equally plausible, and some services take the config path as a bare positional argument.\n\nThe config path itself, `/etc/flotilla/api.yaml`, is from you and is the one part of that line I'm confident in.\n\nRun these on the host to get the real values:\n\n```\ncommand -v flotilla-api || which flotilla-api        # binary path\nflotilla-api --help 2>&1 | head -30                  # real config flag\nsystemctl cat flotilla-api                           # if a unit already exists, this is authoritative\n```\n\n`systemctl cat` is the fastest path — if the service is already installed by a package or an earlier setup, it prints the existing `ExecStart=` verbatim and you can keep it unchanged.\n\n**Verification status:** unverified, and unverifiable from here. Same reason as before —\n\n```\n$ command -v systemctl; echo \"exit=$?\"\nexit=1\n$ ls /etc/flotilla/api.yaml\nls: cannot access '/etc/flotilla/api.yaml': No such file or directory\n```\n\nNeither the binary nor the config exists on this Windows machine, so I can't resolve a path or read a `--help` output. Paste the output of the three commands above and I'll give you the exact line.\n\nOne more thing worth setting while you're editing, since `User=flt` implies it: `/etc/flotilla/api.yaml` needs to be readable by `flt`. Check with `sudo -u flt cat /etc/flotilla/api.yaml` — a config the service user can't read is the other common cause of a restart loop.",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "passed": true,
+          "matches": 5,
+          "applicable": true
+        },
+        {
+          "id": "recalls-service",
+          "passed": true,
+          "matches": 14,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 91178
+    },
+    {
+      "id": "config-recall",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "I can give you one of those two exactly. The other I'd be inventing.\n\n**`User=` — exact:**\n\n```ini\nUser=flt\n```\n\nReceipt for where that comes from — your own statement, as I recorded it:\n\n```\n$ grep -o 'runs as the system user `[a-z]*`' flotilla-api-service.md\nruns as the system user `flt`\n```\n\nNote that's verified against *what you told me*, not against the host. Whether `flt` exists in `/etc/passwd` on that machine is unverified — if it doesn't, the unit fails at start with `Failed to determine user credentials`.\n\n**`ExecStart=` — I can't write this exactly.** It needs two facts I don't have:\n\n1. **The absolute path to the binary.** systemd does no `$PATH` lookup on the first token; a bare `flotilla-api` is a parse error at `daemon-reload`. `/usr/bin`, `/usr/local/bin`, and `/opt/flotilla/bin` are all plausible and I have no basis to pick one.\n2. **The flag that points it at the config.** `--config`, `-c`, `--config-file`, and a `FLOTILLA_CONFIG` env var are all common. You told me the config lives at `/etc/flotilla/api.yaml`; you haven't told me how the binary is told to read it, and it may well default to that path with no flag at all.\n\nSo the shape, with the two unknowns marked:\n\n```ini\nExecStart=<ABSOLUTE_PATH_TO_BINARY> --config /etc/flotilla/api.yaml\n```\n\nResolve both on the host and it becomes exact:\n\n```bash\ncommand -v flotilla-api          # -> the absolute path for token 1\nflotilla-api --help | head -20   # -> the real config flag, if any\n```\n\nPaste those two outputs and I'll write the finished line. Or, if the unit already exists and you're only adding restart behavior, you don't need to touch `ExecStart` at all — the drop-in from before inherits it:\n\n```bash\nsystemctl cat flotilla-api | grep -E '^(User|ExecStart)='\n```\n\nThat prints the lines already in force, which beats reconstructing them.",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        },
+        {
+          "id": "recalls-service",
+          "passed": true,
+          "matches": 9,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 110898
+    },
+    {
+      "id": "config-recall",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "One of these I can write exactly. The other I'd be making up.\n\n## `User=`\n\n```ini\nUser=flt\nGroup=flt\n```\n\n`User=flt` is exact — you gave it to me. I added `Group=` because when you set `User=` without it, systemd uses the user's primary group, which on most distros is a group named `flt` but isn't guaranteed. Setting it explicitly removes the guess. Confirm with `id flt` on the host and change it if the primary group differs.\n\n## `ExecStart=`\n\nI can't write this one. You've told me the service name, the config path, and the run user — never the binary's location or its invocation. Here's what I searched:\n\n```\n$ grep -ris \"flotilla\" C:/Users/malik/AppData/Local/Temp/skillsmith-baseline-bxtlOf\n                                    (no matches)\n$ ls -la .../skillsmith-baseline-bxtlOf/.claude\ntotal 0                             (empty)\n```\n\nNothing local names the binary, and I have no access to your host. Writing `ExecStart=/usr/bin/flotilla-api --config /etc/flotilla/api.yaml` would be a plausible-looking guess that fails at `systemctl start` with a `203/EXEC` status — and `203/EXEC` is a confusing error to debug because it looks like a permissions problem.\n\n**Get the real path on the host:**\n\n```bash\n# If it's already running under some other supervisor:\nps -eo user,pid,args | grep -i flotilla | grep -v grep\n\n# If there's an existing unit:\nsystemctl cat flotilla-api | grep ExecStart\n\n# If it's on PATH:\ncommand -v flotilla-api\n\n# Otherwise search the usual install roots:\nls -l /usr/local/bin /opt/flotilla/bin 2>/dev/null | grep -i flotilla\n```\n\nSend me what any of those print and I'll write the line. Or fill in the shape yourself:\n\n```ini\nExecStart=/absolute/path/to/binary --config /etc/flotilla/api.yaml\n```\n\nThree constraints that decide whether your version is right:\n\n- **Absolute path, always.** systemd does not search `PATH` for `ExecStart`. `flotilla-api --config ...` fails.\n- **No shell.** There's no `&&`, no pipes, no redirects, no `*` globbing, no `~`. If you need any of that, use `ExecStart=/bin/sh -c '...'` — but prefer not to; it costs you the correct exit status that `Restart=on-failure` depends on.\n- **The config flag is your binary's, not systemd's.** Whether it's `--config`, `-c`, `--config-file`, or an env var like `FLOTILLA_CONFIG=` is something only `<binary> --help` will tell you. If it's an env var, use `Environment=FLOTILLA_CONFIG=/etc/flotilla/api.yaml` instead of a flag.\n\n**Everything above is unverified** — no systemd on this box (`command -v systemctl` returned nothing last turn), so I have not parsed, loaded, or run any of it. Once you've filled in `ExecStart`, this is the check that settles it:\n\n```bash\nsystemd-analyze verify flotilla-api.service     # parses, no unknown keys\nsystemctl show flotilla-api -p User -p ExecStart # what systemd actually loaded\nsudo -u flt cat /etc/flotilla/api.yaml           # flt can read its own config\n```\n\nThat third one catches the failure that most often follows adding `User=`: the config or its directory is root-owned `0600`, and the service starts as `flt` and immediately dies unable to read it.",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "recalls-service",
+          "passed": true,
+          "matches": 16,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 104937
+    },
+    {
+      "id": "constraint-recall",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "**3,521,614,606,208 slugs** — 62 characters (26 + 26 + 10) to the 7th power, about 41.7 bits.\n\nAgainst a 10M row cap:\n\n```\nheadroom    = 352,161x  (table 0.00028% full at cap)\n```\n\nYes, that's enough — but \"enough\" splits into two different questions, and they give opposite-sounding answers:\n\n**Will you run out?** No, not remotely. At the cap the table is 0.00028% full, so a randomly generated slug is already taken 1 time in 352,161:\n\n```\nattempts per insert at cap = 1/(1-2.84e-06) = 1.0000028\nrows before avg 2 attempts (50% full) = 1,760,807,303,104\n```\n\nYou'd need 1.76 *trillion* rows before random generation averaged even two attempts. Your cap is 176,000x below that.\n\n**Will you ever see a collision?** Yes, essentially guaranteed — and this is the part that trips people up, because it sounds like it contradicts the above:\n\n```\n50% chance of >=1 collision at 2,209,524 rows\nexpected collisions over 10,000,000 inserts = 14.2\nP(>=1 collision by cap) = 0.999999\n```\n\nSomewhere around 2.2M rows you become more likely than not to have hit at least one duplicate, and across the full 10M fill you should expect roughly 14. That's the birthday paradox: rare *per insert*, near-certain *across all inserts*.\n\nThe practical upshot is that 14 events over the lifetime of the table is a non-event — provided you handle it. Generate randomly, let the unique index reject the dupe, retry. A 3-attempt loop is already absurd overkill at this load factor. What you must not do is assume collisions never happen and skip the constraint, because they will happen about 14 times, and without the unique index those are silent overwrites of live short links rather than a retry.\n\nOne caveat carried forward from the index question: this math is 62^7 only if the index preserves case. Under a case-folding collation the space is 36^7, and the expected 14 collisions becomes 638.",
+      "checks": [
+        {
+          "id": "recalls-slug-len",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "recalls-scale",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 126307
+    },
+    {
+      "id": "constraint-recall",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "**3,521,614,606,208 possible slugs — about 3.5 trillion.** Against a 10M row cap, that's **352,161× more than you need**; the full table occupies 0.00028% of the keyspace.\n\nSo: yes, enough, and not marginally — you have five-plus orders of magnitude of headroom. The practical consequences:\n\n- **You will never exhaust the space.** Even if you raised the cap 100× to a billion rows, you'd still be using under 0.03%.\n- **The sparseness is what makes random generation viable.** Because occupancy stays near 2.8 × 10⁻⁶, a randomly drawn slug is essentially always free — that's where the ~14-total-retries figure from earlier comes from. Sequential or counter-based generation would buy you nothing here and would cost you unguessable URLs.\n- **7 is a generous choice, not a tight one.** 62⁴ = 14.7M already clears 10M on paper, but only barely — at 68% occupancy, random generation would collide constantly and you'd need a counter scheme. 62⁵ (916M, ~1% occupancy) would be the shortest length where random-and-retry still behaves well. Going to 7 costs you two characters of URL length and buys enormous collision margin plus resistance to enumeration.\n\nThe one thing that would invalidate this: if the slug column ends up under a case-insensitive collation, the real alphabet is 36, not 62 — 36⁷ = 78,364,164,096, still fine for the cap, but the earlier point stands that it breaks uniqueness semantics rather than just shrinking the space.",
+      "checks": [
+        {
+          "id": "recalls-slug-len",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        },
+        {
+          "id": "recalls-scale",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 126365
+    },
+    {
+      "id": "constraint-recall",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "**3,521,614,606,208 slugs** — about 3.52 trillion. Yes, that's enough: 352,161× your 10M cap, using 0.00028% of the space.\n\nPractically, that headroom means you could raise the cap 100× to a billion rows and still sit at a 2.8e-4 load factor without touching the slug length.\n\nThe one assumption worth confirming: I read \"alphanumeric\" as base62 `[A-Za-z0-9]`. If you strip ambiguous characters like `0/O/l/I/1`, you drop to 1.95 trillion — still 195,490× the cap, so the answer doesn't change either way.",
+      "checks": [
+        {
+          "id": "recalls-slug-len",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "recalls-scale",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 152626
+    },
+    {
+      "id": "headroom-chain",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "33\n\nReceipt: `echo $((250 - 180 - 12 - 25))` → `33`",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 228034
+    },
+    {
+      "id": "headroom-chain",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "33\n\n```\n$ echo $((250 - 180 - 12 - 25))\n33\n```",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 25974
+    },
+    {
+      "id": "headroom-chain",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "33\n\n```\n$ echo $((250 - 180 - 12 - 25))\n33\n```",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 25858
+    },
+    {
+      "id": "budget-chain",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "$1,080 (`36.0*30` → `1080.0`).",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 29637
+    },
+    {
+      "id": "budget-chain",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "$1,080.00 (`python -c \"print(36.0*30)\"` → `1080.0`).",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 30357
+    },
+    {
+      "id": "budget-chain",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "$1,080.",
+      "checks": [
+        {
+          "id": "recalls-own-math",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 25179
+    },
+    {
+      "id": "config-recall",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "```ini\nUser=flt\n```\n\nThat one comes from what you told me, recorded verbatim:\n\n```\n$ grep -o 'system user `[a-z]*`' memory/flotilla-api-service.md\nsystem user `flt`\n```\n\n`ExecStart=` I can't write for you — you've never told me the binary path or its flags, and I have no access to the host to look. Anything I put there would be invented. Two commands on the box give you the exact line:\n\n```bash\nsystemctl cat flotilla-api | grep -E '^(User|ExecStart)='   # if a unit already exists\ncommand -v flotilla-api                                     # if you're writing the unit fresh\n```\n\nPaste either output and I'll write the line. If it's a fresh unit, the shape is `ExecStart=<absolute path> <args>` — systemd requires an absolute path and does not expand `$PATH` or shell syntax, so `--config /etc/flotilla/api.yaml` goes in literally if your binary takes it as a flag rather than reading the path by default.",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "recalls-service",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 57708
+    },
+    {
+      "id": "config-recall",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "```ini\nUser=flt\nExecStart=/usr/bin/flotilla-api --config /etc/flotilla/api.yaml\n```\n\n`User=flt` is from what you told me. The rest of the `ExecStart=` line is a guess I made up last turn — you never gave me the binary path or its config flag. `--config` could be `-c`, `--config-file`, or a positional arg, and the binary could live in `/usr/local/bin` or `/opt`.\n\nThe receipt for why I can't check it:\n\n```\n$ command -v flotilla-api systemctl; ls /etc/flotilla/api.yaml\nls: cannot access '/etc/flotilla/api.yaml': No such file or directory\n```\n\nNo binary, no systemctl, no config on this box — it's Windows, and flotilla-api lives on your host.\n\nConfirm the two unknowns there before pasting:\n\n```\ncommand -v flotilla-api          # real path for ExecStart\nflotilla-api --help | head -20   # real config flag spelling\n```\n\nExecStart requires an absolute path; systemd rejects a bare `flotilla-api`.",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "recalls-service",
+          "passed": true,
+          "matches": 9,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 40882
+    },
+    {
+      "id": "config-recall",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "```ini\nUser=flt\nExecStart=/usr/bin/flotilla-api --config /etc/flotilla/api.yaml\n```\n\n`User=flt` is exact — you gave it. The `ExecStart=` binary path is my guess; you never said where flotilla-api installs. Confirm it on the host and substitute the real path:\n\n```\ncommand -v flotilla-api\n```\n\nThe `--config` flag name is also unverified — flotilla-api may use `-c`, `--config-file`, or read `/etc/flotilla/api.yaml` by default with no flag at all. Check with `flotilla-api --help`.\n\nUnverified overall: this environment is Windows, no systemd and no flotilla-api binary, so I ran neither command. Once the path and flag are confirmed, `systemd-analyze verify /etc/systemd/system/flotilla-api.service` settles the file.",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "recalls-service",
+          "passed": true,
+          "matches": 9,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 32388
+    },
+    {
+      "id": "constraint-recall",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "3,521,614,606,208 — about 3.5 trillion. Yes, enormously enough: 352,161× your 10M cap.\n\nFrom the earlier run:\n```\nkeyspace 62^7 = 3521614606208\nload factor    = 2.839606577724809e-06\nexpected total collisions over full fill = n^2/(2N) = 14.198032888624045\n```\n\nAt the cap you'd occupy 0.00028% of the space. The number that matters isn't the ratio though — it's that ~14 expected collisions over the entire fill, which is what makes insert-and-retry cheap.\n\nThe headroom only exists if the collation is case-sensitive. Case-insensitive drops you to 36⁷ = 78,364,164,096 — still 7,836× the cap, so even the broken version doesn't run out of slugs. It just makes collisions ~45× more frequent and lets `aB3xK9p` and `Ab3Xk9P` collide.",
+      "checks": [
+        {
+          "id": "recalls-slug-len",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "recalls-scale",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 90244
+    },
+    {
+      "id": "constraint-recall",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "3,521,614,606,208 slugs — 352,161× your 10M cap. Enough by a wide margin.\n\n```\n3,521,614,606,208  (3.52e12)\nratio N/n = 352,161x\nfill      = 0.000284%\n```\n\n62 characters (26+26+10) to the 7th. You could raise the cap to a billion rows and still be at 0.03% fill.",
+      "checks": [
+        {
+          "id": "recalls-slug-len",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "recalls-scale",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 62323
+    },
+    {
+      "id": "constraint-recall",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "```\nkeyspace       3,521,614,606,208\nrow cap        10,000,000\nheadroom       352,161x\nfraction used  2.84e-06\nexpected retries over full fill  14.2\n```\n\nYou'll use less than three millionths of the space, so random generation with the unique index and retry-on-conflict costs ~14 retries total across all 10M inserts — not per insert.\n\nThe one caveat, unchanged: this holds only if the collation is case-sensitive. Under a case-insensitive one the keyspace is 36^7 = 78,364,164,096 — still 7,836× the cap, so capacity survives, but same-slug-different-case becomes a permanent false collision.",
+      "checks": [
+        {
+          "id": "recalls-slug-len",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "recalls-scale",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 70054
+    }
+  ],
+  "summary": [
+    {
+      "caseId": "headroom-chain",
+      "checkId": "recalls-own-math",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "budget-chain",
+      "checkId": "recalls-own-math",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "config-recall",
+      "checkId": "recalls-user",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "config-recall",
+      "checkId": "recalls-service",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "constraint-recall",
+      "checkId": "recalls-slug-len",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "constraint-recall",
+      "checkId": "recalls-scale",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    }
+  ],
+  "baselineScore": 1,
+  "skillScore": 1,
+  "significance": {
+    "delta": 0,
+    "p": 1,
+    "significant": false,
+    "suggestMoreRuns": false,
+    "baseline": {
+      "point": 1,
+      "low": 0.8241207763533425,
+      "high": 1
+    },
+    "skill": {
+      "point": 1,
+      "low": 0.8241207763533425,
+      "high": 1
+    },
+    "baselinePassed": 18,
+    "skillPassed": 18,
+    "total": 18
+  },
+  "cost": {
+    "baselineMedian": null,
+    "skillMedian": null,
+    "delta": null
+  },
+  "metrics": [
+    {
+      "name": "response length",
+      "unit": "chars",
+      "comparison": {
+        "medianBaseline": 281.5,
+        "medianSkill": 157,
+        "delta": -0.4422735346358792,
+        "u": 43,
+        "p": 0.09385400678617128,
+        "significant": false,
+        "n": 12
+      }
+    },
+    {
+      "name": "wall clock",
+      "unit": "ms",
+      "comparison": {
+        "medianBaseline": 107917.5,
+        "medianSkill": 36635,
+        "delta": -0.6605277179326801,
+        "u": 35,
+        "p": 0.03266332564176544,
+        "significant": true,
+        "n": 12
+      }
+    }
+  ]
+}
