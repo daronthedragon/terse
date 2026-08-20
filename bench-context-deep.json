@@ -1,0 +1,66 @@
+{
+  "outputStyle": {
+    "name": "terse",
+    "file": "output-styles/terse.md"
+  },
+  "runner": "node bench/multiturn.mjs {prompt} {skill}",
+  "repeat": 3,
+  "concurrency": 3,
+  "timeoutMs": 900000,
+  "cases": [
+    {
+      "id": "deep-budget",
+      "prompt": "deep-budget",
+      "checks": [
+        {
+          "id": "recalls-computed-cost",
+          "describe": "holds the 3,600 it computed 4 turns earlier",
+          "pattern": "(\b400\b|$400)",
+          "expect": true
+        }
+      ]
+    },
+    {
+      "id": "deep-constraint",
+      "prompt": "deep-constraint",
+      "checks": [
+        {
+          "id": "recalls-window",
+          "describe": "the 2-hour window from turn 1",
+          "pattern": "(2 ?-? ?hour|two hour|120 ?min)",
+          "expect": true
+        },
+        {
+          "id": "recalls-estimate",
+          "describe": "the estimate it computed in turn 5",
+          "pattern": "(33|34|2,?000 ?s|2000 ?seconds)",
+          "expect": true
+        }
+      ]
+    },
+    {
+      "id": "deep-identity",
+      "prompt": "deep-identity",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "describe": "the user flt",
+          "pattern": "\bflt\b",
+          "expect": true
+        },
+        {
+          "id": "recalls-port",
+          "describe": "port 8443",
+          "pattern": "8443",
+          "expect": true
+        },
+        {
+          "id": "recalls-config",
+          "describe": "the config path",
+          "pattern": "flotilla",
+          "expect": true
+        }
+      ]
+    }
+  ]
+}

@@ -111,6 +111,28 @@ else {
   else ok(`all ${platform.length} platform rule files carry identical rules`)
 }
 
+// ------------------------------------------------------- core rule parity
+// The rules live in six files: the shipped output style, SKILL.md, and four
+// platform rule files. Nothing stops one of them from quietly losing a rule
+// during an edit, and a skill whose Cursor copy says something different from
+// its Claude copy is not one skill any more. Each core directive is identified
+// by a phrase that must survive in every file that carries the rules.
+const CORE = [
+  { id: 'answer-first', probe: /answer, result, or decision/i },
+  { id: 'one-receipt', probe: /one receipt/i },
+  { id: 'no-closing-summary', probe: /closing summary/i },
+  { id: 'cut-hedges', probe: /hedge/i },
+  { id: 'exempt-long-form', probe: /tutorial/i },
+]
+const RULE_FILES = ['output-styles/terse.md', 'SKILL.md', ...platform]
+for (const rule of CORE) {
+  const missingIn = RULE_FILES.filter((f) => existsSync(join(HERE, f)) && !rule.probe.test(read(f)))
+  if (missingIn.length) bad(`rule "${rule.id}" is missing from: ${missingIn.join(', ')}`)
+}
+if (!CORE.some((r) => RULE_FILES.some((f) => !r.probe.test(read(f))))) {
+  ok(`all ${CORE.length} core rules present in all ${RULE_FILES.length} rule files`)
+}
+
 // ---------------------------------------------------------- output styles
 // Claude Code reads `name` from the frontmatter; if it disagrees with the
 // filename, `outputStyle: "<file>"` silently fails to match.

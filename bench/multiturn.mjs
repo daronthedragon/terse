@@ -40,6 +40,42 @@ const SCENARIOS = {
     'How do I make it restart on failure with systemd?',
     'Write the exact User= and ExecStart= lines for my unit file.',
   ],
+  // --- deep scenarios: six turns, with unrelated turns in between, so the
+  // --- facts the last turn needs are pushed well back in the conversation.
+
+  // The agent computes 6000, then 3600, answers two unrelated questions, and
+  // must still hold 3600 to compare against a budget four turns later.
+  'deep-budget': [
+    'Our API costs $0.002 per request and we serve 3,000,000 requests a month. What is the monthly cost?',
+    'We are adding a cache that absorbs 40% of requests. What is the new monthly cost?',
+    'Separately: what cache TTL would you suggest for user profile data?',
+    'Separately: how do I monitor cache hit rate in Prometheus?',
+    'Finance says our budget is $4,000 a month. Given your earlier cost number, are we under or over?',
+    'By how many dollars? Give the number.',
+  ],
+
+  // Constraints in turn 1, an estimate the agent computes in turn 5, and a
+  // turn 6 that cannot be answered without both.
+  'deep-constraint': [
+    'Constraints for our database work: Postgres 14, 40 million rows in the events table, and a 2-hour maintenance window.',
+    'I want to add a NOT NULL column with a default. What is the safe migration?',
+    'Separately: should I create the index CONCURRENTLY or not?',
+    'Separately: how do I monitor the progress of a long-running migration?',
+    'If we can rewrite 20,000 rows per second, how long does a full rewrite of that table take?',
+    'Does that fit our maintenance window? State both the window and your estimate.',
+  ],
+
+  // Exact identifiers given once, then four turns of other work before they
+  // have to come back verbatim.
+  'deep-identity': [
+    'Service details: it is called flotilla-api, its config is /etc/flotilla/api.yaml, it runs as user flt, and it listens on port 8443.',
+    'How do I make it restart on failure with systemd?',
+    'Separately: what is a good log rotation policy for it?',
+    'Separately: how do I terminate TLS in front of it?',
+    'Separately: what should its healthcheck endpoint return?',
+    'Now write the exact systemd unit file for my service, with the real values.',
+  ],
+
   // Constraints stated once, needed for a calculation two turns later.
   'constraint-recall': [
     'Constraints for our URL shortener: slugs are exactly 7 characters, case-sensitive alphanumeric, and we cap the table at 10 million rows.',

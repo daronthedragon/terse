@@ -187,6 +187,25 @@ more data, and the reason every rule here has to survive a measurement rather
 than an argument. A prompt only holds so many instructions; one that buys
 nothing is not free.
 
+### Deeper still — six turns with distraction
+
+Three turns is a short conversation, and "no degradation at three turns" is a
+weaker statement than it sounds. A second context benchmark
+([`bench-context-deep.json`](bench-context-deep.json)) doubles the depth and
+puts unrelated work in between, so the facts the last turn needs are pushed
+well back rather than sitting one exchange away:
+
+| scenario | what turn 6 requires |
+|---|---|
+| `deep-budget` | a cost the agent computed in turn 2, carried across three unrelated turns |
+| `deep-constraint` | the window stated in turn 1 **and** the estimate it computed in turn 5 |
+| `deep-identity` | `flt`, `8443` and the config path, given once in turn 1, needed verbatim in turn 6 |
+
+Turns 3 and 4 are deliberately off-topic — cache TTLs, Prometheus, log
+rotation, TLS termination — because the risk is not that an agent forgets the
+last thing said, it is that compression leaves nothing to come back to once
+other work has intervened.
+
 ### Preservation — the exemption holds
 
 Four prompts that explicitly ask for length: a beginner's tutorial, a detailed
