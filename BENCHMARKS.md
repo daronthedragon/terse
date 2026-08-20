@@ -170,20 +170,52 @@ more data, and the reason every rule here has to survive a measurement rather
 than an argument. A prompt only holds so many instructions; one that buys
 nothing is not free.
 
-### What a timeout taught the harness
+### Preservation — the exemption holds
 
-The first pass of the preservation half was invalid, and it is worth recording
-why. Twenty of eighty runs exited 124 — killed at a 240-second timeout — and
-every one was a long-form case. The baseline hit the limit nearly twice as
-often as terse (13 runs to 7), because it writes more and therefore takes
-longer. A killed run leaves a near-empty transcript, which scored as *"the
-reply was too short"*: the harness's own limit, reported as the skill
-truncating. The timeout is now 900 seconds.
+Four prompts that explicitly ask for length: a beginner's tutorial, a detailed
+explanation with the maths, a design doc, a step-by-step walkthrough. 24 runs,
+all exit 0:
 
-The runs that did finish already answer the question the benchmark was built to
-ask. Asked for a tutorial, a design doc or a step-by-step walkthrough, terse
-produced **2,900 to 10,199 characters**. Whatever else it does, it does not
-answer "write me a tutorial" with one line.
+| | without terse | with terse |
+|---|---|---|
+| every content check (13 of them) | 100% | **100%** |
+| median reply | 5,781 chars | **6,502 chars** |
+| Mann-Whitney on length | — | p = 1.00, indistinguishable |
+
+**When you ask for length, terse writes as much as an unmodified agent** — 12%
+more here, which the test cannot separate from noise — and covers every
+required topic: creating, merging and deleting branches; the hash function and
+the false-positive maths; tradeoffs and a rollout plan; heap profiling in
+numbered steps. Its long-form replies ran 1,003 to 9,882 characters.
+
+Set beside the compression result, that is the whole design in two numbers: the
+same skill cuts a padded answer by 68% and leaves a requested tutorial alone.
+The exemption is not a disclaimer in the prompt, it is measured behaviour.
+
+### Three times the harness blamed the skill
+
+This benchmark took four attempts, and the three failures are more instructive
+than the result. Each time the harness broke, its own error text was scored as
+the agent's reply — short, missing the expected words, indistinguishable from
+truncation:
+
+| what actually happened | what the numbers said |
+|---|---|
+| 20 runs killed at a 240s timeout | "terse truncates tutorials" |
+| the CLI would not spawn (`ENOENT`) | "terse forgets the conversation" |
+| an auto-update left the native binary half-installed | "terse refuses to write long content" |
+
+The third was the most convincing: ten of twelve runs returned *"This version of
+claude.exe is not compatible with the version of Windows you're running"*, and
+the table showed a tidy collapse to 0% with a median reply length of 248
+characters. It looked exactly like a skill that truncates.
+
+All three were caught by reading exit codes and transcripts that the report did
+not surface. It surfaces them now — [skillsmith](https://github.com/daronthedragon/skillsmith)
+prints a contamination warning above the table whenever a run did not exit 0,
+and its CI gate fails outright when more than one run in ten failed to execute,
+because a green build on error-message transcripts launders a broken harness
+into a result.
 
 ## Reproducing
 

@@ -1,0 +1,1024 @@
+{
+  "spec": {
+    "outputStyle": {
+      "name": "terse",
+      "file": "C:\\Users\\malik\\New folder (12)\\terse\\output-styles\\terse.md"
+    },
+    "runner": "cd {skill} && claude -p {prompt} --output-format text --dangerously-skip-permissions --no-session-persistence",
+    "repeat": 3,
+    "concurrency": 2,
+    "timeoutMs": 900000,
+    "cases": [
+      {
+        "id": "asked-tutorial",
+        "prompt": "Write a beginner's tutorial on Git branching: cover creating, switching, merging, and deleting branches, with example commands.",
+        "checks": [
+          {
+            "id": "long-enough",
+            "describe": "long enough",
+            "pattern": "[\\s\\S]{800,}",
+            "expect": true
+          },
+          {
+            "id": "covers-create",
+            "describe": "covers create",
+            "pattern": "(branch |checkout -b|switch -c)",
+            "expect": true
+          },
+          {
+            "id": "covers-merge",
+            "describe": "covers merge",
+            "pattern": "\\bmerge\\b",
+            "expect": true
+          },
+          {
+            "id": "covers-delete",
+            "describe": "covers delete",
+            "pattern": "(branch -d|branch -D|delet)",
+            "expect": true
+          }
+        ]
+      },
+      {
+        "id": "asked-detail",
+        "prompt": "Explain in detail how a bloom filter works - I want the full explanation, including the false positive rate math.",
+        "checks": [
+          {
+            "id": "long-enough",
+            "describe": "long enough",
+            "pattern": "[\\s\\S]{800,}",
+            "expect": true
+          },
+          {
+            "id": "covers-hash",
+            "describe": "covers hash",
+            "pattern": "hash",
+            "expect": true
+          },
+          {
+            "id": "covers-fp-math",
+            "describe": "covers fp math",
+            "pattern": "(false positive|\\bk\\b.*\\bm\\b|1 ?- ?e|\\(1)",
+            "expect": true
+          }
+        ]
+      },
+      {
+        "id": "asked-design-doc",
+        "prompt": "Write a short design doc for a rate limiter service: goals, approach, tradeoffs, and rollout plan.",
+        "checks": [
+          {
+            "id": "long-enough",
+            "describe": "long enough",
+            "pattern": "[\\s\\S]{800,}",
+            "expect": true
+          },
+          {
+            "id": "covers-tradeoffs",
+            "describe": "covers tradeoffs",
+            "pattern": "(trade-?off|drawback|cost)",
+            "expect": true
+          },
+          {
+            "id": "covers-rollout",
+            "describe": "covers rollout",
+            "pattern": "(rollout|roll out|deploy|phase|stage)",
+            "expect": true
+          }
+        ]
+      },
+      {
+        "id": "asked-step-by-step",
+        "prompt": "Walk me step by step through debugging a memory leak in a Node.js service - I want every step.",
+        "checks": [
+          {
+            "id": "long-enough",
+            "describe": "long enough",
+            "pattern": "[\\s\\S]{800,}",
+            "expect": true
+          },
+          {
+            "id": "covers-heap",
+            "describe": "covers heap",
+            "pattern": "(heap|snapshot|--inspect|profil)",
+            "expect": true
+          },
+          {
+            "id": "multi-step",
+            "describe": "multi step",
+            "pattern": "(1\\.|2\\.|3\\.|step 2|second|then\\b)",
+            "expect": true
+          }
+        ]
+      }
+    ],
+    "skill": "C:\\Users\\malik\\New folder (12)\\terse\\output-styles\\terse.md"
+  },
+  "results": [
+    {
+      "id": "asked-tutorial",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "**Your First Git Branch** → https://claude.ai/code/artifact/3c4cf29e-24b2-4304-bb26-b66d19d442ff\n\nIt covers the branch lifecycle as four steps — create, switch, merge, delete — plus a mental-model section up front (a branch is a movable label), conflict handling with `--abort`, remote-branch deletion, a cheat sheet, and a copy-paste sandbox for practice.\n\nEvery command and every block of output in it was actually run in a scratch repo, not written from memory:\n\n```\n$ git --version\ngit version 2.50.1.windows.1\n\n$ git merge add-waffles -m \"Merge branch 'add-waffles'\"\nMerge made by the 'ort' strategy.\n\n$ git branch -d experiment\nerror: the branch 'experiment' is not fully merged\nhint: If you are sure you want to delete it, run 'git branch -D experiment'\n\n$ git push origin --delete share-me\n - [deleted]         share-me\n```\n\nThe practice script at the bottom was run verbatim as a final check:\n\n```\nFast-forward\n pancakes.md | 1 +\nDeleted branch add-pancakes (was fe4a7d3).\n* fe4a7d3 Add pancake recipe\n* 64ea1f7 Initial commit\nEXIT=0\n```\n\nMarkup and theming validated too — `unclosed: []`, `mismatches: []`, and all 15 CSS tokens defined in the bare `:root` (`NOT in bare :root: none`), so it renders correctly in light, dark, and un-stamped system themes.\n\nOne thing I did not check: how the page looks rendered in a browser. The structure and CSS are verified statically; the visual result is unverified.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-create",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "covers-merge",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "covers-delete",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 369268
+    },
+    {
+      "id": "asked-tutorial",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "**The Life of a Branch** — https://claude.ai/code/artifact/7c37fa62-2cda-488e-a702-84d5032d4cad\n\nRather than write the commands from memory, I built a throwaway repo and ran every one of them. Every output block in the tutorial is what Git actually printed on this machine.\n\nCovered, in order: what a branch is (a movable label, not a copy) → `git branch`/`status` → `git switch -c` → committing and watching a file vanish when you switch away → merging (fast-forward *and* the diverged merge-commit case, with the real `git log --graph` output for both) → conflicts, including the marker block and `--abort` → `-d` vs `-D` deletion → remote branches → three common snags → a cheat sheet.\n\nVerification receipts:\n\n```\n== git merge add-search ==          == git branch -d experiment ==\nUpdating 920be3f..e74360f           error: the branch 'experiment' is not fully merged\nFast-forward                        hint: If you are sure you want to delete it, run 'git branch -D experiment'\n search.md | 1 +\n\n== git merge new-title ==           == git log --oneline --graph --all ==\nAuto-merging README.md              *   6df650c Merge branch 'add-footer'\nCONFLICT (content): Merge conflict  |\\\n  in README.md                      | * 6010e90 Add footer\nAutomatic merge failed              * | b93db7e Add contact page\n```\n\nPage checks:\n\n```\n:root                             21 tokens\n:root:not([data-theme=\"light\"])   21 tokens   missing=[] extra=[]\n:root[data-theme=\"dark\"]          21 tokens   missing=[] extra=[]\nused but never defined: []\nmismatches: none    unclosed at EOF: none\n```\n\nTwo things I did not verify: the remote in section 07 was a local bare repo, not GitHub — the push/delete transfer lines are verbatim but the `To <url>` lines are trimmed, and that's stated in the page footer. Rendered appearance in the published artifact (fonts loading, both themes) is **unverified** — I checked the source-level theme tokens, not the rendered page.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-create",
+          "passed": true,
+          "matches": 6,
+          "applicable": true
+        },
+        {
+          "id": "covers-merge",
+          "passed": true,
+          "matches": 6,
+          "applicable": true
+        },
+        {
+          "id": "covers-delete",
+          "passed": true,
+          "matches": 5,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 413805
+    },
+    {
+      "id": "asked-tutorial",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "**Tutorial published:** https://claude.ai/code/artifact/d7b82221-8432-4ab9-a943-a18a6eee33d7\n\nIt covers creating, switching, merging (fast-forward *and* true merge), conflict resolution, deleting (safe `-d`, forced `-D`, remote), plus the blocked-switch error and a command reference table.\n\nRather than write the example outputs from memory, I built a throwaway repo and ran every command in it. Receipt for the merge/delete core:\n\n```\n$ git merge add-pancakes\nUpdating 6c80b05..b49f682\nFast-forward\n pancakes.md | 1 +\n\n$ git merge add-syrup\nCONFLICT (content): Merge conflict in pancakes.md\nAutomatic merge failed; fix conflicts and then commit the result.\n\n$ git branch -d fix-typo\nerror: the branch 'fix-typo' is not fully merged\nhint: If you are sure you want to delete it, run 'git branch -D fix-typo'\n\n$ git branch -d main\nerror: cannot delete branch 'main' used by worktree at '.../branch-demo'\n```\n\nTwo things the run changed in the draft:\n\n- I had written that uncommitted changes block a branch switch. That's only true when the target branch has a *different* version of the file — my first test switched cleanly (exit 0) because the file was identical on both branches. The tutorial now states the real rule and shows the actual error from the case that does block.\n- Two output blocks I'd initially written from memory (`git commit` on a root commit, `git stash pop`) were missing lines. I re-ran both and pasted the verbatim output.\n\nRemote branch push/delete was verified against a local bare repo standing in for GitHub, not against GitHub itself — the output form is identical, but that's the caveat, and the page says so. Outputs are verbatim except that Windows `LF will be replaced by CRLF` warnings were trimmed, which the page also notes. Commit hashes shown are the real ones from that repo.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-create",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "covers-merge",
+          "passed": true,
+          "matches": 6,
+          "applicable": true
+        },
+        {
+          "id": "covers-delete",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 270515
+    },
+    {
+      "id": "asked-detail",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "All numbers below come from a Bloom filter I implemented and ran (`scratchpad/bloom.py`); receipts are inline.\n\n---\n\n## 1. What problem it solves\n\nA Bloom filter is a **probabilistic set membership** structure. It answers one question — \"have I seen *x* before?\" — with two possible answers:\n\n- **\"definitely not\"** — always correct\n- **\"probably yes\"** — may be wrong, with a tunable probability\n\nIn exchange, it stores **no elements at all**. A hash set holding 10M URLs needs to store 10M URLs (hundreds of MB). A Bloom filter with a 1% error rate needs ~12 MB, *regardless of how long the URLs are*. That's the trade: you give up exactness and the ability to enumerate, and you get space proportional to `n × log(1/p)` bits instead of `n × (size of an element)`.\n\nThe asymmetry of the error is what makes it useful. \"Definitely not\" is a hard guarantee, so a Bloom filter works as a **cheap negative cache in front of something expensive** — a disk read, a network call, an SSTable scan. The expensive thing only gets touched when the filter says \"probably\", and it self-corrects when the filter was wrong.\n\n---\n\n## 2. The structure\n\nThree parameters:\n\n| | |\n|---|---|\n| `m` | number of bits in the array |\n| `n` | number of elements you will insert |\n| `k` | number of hash functions |\n\nThe state is **a bit array of `m` bits, all initially 0**. Nothing else.\n\n**Insert(x):** compute `h₁(x), h₂(x), …, h_k(x)`, each mapping to `[0, m)`. Set all `k` of those bits to 1. Bits already set stay set — no counter, no record of who set them.\n\n**Query(x):** compute the same `k` positions. If **any** is 0, return \"definitely not\". If **all** are 1, return \"probably yes\".\n\nHere is the entire implementation — this is genuinely all there is:\n\n```python\nclass Bloom:\n    def __init__(self, m, k):\n        self.m, self.k = m, k\n        self.bits = bytearray((m + 7) // 8)\n\n    def _idx(self, item):\n        d = hashlib.sha256(item.encode()).digest()\n        h1 = int.from_bytes(d[:8], 'big')\n        h2 = int.from_bytes(d[8:16], 'big') | 1\n        for i in range(self.k):\n            yield (h1 + i * h2) % self.m          # Kirsch–Mitzenmacher double hashing\n\n    def add(self, item):\n        for j in self._idx(item):\n            self.bits[j >> 3] |= 1 << (j & 7)\n\n    def __contains__(self, item):\n        return all(self.bits[j >> 3] >> (j & 7) & 1 for j in self._idx(item))\n```\n\nBoth operations are **O(k)** — constant time, independent of `n`. No resizing, no probing, no collision chains, no branching on data.\n\n### Why there are no false negatives\n\nIf `x` was inserted, its `k` bits were set to 1 at insert time. **Bits are never cleared.** So at query time those same `k` positions are still 1, and the query returns \"probably yes\". There is no execution path that produces \"definitely not\" for an inserted element — this is a structural invariant, not a probabilistic claim.\n\nI asserted it on every configuration, and separately on 100k members:\n\n```\n=== C. false negatives: 100k members, m/n=8, k=6 ===\n  members re-queried: 100000, reported absent: 0\n```\n\n(The `assert all(w in bf for w in inserted)` in the main sweep never fired either, across all 20 configurations.)\n\n### Why there are false positives\n\nThe `k` bits for a *non*-member `y` may all happen to have been set by **other** elements — not necessarily by any single one, but by a coalition. `h₁(y)` set by element A, `h₂(y)` by element B, and so on. The filter cannot tell \"these bits were set by y\" from \"these bits were set by an unrelated pile of insertions\", because it never recorded who set what. That erasure of provenance is exactly what buys the space savings.\n\n---\n\n## 3. The false positive rate — full derivation\n\n### Step 1: probability a given bit is still 0\n\nOne hash function, one element, one bit: the probability that this particular hash does *not* select bit *i* is\n\n$$1 - \\frac{1}{m}$$\n\nInserting one element performs `k` hash operations. Inserting `n` elements performs `kn` of them. Assuming they're independent and uniform:\n\n$$P(\\text{bit } i = 0) = \\left(1 - \\frac{1}{m}\\right)^{kn}$$\n\n### Step 2: the exponential approximation\n\nUse the standard limit $\\left(1-\\frac{1}{m}\\right)^{m} \\to e^{-1}$ as $m \\to \\infty$. Rewrite:\n\n$$\\left(1 - \\frac{1}{m}\\right)^{kn} = \\left[\\left(1-\\frac{1}{m}\\right)^{m}\\right]^{kn/m} \\approx e^{-kn/m}$$\n\nSo\n\n$$P(\\text{bit } i = 1) \\approx 1 - e^{-kn/m}$$\n\nThis quantity is the **fill ratio** — the expected fraction of the array that is set. Call it $\\rho$. The exponent $kn/m$ is the *load*: hash operations per bit.\n\n### Step 3: all `k` bits set\n\nA false positive occurs when all `k` probed bits are 1. Treating the `k` positions as independent:\n\n$$\\boxed{\\;\\varepsilon \\;\\approx\\; \\left(1 - e^{-kn/m}\\right)^{k} \\;=\\; \\rho^{\\,k}\\;}$$\n\n### Step 4: does it actually hold?\n\nI built filters at four densities and measured against 200,000 known non-members each:\n\n```\n       m   m/n   k  pred_naive  pred_exact   measured  fill_pred  fill_real\n   40000     4   1     0.22120     0.22127    0.22220    0.22120    0.22127\n   40000     4   3     0.14689     0.14776    0.14835    0.52763    0.52868\n   40000     4  10     0.42464     0.42876    0.42885    0.91792    0.91880\n   80000     8   3     0.03058     0.03057    0.03117    0.31271    0.31269\n   80000     8   6     0.02158     0.02167    0.02118    0.52763    0.52800\n  100000    10   3     0.01741     0.01753    0.01772    0.25918    0.25979\n  100000    10   7     0.00819     0.00808    0.00816    0.50341    0.50240\n  160000    16   3     0.00500     0.00503    0.00516    0.17097    0.17137\n  160000    16  11     0.00046     0.00046    0.00051    0.49717    0.49764\n```\n\n`pred_naive` is $\\left(1-e^{-kn/m}\\right)^k$; `measured` is the observed rate. They agree to roughly the sampling error throughout, including the pathological case (`m/n=4, k=10`) where the filter is 92% full and 43% of queries false-positive. `fill_pred` vs `fill_real` confirms Step 2 independently: the predicted and actual fraction of set bits match to ~3 decimal places.\n\n### Step 5: the subtlety in Step 3 (where the formula is technically wrong)\n\nThe independence assumption in Step 3 is **not exactly true**, for two reasons:\n\n1. The `k` positions for a single query may collide with each other.\n2. More importantly, the bits are *negatively correlated*. The number of set bits `X` is a random variable, and knowing one bit is set is weak evidence that `X` is high, which raises the odds the others are set too.\n\nThe exact statement conditions on `X`:\n\n$$\\varepsilon = \\mathbb{E}\\left[\\left(\\frac{X}{m}\\right)^{k}\\right], \\qquad P(X = i) = \\frac{\\binom{m}{i}\\, i!\\, S(kn, i)}{m^{kn}}$$\n\nwhere $S(\\cdot,\\cdot)$ is a Stirling number of the second kind (`kn` balls landing in exactly `i` of `m` bins). Bose et al. (2008) showed the textbook formula is a **lower bound** — a slight *under*estimate of the true rate — not the exact value it's usually presented as.\n\nIn practice it doesn't matter, because `X` concentrates extremely tightly around `m·ρ`. The `pred_exact` column above is $(\\text{actual fill})^k$ — plugging the realized `X` into the same formula — and it lands between `pred_naive` and `measured` almost everywhere, confirming that the residual gap is the concentration of `X`, not a flaw in the $\\rho^k$ step.\n\n---\n\n## 4. Choosing `k` — the optimum\n\n`k` cuts both ways. More hash functions mean more bits must coincidentally align for a false positive (good), but each insertion sets more bits, so the array fills faster (bad). There's an interior optimum.\n\nLet $b = m/n$ (bits per element) and minimize\n\n$$\\ln \\varepsilon = k \\ln\\left(1 - e^{-k/b}\\right)$$\n\n**Substitution trick.** Let $x = e^{-k/b}$, so $k = -b\\ln x$ and $x \\in (0,1)$:\n\n$$\\ln \\varepsilon = -b \\cdot \\ln(x)\\cdot\\ln(1-x)$$\n\nBoth logs are negative, so their product is positive and $\\ln\\varepsilon$ is negative — minimizing $\\varepsilon$ means **maximizing $\\ln(x)\\ln(1-x)$**. That expression is symmetric under $x \\leftrightarrow 1-x$, so its maximum is at\n\n$$x = \\tfrac{1}{2} \\quad\\Longrightarrow\\quad e^{-k/b} = \\tfrac{1}{2} \\quad\\Longrightarrow\\quad \\boxed{k^{*} = \\frac{m}{n}\\ln 2 \\approx 0.693\\,\\frac{m}{n}}$$\n\n**The interpretation is the memorable part:** the optimum is exactly where **half the bits are set**. Intuitively, each bit is a one-bit predicate, and a bit carries maximum entropy when it's 50/50. Below that you're wasting array; above it you're saturating.\n\nSubstituting back:\n\n$$\\varepsilon_{\\min} = \\left(\\tfrac{1}{2}\\right)^{k^*} = 2^{-\\,(m/n)\\ln 2} \\approx 0.6185^{\\,m/n}$$\n\n**Measured k-sweep at m/n = 10** (theory predicts $k^* = 10\\ln2 = 6.93 \\to 7$, and fill = 0.5 there):\n\n```\n  k= 1  predicted=0.09516  measured=0.09538  fill=0.0954\n  k= 3  predicted=0.01741  measured=0.01772  fill=0.2598\n  k= 5  predicted=0.00943  measured=0.00948  fill=0.3932\n  k= 6  predicted=0.00844  measured=0.00836  fill=0.4510\n  k= 7  predicted=0.00819  measured=0.00816  fill=0.5024   <-- minimum\n  k= 8  predicted=0.00846  measured=0.00835  fill=0.5494\n  k=10  predicted=0.01019  measured=0.01045  fill=0.6323\n  k=15  predicted=0.02266  measured=0.02375  fill=0.7788\n  -> measured minimum at k=7; theory says k*=round(10*ln2)=7\n```\n\nThe measured optimum is `k=7`, the fill there is `0.5024`, and the curve is a clean U. Note it's a **shallow** U near the bottom — `k=6` and `k=8` cost you under 3% relative. Rounding `k` to an integer is harmless; guessing it wildly (`k=1` or `k=15`) is not.\n\n---\n\n## 5. Sizing: going from a target error rate to `m` and `k`\n\nInvert $\\varepsilon = 2^{-(m/n)\\ln 2}$ for a target rate `p`:\n\n$$\\ln p = -\\frac{m}{n}(\\ln 2)^2 \\quad\\Longrightarrow\\quad \\boxed{m = -\\frac{n \\ln p}{(\\ln 2)^2} \\approx 1.44\\, n \\log_2\\!\\frac{1}{p}}$$\n\nand then $k = -\\log_2 p$.\n\n**The striking consequence:** bits per element is\n\n$$\\frac{m}{n} = 1.44 \\log_2\\frac{1}{p}$$\n\nwhich depends **only on the target error rate** — not on `n`, not on the size of the elements, not on the size of the universe. Each additional order of magnitude of accuracy costs a flat ~4.8 bits per element, forever.\n\n| target `p` | bits/element | `k` |\n|---|---|---|\n| 10% | 4.79 | 3 |\n| 1% | 9.59 | 7 |\n| 0.1% | 14.38 | 10 |\n| 0.01% | 19.17 | 13 |\n\n**Verified end-to-end** — sized by the formula, then measured against 200k non-members:\n\n```\n  target p=0.1     -> m=  47926 bits (4.79/elem), k= 3 | measured=0.10057 (+-0.00134 2sig)\n  target p=0.01    -> m=  95851 bits (9.59/elem), k= 7 | measured=0.01033 (+-0.00044 2sig)\n  target p=0.001   -> m= 143776 bits (14.38/elem), k=10 | measured=0.00096 (+-0.00014 2sig)\n  target p=0.0001  -> m= 191702 bits (19.17/elem), k=13 | measured=0.00007 (+-0.00004 2sig)\n```\n\nThree of four land inside two standard errors of the target. `p=0.01` measures 0.01033 against a ±0.00044 band — slightly high, which is the direction Bose et al. predict, since the naive formula underestimates.\n\n### How close to optimal is that?\n\nInformation theory says any structure answering approximate membership at rate `p` needs at least $n\\log_2(1/p)$ bits. Bloom filters use $1.44\\,n\\log_2(1/p)$ — **44% above the lower bound**, the price of the $1/\\ln 2$ factor. Cuckoo filters and quotient filters close most of that gap (~1.05–1.2×) and support deletion, at the cost of a more complex structure and a load-factor cliff. Bloom's appeal is that it never fails to insert, has no rehashing, and is ~15 lines of code.\n\nA related fact: at optimal `k` the array is half-set and looks like a uniformly random bit string, so it is **incompressible**. If you're transmitting a filter over a network, Mitzenmacher's *compressed Bloom filters* deliberately use a larger `m` with a *smaller* `k`, making the array sparse and compressible — worse in RAM, better on the wire.\n\n---\n\n## 6. Set operations\n\nTwo filters with **identical `m`, `k`, and hash functions**:\n\n**Union is exact.** Bitwise OR of the two arrays is bit-for-bit identical to a filter built by inserting the union of both sets — because \"set the bits\" is idempotent and order-independent.\n\n**Intersection is not.** Bitwise AND produces a filter with an error rate *higher* than a properly built filter over `A ∩ B`, because a bit survives the AND whenever *any* element of A and *any* element of B both happened to set it.\n\n```\nOR of two filters == filter built on the union set: True\ntrue |A n B| = 0\nAND-filter FP rate on 100k random queries: 1e-05\ntheory for a filter holding 0 elements:     0.0\n```\n\nA and B were disjoint, so a correct intersection filter is all zeros and would return 0.0. The AND filter returned one hit in 100,000 — small, but nonzero, which is the point: AND is an approximation, OR is not.\n\n---\n\n## 7. Practical engineering notes\n\n**Hashing.** You don't need `k` independent hash functions. Kirsch–Mitzenmacher (2006) proved that\n\n$$g_i(x) = h_1(x) + i\\cdot h_2(x) \\bmod m$$\n\nfrom two independent hashes yields the same asymptotic false positive rate. My implementation uses exactly this, taking `h₁` and `h₂` from two 8-byte slices of one SHA-256, and it matched theory across all 20 configurations above — which is supporting evidence for the technique, since a bad probe sequence would have shown up as measured rates above prediction.\n\nOne caveat I did *not* control for: to guarantee the `k` probes are distinct, standard guidance is prime `m`, or power-of-two `m` with an odd `h₂` (I forced `h₂ | 1` but used non-power-of-two `m`). It tracked theory here; that's an empirical result on these inputs, not a proof for arbitrary `m`.\n\nIn production, use a fast non-cryptographic hash (xxHash, MurmurHash3) — SHA-256 dominated the runtime in my benchmark and buys nothing here.\n\n**You cannot delete.** Clearing a bit would break every other element sharing it, reintroducing false negatives and destroying the one hard guarantee. Options:\n- **Counting Bloom filter** — replace each bit with a 4-bit counter; increment on insert, decrement on delete. Costs 4× the space, and deleting an element that was never inserted silently corrupts the structure.\n- **Rebuild periodically** from the authoritative source.\n- **Cuckoo filter** — supports true deletion, uses less space, but insertion can fail at high load.\n\n**`n` must be estimated up front.** Overshoot on inserts and the error rate degrades fast — the `m/n=4, k=10` row above shows 43% false positives at a load the filter wasn't sized for. If `n` is unknown, use a **scalable Bloom filter**: a chain of filters with geometrically growing `m` and geometrically shrinking target error rates, chosen so the total error rate converges.\n\n**Cache behavior.** With `k=7` and a large `m`, a single lookup touches 7 random cache lines — 7 potential cache misses, which dominates runtime at scale. **Blocked Bloom filters** confine all `k` bits of an element to one cache line (one extra hash picks the block). This costs a small amount of accuracy and buys a large constant-factor speedup; it's what high-throughput systems actually deploy.\n\n**Where they're used in practice:** LSM-tree storage engines (RocksDB, LevelDB, Cassandra, HBase) put a Bloom filter on each SSTable so a point lookup skips files that definitely don't contain the key; Chrome's Safe Browsing shipped a local filter of malicious URLs so only \"probably\" hits went to the server; Bitcoin BIP 37 used them for lightweight wallet filtering; CDNs use \"one-hit-wonder\" filters to avoid caching objects seen only once; Medium used them to suppress already-recommended posts.\n\n---\n\n## Summary of the math\n\n| Quantity | Formula |\n|---|---|\n| Fill ratio | $\\rho = 1 - e^{-kn/m}$ |\n| False positive rate | $\\varepsilon \\approx \\left(1-e^{-kn/m}\\right)^{k}$ |\n| Optimal `k` | $k^{*} = (m/n)\\ln 2$, at which the array is half-set |\n| Error at optimal `k` | $\\varepsilon = 2^{-k^*} \\approx 0.6185^{\\,m/n}$ |\n| Bits needed for target `p` | $m = -n\\ln p / (\\ln 2)^2 \\approx 1.44\\,n\\log_2(1/p)$ |\n| Space overhead vs. optimal | $1/\\ln 2 \\approx 1.44\\times$ |\n\nScripts: `scratchpad/bloom.py`, `bloom2.py`, `bloom3.py` — all outputs above are from real runs, no figures are illustrative. The one claim I have **not** verified is the exact Stirling-number formula in §3 Step 5 (I verified only that measured rates sit slightly above `pred_naive`, consistent with its direction) — that's cited from Bose et al. 2008, unverified here.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-hash",
+          "passed": true,
+          "matches": 18,
+          "applicable": true
+        },
+        {
+          "id": "covers-fp-math",
+          "passed": true,
+          "matches": 37,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 193593
+    },
+    {
+      "id": "asked-detail",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "## What problem it solves\n\nA Bloom filter is a probabilistic set membership structure. You can ask it \"have you seen *x*?\" and it answers **\"definitely not\"** or **\"probably yes\"**. It never stores the elements themselves — just a bit array — so it uses a small constant number of bits per item regardless of how large the items are, and both insert and query are O(k) with no pointer chasing.\n\nThe trade you're making: it can say *yes* about something you never inserted (false positive), but it can never say *no* about something you did insert (no false negatives). That asymmetry is what makes it useful — a \"no\" is authoritative, so you use the filter as a cheap gate in front of an expensive exact check.\n\n## The structure\n\nThree parameters:\n\n- **m** — size of the bit array, all bits initially 0\n- **n** — number of elements you expect to insert\n- **k** — number of independent hash functions, each mapping an element to `[0, m)`\n\n**Insert(x):** compute `h₁(x) … h_k(x)`, set all k of those bits to 1. Bits already set stay set — there's no counter, no collision handling, nothing to resolve.\n\n**Query(x):** compute the same k positions. If *any* is 0, x was definitely never inserted (inserting it would have forced that bit to 1). If *all* k are 1, answer \"probably yes\" — those bits may have been set by k different other elements.\n\nThat's the whole algorithm. The interesting part is quantifying \"probably.\"\n\n## The false positive math\n\n**Step 1 — probability a given bit stays 0.**\n\nOne hash function picks one of m positions uniformly. The probability it misses a specific bit is `1 − 1/m`. Across k hash functions and n insertions — kn independent bit-settings total:\n\n```\nP(specific bit is still 0) = (1 − 1/m)^(kn)\n```\n\nSince `(1 − 1/m)^m → e^(−1)` as m grows, for realistic m this is:\n\n```\nP(bit is 0) ≈ e^(−kn/m)\nP(bit is 1) ≈ 1 − e^(−kn/m)\n```\n\n**Step 2 — probability all k bits of an absent element are 1.**\n\nTreating the k bits as independent:\n\n```\np ≈ (1 − e^(−kn/m))^k\n```\n\n**A caveat worth stating:** that independence assumption is not strictly true — the bits are weakly negatively correlated, because knowing one bit is set is slight evidence that fewer distinct positions were hit overall. Bose et al. (2008) showed the standard formula is a mild *under*estimate of the true rate. The error is negligible at practical sizes; you can see it in the measurements below, where the measured rate sits a hair above prediction in three of five configurations.\n\nHere is the formula measured against a real filter (SHA-256-derived hashes, 200,000 absent-key probes per row):\n\n```\n       m      n   k | pred_naive pred_exact  measured | bits_pred bits_meas\n--------------------------------------------------------------------------\n    8000   1000   6 |    0.02158    0.02158   0.02086 |   0.52763   0.52487\n   10000   1000   7 |    0.00819    0.00820   0.00854 |   0.50341   0.50370\n   16000   1000  11 |    0.00046    0.00046   0.00049 |   0.49717   0.49625\n   24000   1000  17 |    0.00001    0.00001   0.00003 |   0.50754   0.50821\n   10000   3000   2 |    0.20357    0.20359   0.20180 |   0.45119   0.44900\n```\n\n`pred_exact` is the un-approximated `(1 − (1−1/m)^(kn))^k`; it agrees with the `e^x` version to five decimals, which is why nobody bothers with it.\n\n## Choosing k optimally\n\nMore hash functions means more bits must coincidentally align for a false positive — but also more bits set per insert, saturating the array faster. There's a minimum in between.\n\nLet `b = m/n` (bits per item) and take logs:\n\n```\nln p = k · ln(1 − e^(−k/b))\n```\n\nSubstitute `x = e^(−k/b)`, so `k = −b ln x`:\n\n```\nln p = −b · ln(x) · ln(1 − x)\n```\n\nThis expression is **symmetric under x ↔ 1−x**, and convex on (0,1), so it's minimized at `x = 1/2`. Back-substituting `e^(−k/b) = 1/2`:\n\n```\nk_opt = (m/n) · ln 2 ≈ 0.693 · (m/n)\n```\n\nThe `x = 1/2` result has a nice physical reading: **the optimal filter is exactly half full**. Look at the `bits_meas` column above — 0.5249, 0.5037, 0.4963, 0.5082. Every optimally-tuned filter converged to ~50% of bits set, as predicted, and the one deliberately under-provisioned row (m/n ≈ 3.3, forced to k=2) sits off at 0.449.\n\nAt the optimum, each of the k bits is set with probability ½ independently, so:\n\n```\np = (1/2)^k = 2^(−k_opt)\n```\n\nEmpirically confirming the minimum is where the derivation says it is, at m=10000, n=1000:\n\n```\n  k= 5  p=0.00943\n  k= 6  p=0.00844\n  k= 7  p=0.00819   <-- min\n  k= 8  p=0.00846\n  k= 9  p=0.00913\n  (m/n)*ln2 = 6.9315  -> round = 7\n```\n\nNote the curve is **flat near the bottom** — k=6 and k=8 cost you under 4% relative FPR. Rounding to a convenient k is free; you should not agonize over it. Rounding *down* is often the better call since each hash function costs a memory probe at query time.\n\n## Sizing the filter from a target error rate\n\nUsually you know the FPR you want and n, and need m. Invert `p = 2^(−(m/n)ln2)`:\n\n```\nln p = −(m/n)(ln 2)²\n\nm = −(n · ln p) / (ln 2)²      ≈ −2.081 · n · ln p\n\nm/n = −log₂(p) / ln 2          ≈ 1.44 · log₂(1/p)\n```\n\n```\n  target p=0.01    -> m/n =   9.59 bits/item, k = 7\n  target p=0.001   -> m/n =  14.38 bits/item, k = 10\n  target p=0.0001  -> m/n =  19.17 bits/item, k = 13\n```\n\nTwo things to internalize from this table:\n\n1. **Cost is independent of item size.** ~10 bits per item for 1% error whether the items are 8-byte integers or 2 KB URLs. This is the entire value proposition.\n2. **Each additional order of magnitude of precision costs a flat ~4.8 bits per item.** The scaling is logarithmic, not linear — so \"make it 10× more accurate\" is cheap, which is unusual and worth remembering.\n\nThe information-theoretic lower bound for any structure with FPR p is `log₂(1/p)` bits per item. Bloom filters use `1.44 · log₂(1/p)` — a **44% space overhead** over optimal. That gap is what motivates the alternatives at the end.\n\n## Properties that follow from the construction\n\n**No false negatives, guaranteed.** Not probabilistically — structurally. A set bit is never cleared, so the k bits of an inserted element are still 1 at query time:\n\n```\nfalse negatives among all inserted keys: 0\n```\n\n**You cannot delete.** Clearing a bit for element x may clear a bit that some other element y also depends on, which would create a false negative and break the one hard guarantee. This is the single biggest practical limitation.\n\n**Estimating cardinality.** If you've lost count of n, recover it from the number of set bits X by inverting `X/m = 1 − e^(−kn/m)`:\n\n```\nn̂ = −(m/k) · ln(1 − X/m)\n\ntrue n=2000  bits set X=10031  estimated n=1989.3  error=0.54%\n```\n\n**Union is exact; intersection is not.** Two filters sharing identical m, k, and hash functions can be OR'd, and the result is bit-for-bit identical to a filter built from the union of both sets:\n\n```\nOR(A,B) bits == bits of filter built from A union B: True\n```\n\nAND *seems* like it should give intersection, and it does contain every true member — but it also admits elements in neither intersection, because a bit can be set in both filters for unrelated reasons. It's a superset, with an inflated error rate. At m=2000, k=4, |A|=|B|=450:\n\n```\ntrue shared keys found in AND filter: 50 /50\nA-only/B-only keys wrongly in AND filter: 116 /800\n```\n\n14.5% of non-members passed — far above the filter's own nominal rate. Use AND only if you understand you're getting a degraded approximation.\n\n**Degradation is graceful but unbounded.** Insert past your design n and the FPR climbs smoothly toward 1. There's no failure signal, no exception — the filter quietly stops being useful. If your n is uncertain, monitor the fill ratio: past ~50% set bits you're beyond the optimum, and past ~80% the thing is nearly worthless.\n\n## Implementation notes that matter in practice\n\n**You don't need k real hash functions.** Kirsch–Mitzenmacher showed that two independent hashes suffice, with the rest derived as:\n\n```\ngᵢ(x) = (h₁(x) + i · h₂(x)) mod m\n```\n\nwith no asymptotic penalty to the FPR. In practice people take one 128-bit hash (murmur3, xxhash, SHA-256) and split it into two 64-bit halves. That's exactly what the measurements above use — the agreement between predicted and measured rates *is* the evidence this technique holds up. Keep `h₂` odd (or m prime) so the stride doesn't hit a short cycle.\n\n**Cache behavior is the real bottleneck.** k=10 means up to 10 random probes across a bit array that may be far larger than L3. A **blocked Bloom filter** confines all k bits of one element to a single cache line, cutting the cost to one cache miss. It's slightly worse per-bit theoretically — blocks fill unevenly — but usually much faster in wall-clock terms.\n\n**Concurrency is nearly free.** Insert is a set of idempotent bit-set operations, so concurrent inserts need only atomic OR (or on many architectures, nothing at all, if you tolerate a benign race — you can never *clear* a bit by racing). Readers never need a lock.\n\n**Hash quality matters less than you'd expect** — you need good distribution, not cryptographic strength; murmur3 or xxhash are the right choice. The exception is when inputs are adversarial: an attacker who can find inputs colliding on your k positions can drive your FPR to 1 and turn the filter into a denial-of-service amplifier. Use a seeded/keyed hash with a secret seed in that setting.\n\n## When to reach for something else\n\n| Need | Structure |\n|---|---|\n| Deletion | **Counting Bloom filter** — replace each bit with a 4-bit counter; increment on insert, decrement on delete. Costs 4× the space and can still overflow. |\n| Deletion + less space | **Cuckoo filter** — stores fingerprints in a cuckoo hash table. Supports deletion, and beats Bloom on space below roughly p < 3%. |\n| Minimum possible space | **Xor / Ribbon filter** — ~1.23× the lower bound versus Bloom's 1.44×, and faster to query. Catch: immutable, built once from the full set in a batch. |\n| Unknown / growing n | **Scalable Bloom filter** — a chain of filters with geometrically tightening error rates; query checks all of them. |\n| Frequency, not membership | **Count-Min Sketch** — same hashing idea, counters instead of bits. |\n| Distinct-count only | **HyperLogLog** — vastly less space if you never need per-element queries. |\n\nThe decision rule: if your set is static and known upfront, an xor filter dominates. If you need deletion, cuckoo. Bloom filters win on being trivially simple, streaming-friendly, mergeable by OR, and lock-free — which is why they persist despite the 44% space overhead.\n\n## Where they show up\n\n- **LSM-tree databases** (RocksDB, Cassandra, LevelDB) — one filter per SSTable, so a point lookup skips disk reads for tables that definitely don't hold the key. This is the canonical use, and the one that most shaped the design.\n- **CDNs** — \"have I seen this URL once before?\" to avoid caching one-hit-wonders.\n- **Chrome's Safe Browsing** (historically) — a local filter over malicious URLs; a hit triggers a server round-trip, a miss costs nothing.\n- **Bitcoin BIP-37** light clients — request only possibly-relevant transactions. Also a cautionary tale: the filter leaked enough about which addresses a wallet cared about to substantially deanonymize users, and it was deprecated. False positives are privacy cover only if you size them for it.\n\n---\n\nAll numbers above are measured output from `bloom.py`, `bloom2.py`, and `bloom3.py` in the scratchpad, not quoted from memory. The one claim I did not verify empirically is the Bose et al. correction — I stated it as published theory and the direction is consistent with the measurements, but three of five rows is far too small a sample to be evidence of anything; treat that as unverified.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-hash",
+          "passed": true,
+          "matches": 16,
+          "applicable": true
+        },
+        {
+          "id": "covers-fp-math",
+          "passed": true,
+          "matches": 17,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 138225
+    },
+    {
+      "id": "asked-detail",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "## The core idea\n\nA Bloom filter answers one question — *\"have I seen this before?\"* — with a deliberate asymmetry:\n\n- **\"No\"** is always correct. No false negatives, ever.\n- **\"Yes\"** means *probably*. There's a tunable false positive rate.\n\nIn exchange you get a structure that stores **no elements at all** — just a bit array — and uses roughly **10 bits per element for a 1% error rate**, regardless of whether the elements are 8-byte integers or 2KB URLs. A hash set storing those same URLs needs ~2000× more space.\n\n## The mechanics\n\nThree parameters:\n\n- `m` — size of the bit array (all zeros initially)\n- `k` — number of independent hash functions, each mapping an element to `[0, m)`\n- `n` — number of elements you'll insert\n\n**Insert(x):** compute `h₁(x) … h_k(x)`, set all `k` bits to 1. Bits already set stay set — there's no collision detection and no bookkeeping.\n\n**Query(x):** compute the same `k` positions. If *any* is 0 → **definitely not present** (had it been inserted, that bit would have been set). If *all* are 1 → **probably present**.\n\n```\nm = 16, k = 3\n\ninsert \"cat\"  → positions 2, 7, 11\ninsert \"dog\"  → positions 5, 7, 14      (7 collides — harmless)\n\nindex:  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15\nbits:   0  0  1  0  0  1  0  1  0  0  0  1  0  0  1  0\n                 ↑        ↑     ↑        ↑        ↑\n                cat      dog  both      cat      dog\n\nquery \"cow\" → positions 5, 11, 14 → all 1 → FALSE POSITIVE\n```\n\n\"cow\" was never inserted, but its three bits were incidentally set by *different* elements. That is the only failure mode, and the entire math below is about controlling its probability.\n\n## The false positive rate, derived\n\n**Step 1 — probability one specific bit survives one hash.** A hash picks uniformly among `m` positions:\n\n$$P(\\text{bit } i \\text{ not set by one hash}) = 1 - \\frac{1}{m}$$\n\n**Step 2 — after all insertions.** Inserting `n` elements performs `kn` hash operations, assumed independent:\n\n$$P(\\text{bit } i \\text{ still } 0) = \\left(1 - \\frac{1}{m}\\right)^{kn} \\approx e^{-kn/m}$$\n\nThe approximation uses $(1-1/m)^m \\to e^{-1}$, and is tight for any realistic `m`.\n\n**Step 3 — fill ratio.** The expected fraction of bits set to 1:\n\n$$p = 1 - e^{-kn/m}$$\n\n**Step 4 — a query on an absent element** checks `k` positions, each set with probability `p`:\n\n$$\\boxed{\\;\\varepsilon \\approx \\left(1 - e^{-kn/m}\\right)^{k}\\;}$$\n\n### The tension in `k`\n\n`k` appears twice with opposite effects. Raising `k` means more bits must *all* be 1 for a false positive — good. But it also fills the array faster, raising `p` — bad. So there's an optimum.\n\nSubstitute $g = k\\ln(1 - e^{-kn/m})$ (minimizing $\\varepsilon$ = minimizing $g$). Setting $dg/dk = 0$ yields:\n\n$$k^{*} = \\frac{m}{n}\\ln 2 \\approx 0.693\\,\\frac{m}{n}$$\n\n**The optimum is exactly where the array is half full** — substitute $k^*$ back into $p$:\n\n$$p = 1 - e^{-\\ln 2} = 1 - \\tfrac{1}{2} = \\tfrac{1}{2}$$\n\nThat's the memorable form of the whole theory: *a well-tuned Bloom filter is a half-set bit array.* If you inspect a production filter and find it 90% ones, it's overloaded; 10% ones and you over-allocated.\n\nAt the optimum:\n\n$$\\varepsilon = 2^{-k^{*}} = 2^{-(m/n)\\ln 2} \\approx 0.6185^{\\,m/n}$$\n\n### Inverting it — how to size a filter\n\nYou normally know `n` and your error budget `ε`, and need `m`:\n\n$$\\frac{m}{n} = \\frac{-\\ln \\varepsilon}{(\\ln 2)^{2}} \\approx 1.4427\\,\\log_2\\frac{1}{\\varepsilon}$$\n\n| target ε | bits/element | k |\n|---|---|---|\n| 10% | 4.8 | 3 |\n| 1% | 9.6 | 7 |\n| 0.1% | 14.4 | 10 |\n| 0.01% | 19.2 | 13 |\n\nThe striking property: **each additional factor-of-10 accuracy costs a flat ~4.8 bits per element.** Space grows logarithmically in `1/ε` and doesn't depend on element size at all.\n\nThe information-theoretic floor for any such structure is $\\log_2(1/\\varepsilon)$ bits/element, so a Bloom filter is off-optimal by exactly the factor $1/\\ln 2 \\approx 1.44$ — about 44% overhead. That gap is what modern alternatives close.\n\n## Verifying the math\n\nI built a filter over 10,000 real strings and probed it with 200,000 strings that were never inserted:\n\n```\n  m/n   k  pred_naive  pred_exact   measured  bits_set  pred_fill\n    4   3     0.14689     0.14776    0.14835    0.5287     0.5276\n    8   6     0.02158     0.02167    0.02118    0.5280     0.5276\n   10   7     0.00819     0.00808    0.00816    0.5024     0.5034\n   16  11     0.00046     0.00046    0.00051    0.4976     0.4972\n```\n\nAt 10 bits/element the formula predicts 0.819% and measurement gives 0.816% — agreement to the third decimal. The `bits_set` column confirms the half-full result: measured fill sits at 0.5024 and 0.4976 where `k` rounds close to `(m/n)ln2`, and drifts to 0.528 at `m/n = 4` where the optimal `k` is 2.77 but integer `k=3` overfills slightly.\n\n**One caveat on the formula.** Step 4 treats the `k` bits as independently set, which isn't strictly true — the number of set bits is a random variable, and conditioning on one bit being 1 makes others slightly more likely to be 1. Bose et al. (2008) showed the standard formula is therefore a mild *underestimate*. You can see it in the run: the `pred_exact` column uses the filter's actual measured fill ratio instead of the expected one, and at `m/n = 4` it sits above the naive prediction (0.14776 vs 0.14689), closer to the measured 0.14835. The error is fractions of a percent at practical sizes — the formula is fine for sizing, just don't treat it as a hard bound.\n\n## Practical details that matter\n\n**You don't need `k` real hash functions.** Kirsch–Mitzenmacher showed that\n\n$$g_i(x) = h_1(x) + i \\cdot h_2(x) \\bmod m$$\n\nfor `i = 0…k-1` gives asymptotically the same false positive rate as `k` independent hashes. In practice: take one 128-bit hash (xxHash, MurmurHash3), split it in half, done. The simulation above uses exactly this — that's why its measured rates match theory despite computing only a single SHA-256 per element.\n\n**Deletion is impossible.** Clearing a bit could break an unrelated element sharing it, which would create a false *negative* — the one error the structure promises never to make. The fixes:\n\n- *Counting Bloom filter* — replace each bit with a small counter (usually 4 bits); increment on insert, decrement on delete. Costs 4× the space.\n- Rebuild periodically, or keep two generations and rotate.\n\n**Set operations work, with limits.** Two filters with identical `m` and `k` can be unioned by bitwise OR — exactly the filter you'd get by inserting both sets. Bitwise AND gives *a* filter for the intersection but with an inflated error rate, since bits can align coincidentally; it's usually not the right tool.\n\n**`n` must be estimated in advance.** Insert past your design `n` and `ε` degrades fast — it's exponential in `n`. A filter sized for 1M at 1% delivers ~10% at 2M elements. If `n` is unknown, use a *scalable* Bloom filter: a chain of filters with geometrically tightening error rates, so the total stays bounded.\n\n**Memory access is the real cost.** `k = 7` means 7 random reads across a possibly-large array — potentially 7 cache misses per lookup, which dominates the hashing. *Blocked Bloom filters* fix this: pick one cache-line-sized block with the first hash, then set all `k` bits within that 64-byte block. One cache miss instead of `k`, at the cost of slightly worse `ε` from uneven block loading. This is what high-throughput systems actually deploy.\n\n## When to reach for one\n\nThe pattern is always **a cheap filter in front of an expensive lookup**:\n\n- **Databases** (Cassandra, RocksDB, HBase) — each SSTable carries a Bloom filter, so a read that would touch dozens of files on disk skips the ones that provably lack the key.\n- **CDNs and caches** — \"has this URL been requested before?\" decides whether to cache on first or second request, avoiding cache pollution from one-off URLs.\n- **Distributed joins** — ship a Bloom filter of one table's join keys across the network instead of the keys themselves, then filter the other side before transfer.\n- **Crawlers** — \"have I visited this URL?\" across billions of URLs, in RAM.\n- **Weak-password checks** — test candidates against a breached-password corpus without storing the corpus.\n\nThe economics only work when a false positive is *cheap* — one wasted disk read — and the filter is small enough to keep in RAM while the real data is not. If a false positive is expensive or unacceptable, you need the exact structure.\n\n**Modern alternatives worth knowing:** *Cuckoo filters* support deletion and beat Bloom filters below ~3% error. *XOR filters* and *binary fuse filters* need ~1.08–1.23× the theoretical minimum (vs Bloom's 1.44×) with single-block lookups, but are immutable — build once from a known set, no incremental inserts. For a static set that fits the build-once model, a binary fuse filter is roughly 20–30% smaller and faster than a Bloom filter at the same error rate.\n\n---\n\nThe simulation script is at `scratchpad/bloom.py` if you want to vary the parameters — it's ~35 lines and takes about 20 seconds to run the full sweep. I haven't benchmarked the blocked-filter or cuckoo-filter claims in this session; those are cited from the literature, not measured here.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-hash",
+          "passed": true,
+          "matches": 13,
+          "applicable": true
+        },
+        {
+          "id": "covers-fp-math",
+          "passed": true,
+          "matches": 19,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 89209
+    },
+    {
+      "id": "asked-design-doc",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "# Rate Limiter Service — Design Doc\n\n**Status:** Draft · **Author:** maliksmithm@gmail.com · **Date:** 2026-08-20\n\n---\n\n## 1. Goals\n\n- **Central policy enforcement.** One service decides \"allow / deny / delay\" for requests keyed by tenant, API key, user ID, IP, or endpoint — so limits aren't reimplemented per service.\n- **Low latency.** Decision p99 ≤ 5 ms in-region; the limiter must not become the tail-latency source for the calls it protects.\n- **Correct enough under concurrency.** No more than ~1% overshoot of a configured limit under normal operation.\n- **Runtime-configurable.** Policy changes take effect in < 60 s without a deploy.\n- **Fail-open by default.** A limiter outage degrades to \"allow\" rather than taking down the fleet. Selected endpoints may opt into fail-closed.\n- **Observable.** Per-policy allow/deny counts, headroom, and top talkers.\n\n### Non-goals\n- Quota billing / metering (separate system; the limiter emits events it can consume).\n- DDoS mitigation at L3/L4 — that's the edge's job.\n- Global strong consistency across regions.\n\n---\n\n## 2. Approach\n\n### Architecture\n\n```\nclient → service → [limiter SDK] ──(gRPC, in-cluster)──> limiter pods ──> Redis Cluster\n                        │                                                    │\n                   local cache                                       policy config (watch)\n```\n\nTwo enforcement points:\n\n1. **Limiter SDK (in-process).** Holds a short-TTL local token allowance leased from the server, plus the policy set. Most calls are answered locally with zero network hops.\n2. **Limiter service.** Stateless pods executing an atomic Redis Lua script per key.\n\n### Algorithm: token bucket (GCRA form)\n\nEach key stores two fields: `tat` (theoretical arrival time) and nothing else — GCRA encodes rate and burst in a single timestamp, so the hot path is one Redis round trip against one slot, no counter arrays or sorted-set trimming.\n\n```\nallow if  now >= tat - burst_tolerance\nthen      tat = max(tat, now) + cost * emission_interval\n```\n\nRedis `TIME` supplies the clock so all pods agree; keys carry a TTL of `burst_tolerance + emission_interval` so idle keys evict themselves.\n\n### Distributed batching (\"leases\")\n\nFor hot keys, per-request Redis calls are wasteful. The SDK requests a lease of N tokens (sized from the key's recent rate, capped at ~10% of the limit per instance per second) and spends them locally. Unused tokens expire rather than being returned — simpler, and the loss is bounded by the cap.\n\n### Policy model\n\n```yaml\n- id: api.write.per_tenant\n  key: \"tenant:{tenant_id}:{route_group}\"\n  limit: 1000/min\n  burst: 200\n  on_exceed: reject      # or: shadow | queue\n  fail_mode: open\n```\n\nPolicies live in a versioned store, pushed to pods and SDKs over a watch stream. Every decision response carries the policy ID and version so denials are traceable to a specific config.\n\n### API\n\n`Check(key, policy_id, cost) → {decision, remaining, retry_after_ms, policy_version}`\n\nRejections surface as HTTP 429 with `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset`, and `Retry-After`.\n\n---\n\n## 3. Tradeoffs\n\n| Decision | Chosen | Rejected | Why |\n|---|---|---|---|\n| Algorithm | GCRA token bucket | Sliding-window log | Log is exact but O(requests) memory per key; GCRA is O(1) and burst-friendly. |\n| | | Fixed window | Allows 2× the limit across a boundary. |\n| State | Redis Cluster | Embedded per-pod state | Per-pod state divides the limit by pod count and breaks on autoscale. |\n| | | Strongly-consistent store (etcd/Spanner) | Correct, but adds 10–100× write latency for a counter that tolerates 1% error. |\n| Leases | Yes, capped | Strict per-request checks | Trades ≤1% overshoot for ~90% fewer Redis ops on hot keys. |\n| Failure mode | Fail-open | Fail-closed | An availability tool that causes outages is a net negative; opt-in fail-closed for abuse-sensitive routes. |\n| Region scope | Per-region limits | Global counters | Cross-region coordination costs 80–150 ms; limits are configured as per-region shares instead. |\n\n**Known costs of this design:**\n- Global limits are approximate — a client spread across 3 regions can reach up to 3× a nominal global limit unless the policy accounts for it.\n- Fail-open means a Redis partition is an enforcement gap. Mitigated by SDK-local last-known limits continuing to apply during the gap.\n- Lease-based counting makes `remaining` in the response an estimate, not a guarantee.\n\n---\n\n## 4. Rollout Plan\n\n**Phase 0 — Foundations (weeks 1–3).** Service, Lua script, SDK, policy store. Load test to establish real p99 and max QPS per Redis shard. *These are the numbers that decide shard count — the 5 ms and 1% targets above are budgets, not measurements.*\n\n**Phase 1 — Shadow (weeks 4–5).** Deploy to 2–3 services with `on_exceed: shadow`. The limiter computes decisions and emits `would_have_denied` metrics; nothing is blocked. Exit criterion: one week with the shadow denial rate matching hand-analysis of traffic, and no p99 regression in the host service.\n\n**Phase 2 — First enforcement (week 6).** Enable rejection on one low-risk, high-volume, idempotent endpoint. Ramp by percentage of traffic: 1% → 10% → 50% → 100%, one step per day, with an instant config-level kill switch (`on_exceed: shadow` reverts in < 60 s, no deploy).\n\n**Phase 3 — Expansion (weeks 7–12).** Onboard services in order of abuse exposure. Each onboarding repeats shadow → ramp. Policies start ~3× above observed p99 traffic and tighten weekly.\n\n**Phase 4 — Default on (week 13+).** New endpoints get a default per-tenant policy at registration. Add a public status/quota endpoint so clients can self-diagnose.\n\n**Rollback:** every phase reverts by config, not deploy. The SDK treats an unreachable limiter as allow, so removing the service entirely is also a safe state.\n\n### Success metrics\n- Zero limiter-caused incidents in the host services.\n- ≥95% of 429s carry a correct `Retry-After` (validated by client retry-success rate).\n- Measured p99 decision latency and overshoot rate published against the budgets in §1.\n\n---\n\n**Verification note:** nothing in this document has been executed — the latency, throughput, and overshoot figures are design budgets, and are **unverified** until Phase 0 load testing produces measurements. Phase 1's exit criteria exist specifically to replace them with real numbers.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-tradeoffs",
+          "passed": true,
+          "matches": 5,
+          "applicable": true
+        },
+        {
+          "id": "covers-rollout",
+          "passed": true,
+          "matches": 13,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 55920
+    },
+    {
+      "id": "asked-design-doc",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "**https://claude.ai/code/artifact/f768339a-3e76-43d6-b046-afb225fe00f7**\n\nEight sections: context, goals/non-goals, approach (with a request-path diagram), tradeoffs, failure modes, rollout, observability, open questions.\n\nThe shape of the design:\n\n- **Approach** — GCRA meter running in-process in the edge proxy, spending budget leased from Redis in ~1-second slices, with policy pushed from a control plane over xDS. Redis stays off the request path entirely.\n- **Central tradeoff** — approximate global counting (10–15% overshoot at current fleet size) bought in exchange for a sub-millisecond hot path and no new synchronous request-path dependency. That's why §2 puts billing explicitly out of scope.\n- **Rollout** — shadow fleet-wide → protective limits in one region → quotas ramped 10/50/100% by stable hash → retire the legacy limiters. Each stage has a written gate, and rollback is one mode flag back to shadow.\n\nI wrote it against assumed numbers (~50k RPS, ~40 services, existing Envoy edge, Redis run by SRE) since you didn't specify a system — they're stated in §1 so they're easy to swap.\n\nVerification of what I built, since I can't verify claims about a system that doesn't exist yet:\n\n```\n--- tokens used but never defined in bare :root ---\n(none above = all good)\nunclosed at EOF: []\nunquoted attributes: none\n```\n\nThat's the theme-token check (no color defined only inside a dark-mode block, which would render unreadably for half of viewers) and a tag-balance parse. **Unverified:** the page's actual rendering in a browser and the diagram's visual layout — I checked the SVG coordinates arithmetically and moved one label that overlapped the proxy box, but I have not looked at the rendered output.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-tradeoffs",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "covers-rollout",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 384564
+    },
+    {
+      "id": "asked-design-doc",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "**Meter — rate limiter design doc:** https://claude.ai/code/artifact/2bd39265-6e52-47ec-ad05-01c78060f62b\n\nThe shape of it:\n\n- **Goals** — overload protection, plan quotas, p99 under 2ms added, config-push limit changes, per-decision observability. Non-goals: volumetric DDoS, concurrency limiting, billing-grade metering.\n- **Approach** — token bucket per `(policy, subject)` in a dedicated Redis cluster, one Lua script doing lazy refill + decrement atomically, called from a thin client library in-process rather than a separate RPC hop. Fail open past a 5ms deadline; over-limit verdicts cached locally so abusive traffic doesn't also become a hot key.\n- **Tradeoffs** — a table naming each choice and its cost: client library (per-runtime clients, per-service upgrades), central Redis (shared request-path dependency, per-region limit splits), token bucket (bursts to capacity pass), fail open (outage + spike is unprotected), approximate counters. Standalone RPC tier explicitly rejected, with the condition to revisit.\n- **Rollout** — four gated phases, each reversible by config flag: shadow on the gateway → enforce internal → ramp external by tenant tier → parallel-run and delete the old limiters. Plus the four metrics that tell you it's working and two open questions.\n\nVerification: the checks I ran were on the page itself, not its content.\n\n```\ntokens per block: bare 10  media 10  attr 10\nhex literals outside :root token blocks: none\ndiv 43/43  section 4/4  figure 1/1  table 1/1  svg 1/1  header 1/1  footer 1/1\n```\n\nAll ten color tokens are defined in the bare `:root` as well as both dark blocks, so the un-stamped system-theme state resolves — that's the common unreadable-artifact bug, and it's absent here. I have not viewed the rendered page in a browser, so the visual result is unverified; the numbers in the doc (2ms budget, 99.9% agreement gate, 0.1% fail-open alert) are proposed defaults, not measurements.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-tradeoffs",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "covers-rollout",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 253646
+    },
+    {
+      "id": "asked-step-by-step",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "Done — every step below was actually run. Files are in `…/scratchpad/memleak/`.\n\n---\n\n# Debugging a Node.js memory leak, end to end\n\n## Step 0 — Get a deterministic reproduction first\n\nYou cannot debug what you can't re-trigger. Before touching a profiler, build a **closed-loop load generator** (fixed request count, fixed concurrency) and a `/health` endpoint exposing `process.memoryUsage()`. Everything downstream depends on being able to say \"run exactly this, twice.\"\n\n```\nt= 0s rss=    42.7MB heapUsed=     5.1MB heapTotal=     5.8MB external=  1.9MB cache=     0 listeners=     0\n```\n\n## Step 1 — Separate \"leak\" from \"GC hasn't run yet\"\n\nThe single most common false alarm. V8 only collects under pressure, so rising `heapUsed` proves nothing. Run with `--expose-gc`, force **two** full GCs (the first can leave work for the second), *then* measure.\n\n```\nafter round 2 (post-GC): heapUsed=   130.0MB  cache=  4000  listeners=  4000\nafter round 3 (post-GC): heapUsed=   192.5MB  cache=  6000  listeners=  6000\nafter round 4 (post-GC): heapUsed=   254.8MB  cache=  8000  listeners=  8000\n```\n\n**Staircase, not sawtooth.** +62.5 MB per 2000 requests that survives a forced GC. That's a leak. If it had returned to baseline, you'd be done — that's just allocation churn.\n\n## Step 2 — Classify which memory is growing\n\n`memoryUsage()` gives you four numbers and they point at four different bugs:\n\n| growing | culprit |\n|---|---|\n| `heapUsed` | JS objects retained — heap snapshots will find it |\n| `external` / `arrayBuffers` | Buffers, `ArrayBuffer`s — snapshots barely show these |\n| `rss` only, heap flat | native addon, or glibc allocator fragmentation |\n| none, but process dies | file descriptors / sockets, not memory |\n\nHere `external` sat at **1.9 MB the whole run** while `heapUsed` went 5 → 255 MB. Pure JS heap. That decides your tool.\n\n## Step 3 — Read the signals the runtime already gave you for free\n\nBefore any profiler, check stderr. Node had been telling us since request 11:\n\n```\nMaxListenersExceededWarning: Possible EventEmitter memory leak detected.\n11 flush listeners added to [EventEmitter].\n```\n\nRe-run with `--trace-warnings` to turn that into a stack trace:\n\n```\nat EventEmitter.addListener (node:events:610:10)\nat auditLog   (server.js:14:7)     ← the leak, exact line\nat handleOrder (server.js:34:3)\n```\n\nThat's one leak found, for free, in about 20 seconds. Do this before snapshots every time.\n\n## Step 4 — The three-snapshot technique\n\nOne snapshot tells you almost nothing. Take **three**, with an *identical* workload between each:\n\n- snapshot 1 — after warmup (so lazy one-time allocations are already done)\n- workload A → snapshot 2\n- workload B (same) → snapshot 3\n\nAnything allocated during A and still alive at snapshot 3 is leaked. Growing in *both* intervals is the signature; growing once is usually a cache warming up.\n\n**Capture early, while the heap is still small.** Mine at 10k requests were 840 MB and unloadable:\n\n```\nMAX_STRING_LENGTH = 536870888 bytes\nsnapshot 3 size   = 844726826 bytes\nFAILED: Error: Cannot create a string longer than 0x1fffffe8 characters\n```\n\nA `.heapsnapshot` bigger than ~512 MB can't be `JSON.parse`d in Node at all, and DevTools will struggle too. I restarted and captured at 300 requests/round → 26–67 MB, fully analyzable.\n\n## Step 5 — Diff by constructor, then do the arithmetic\n\nThis is DevTools' \"Comparison\" view. Filter to labels that grew in **both** intervals, sorted by growth. 300 requests per interval:\n\n```\n  snap1    snap2    snap3    +A     +B   growth   constructor\n 302995   591683   880367 288688 288684   17691KB  (string)\n  13088    25390    37690  12302  12300    1158KB  Object\n   1421     1721     2021    300    300      33KB  closure (anonymous)\n   1143     1443     1743    300    300      23KB  system / Context\n```\n\nThe deltas being **nearly identical across both intervals** (288688 vs 288684) is what confirms it's per-request retention rather than noise.\n\nNow divide by request count — this is the step people skip, and it's the most informative one:\n\n- `closure` and `system / Context`: **exactly 300 per 300 requests** → one leaked closure per request\n- `Object`: 12300 / 300 = **41 per request** → 1 order + its 40 line items\n- `(string)`: 962 per request\n\nThose integers tell you the shape of the leaked object before you've looked at any code.\n\n## Step 6 — Retaining path: turn a constructor into a variable name\n\n\"Object is growing\" isn't actionable. Ask *what is holding it*: BFS from the GC root to the object; the shortest path is the retainer chain.\n\n```\n### retaining path to a leaked order object\n (root) → synthetic (GC roots) → synthetic (Stack roots)\n  → internal \"35\"          object system / Context\n   → context \"dedupeCache\"  object Map        ← named\n    → internal \"table\"       array (1801 refs)\n     → internal \"516\"         object Object\n```\n\n```\n### retaining path to a leaked anonymous closure\n  → context \"bus\"        object EventEmitter\n   → property \"_events\"   object Object\n    → property \"flush\"     object Array (905 refs)\n     → element \"[0]\"        closure\n\nlive closures of this exact shape: 900   (requests served: 900)\n```\n\n900 listeners for 900 requests, and both leaks now have a **variable name**: `dedupeCache` and `bus._events.flush`.\n\n⚠️ **Expect red herrings.** The second-largest container in my heap was a 2051-ref array. Tracing it:\n\n```\n→ property \"queueMicrotask\" → context \"queue\" → FixedQueue → FixedCircularBuffer\nfirst 3 things it holds:  element \"[0]\" -> hidden system / Oddball\n```\n\nNode's internal microtask ring buffer, full of empty slots. Big ≠ leaking. Always trace before you accuse.\n\n## Step 7 — Allocation profiler: turn a variable into a line number\n\nRetainers tell you *who holds it*; the sampling heap profiler tells you *where it was born*. It samples every N bytes, so overhead is low enough for production:\n\n```js\nsession.post('HeapProfiler.startSampling', { samplingInterval: 16384 })\n// ... later ...\nsession.post('HeapProfiler.getSamplingProfile', ...)\n```\n\n```\n=== sampled allocations by site (self bytes) ===\n   64.92 MB   68.4%  (anonymous) @ server.js:24     ← the 40-item builder\n   24.48 MB   25.8%  repeat @ ?:0                   ← 'x'.repeat(200)\n    0.38 MB    0.4%  handleOrder @ server.js:19\n    0.23 MB    0.4%  auditLog @ server.js:12\n```\n\nYou need **both** views. This one would happily point at a hot allocation site that's correctly freed; only the retainer path proves it's leaking.\n\n## Step 8 — Read the code before writing a fix\n\n`server.js:20` and `:32`:\n\n```\n2:    id: crypto.randomUUID(),\n13:  if (dedupeCache.has(order.id)) return dedupeCache.get(order.id);\n14:  dedupeCache.set(order.id, order);\n```\n\nThe dedupe cache is keyed on a UUID **minted one line earlier**. Its hit rate is structurally zero — it is a pure retention engine that has never once deduplicated anything. The right fix isn't an eviction policy bolted onto it; it's deleting it and keying dedupe on something the *client* supplies. Leaks are frequently a symptom of code that shouldn't exist.\n\n## Step 9 — Fix all three findings\n\n1. Dedupe keyed on a client `Idempotency-Key`, in a **bounded** FIFO map (`Map` is insertion-ordered, so eviction is `delete(keys().next().value)` — no LRU dependency needed). No key → no caching.\n2. One `bus.on('flush')` registered at module load, receiving the order as an **argument** instead of closing over it.\n3. `recentErrors` capped at 100.\n\n## Step 10 — Prove it, with the identical workload\n\nSame harness, same request count, one variable changed:\n\n```\n--- server.js (before) ---            --- server.fixed.js (after) ---\nbaseline      20.6 MB                 baseline       5.0 MB\n1 (2000 req)  83.1 MB  +62.5 MB       1 (2000 req)   5.1 MB  +0.1 MB\n2 (2000 req) 145.6 MB  +62.6 MB       2 (2000 req)   5.3 MB  +0.2 MB\n3 (2000 req) 208.0 MB  +62.4 MB       3 (2000 req)   5.4 MB  +0.1 MB\n4 (2000 req) 270.6 MB  +62.5 MB       4 (2000 req)   5.4 MB  +0.0 MB\n5 (2000 req) 332.9 MB  +62.3 MB       5 (2000 req)   5.4 MB  +0.0 MB\n\n32747 bytes/request                   48 bytes/request\n```\n\n**32,747 → 48 bytes/request**, and the fixed line is *decelerating* (+0.0 in the last two rounds) — that's the bounded map filling to its ceiling and stopping, which is the curve you want to see. A flat-but-still-creeping line means you found one leak, not all of them.\n\n## Step 11 — Prove the fix is correct and isn't the next leak\n\nEvery leak fix is a behavior change, and every bounded cache is a leak that hasn't been tested yet:\n\n```\n  PASS  same idempotency-key returns the same order\n  PASS  different key returns a different order\n  PASS  no key -> no caching, distinct orders\n  PASS  idempotency map stays bounded at 1000     (after 3000 distinct keys)\n  PASS  listener count stays at 1\n  PASS  evicted key is recomputed, not served stale\n\n6 passed, 0 failed\n```\n\n## Step 12 — Capture evidence in production\n\nYou won't get to attach a profiler to the pod that's dying at 03:00. Set this now:\n\n```\nnode --max-old-space-size=128 --heapsnapshot-near-heap-limit=1 server.js\n```\n\n```\nWrote snapshot to ...Heap.20260820.050140.52140.0.001.heapsnapshot\nFATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory\n287360087 bytes\n```\n\nIt dumps a snapshot on the way down, so the crash produces evidence instead of just a restart. Write it to a mounted volume, cap it at 1–2 dumps, and be aware the dump itself takes seconds and blocks the event loop.\n\n---\n\n## The order that matters\n\n`--trace-warnings` → forced-GC staircase → classify the four counters → three snapshots → diff and divide by request count → retainer path (which variable) → allocation profiler (which line) → fix → re-measure the same workload.\n\n## Two environment gotchas I hit, in case you're on Windows\n\n- `pkill -f \"node …\"` silently fails on Git Bash against Windows processes — nothing dies, and the next start fails with `EADDRINUSE`. Use `netstat -ano | grep :PORT` → `taskkill //PID <pid> //F`.\n- No `bc` on this box; the shell arithmetic silently produced a table of `0.0 MB` deltas. Doing the math in Node instead is what surfaced the real numbers.\n\n**Unverified:** the `external`/`arrayBuffers` and RSS-fragmentation branches in Step 2's table — this service leaked on the JS heap, so I never exercised those paths. Say the word and I'll build a Buffer-leak variant to demonstrate that they need a different toolchain (`--track-heap-objects` won't help; you want `process.memoryUsage.rss()` deltas plus native tooling).\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-heap",
+          "passed": true,
+          "matches": 50,
+          "applicable": true
+        },
+        {
+          "id": "multi-step",
+          "passed": true,
+          "matches": 24,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 566240
+    },
+    {
+      "id": "asked-step-by-step",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "Both servers stopped. Here's the whole walkthrough — every step below was actually executed above, with its real output.\n\nWorking files: `…/scratchpad/leak-demo/` (`server.js`, `server-fixed.js`, `load.js`, `sample.js`, `heaplib.js`, `diff.js`, `retain.js`).\n\n---\n\n## Step 0 — Instrument before you profile\n\nThe service needs three endpoints before any tooling is worth reaching for. Adding them took ~20 lines (`server.js:47-75`):\n\n- `/_health` → `process.memoryUsage()` + `v8.getHeapStatistics()`\n- `/_gc` → `global.gc()` twice (requires `--expose-gc`)\n- `/_snapshot` → `v8.writeHeapSnapshot(file)`\n\nStart with a hard heap cap so a runaway crashes fast instead of swapping your box:\n\n```\nnode --expose-gc --max-old-space-size=512 server.js\n```\n\n**Pitfall I hit immediately:** port 3000 was already occupied on your machine by an unrelated service (it answered `{\"id\":\"...\"}`), so the process died with `EADDRINUSE`. I moved to 3100/3200 rather than killing it. Always confirm the process you're measuring is the one you started — `pid=52340` came back in the log.\n\n## Step 1 — Baseline *after* a forced GC\n\n```\nT0 baseline idle       rss=    39.9MB heapUsed=     4.3MB heapTotal=     6.8MB external=     1.7MB up=4s\n```\n\nRSS is the wrong number to chase. It includes the allocator's unreturned pages and never falls cleanly. `heapUsed` sampled right after a forced GC is the number that means \"memory I cannot get back.\"\n\n## Step 2 — A closed-loop, repeatable load\n\n`load.js` — no dependencies, keep-alive agent, fixed request count, fixed concurrency. It must be *identical* every round or the comparison is meaningless.\n\n## Step 3 — Prove it's a leak, not a warm cache\n\nThis is the step almost everyone skips, and it nearly fooled me here. First run, 4 identical rounds of 1000 requests:\n\n```\nafter round 1 (1k req) rss=   109.7MB heapUsed=    17.4MB  external=    48.6MB\nafter round 2 (1k req) rss=   114.7MB heapUsed=    17.6MB  external=    48.6MB\nafter round 3 (1k req) rss=   117.5MB heapUsed=    17.8MB  external=    48.6MB\nafter round 4 (1k req) rss=   117.9MB heapUsed=    18.0MB  external=    48.6MB\n```\n\nFlat. `external` pinned at exactly 48.6 MB = 1000 × 48 KB. **A leak keyed by a bounded input set is indistinguishable from a cache.** I had reused the same 1000 customer IDs. Adding `--offset` so each round uses fresh keys:\n\n```\nfresh-keys round 1     rss=   170.8MB heapUsed=    29.9MB  external=    95.5MB\nfresh-keys round 2     rss=   242.5MB heapUsed=    42.6MB  external=   142.4MB\nfresh-keys round 3     rss=   302.1MB heapUsed=    55.3MB  external=   189.2MB\nfresh-keys round 4     rss=   360.3MB heapUsed=    68.0MB  external=   236.1MB\nfresh-keys round 5     rss=   422.1MB heapUsed=    80.6MB  external=   283.0MB\n```\n\nLinear and unbounded: **+12.7 MB heap and +46.9 MB external per 1000 requests**, post-GC. Now it's a leak. The rate also tells you the shape: `external` growing 3.7× faster than `heapUsed` says most of the mass is off-heap (Buffers/ArrayBuffers), not JS objects.\n\n## Step 4 — Two snapshots with load between them\n\n```\nsnapshot A  → snap-A.heapsnapshot  (166M)\n  … 3000 more requests …\nsnapshot B  → snap-B.heapsnapshot  (247M)\n```\n\nForce a GC immediately before each snapshot. One snapshot tells you what's big; two tell you what's *growing*, which is the only thing you care about.\n\n## Step 5 — Diff by constructor\n\nI parsed the `.heapsnapshot` format directly (`heaplib.js`) so this runs headless in CI, no Chrome required:\n\n```\nnodes: A=2522109  B=3752516  (+1230407)\nΔself(KB)    Δcount    now(KB)  constructor\n   144000      3000     432010  native:system / JSArrayBufferData\n    23602    603002      70846  object:Object\n     9422    603000      28267  number:heap number\n     4776      3000      14376  array:(object elements)\n      281      3000        844  object:Buffer\n      258      3000        777  object:ArrayBuffer\n      164      3000        656  closure:onReprice\n      117      3000        542  object:system / Context\n```\n\nRead the `Δcount` column, not the size column. Three separate things grew by *exactly 3000* over exactly 3000 requests: ArrayBuffers, `onReprice` closures, and Contexts. `+603000 Object` is 3000 × ~201 — the 200-element discount array plus its context. Anything growing in lockstep with request count is your leak.\n\n## Step 6 — Retainer chains (the only step that names the bug)\n\nCounts tell you *what* leaked. Only the retaining path tells you *which line*. `retain.js` BFS's from the GC roots over non-weak edges and prints the shortest root→object path:\n\n```\nmatched 12000 nodes for /^closure:onReprice$/\n\n synthetic \"\" @1\n   --element:[1]--> synthetic \"(GC roots)\"\n     --element:[19]--> synthetic \"(Stack roots)\"\n       --internal:44--> object \"system / Context\"\n         --context:priceBus--> object \"EventEmitter\"\n           --property:_events--> object \"Object\"\n             --property:reprice--> object \"Array\"\n               --element:[117]--> closure \"onReprice\"\n```\n\n`priceBus._events.reprice` is an Array of 12,000 listeners. That's `server.js:39` — `priceBus.on('reprice', onReprice)` per request, never removed. And each closure captures `ctx`, so it pins the 48 KB rate card too.\n\n```\nmatched 9007 nodes for /^object:Buffer$/\n\n         --context:pricingContexts--> object \"Map\"\n           --internal:table--> array \"\" self=458792B\n             --internal:8691--> object \"Object\"\n               --property:rateCard--> object \"Buffer\"\n```\n\nSecond, independent leak: the `pricingContexts` Map at `server.js:16` is an unbounded cache. Its hash table alone is 458 KB.\n\n**Two leaks, not one.** If I'd stopped at the first retainer chain I'd have shipped a half-fix — which is why Step 8 re-runs the full protocol rather than eyeballing RSS.\n\n## Step 7 — Fix\n\n```diff\n- priceBus.setMaxListeners(0); // \"it warned in CI, we bumped it\"\n+ priceBus.setMaxListeners(20); // keep the warning: it is a leak detector\n\n+ const MAX_CONTEXTS = 500;\n+ function cacheSet(key, val) {\n+   if (pricingContexts.size >= MAX_CONTEXTS) {\n+     pricingContexts.delete(pricingContexts.keys().next().value);\n+   }\n+   pricingContexts.set(key, val);\n+ }\n\n    priceBus.on('reprice', onReprice);\n+   res.on('close', () => priceBus.off('reprice', onReprice));\n```\n\nNote the first hunk. `setMaxListeners(0)` was the service *telling you* about this leak, and someone silenced it. Raising that ceiling to quiet a warning is how this class of bug reaches production.\n\n## Step 8 — Prove the fix with the identical protocol\n\nSame load, same offsets, same post-GC sampling:\n\n```\nFIXED T0 baseline      rss=    39.9MB heapUsed=     4.3MB external=     1.7MB\nFIXED fresh-keys rd 1  rss=    86.4MB heapUsed=    11.0MB external=    25.2MB\nFIXED fresh-keys rd 2  rss=    97.4MB heapUsed=    11.1MB external=    25.2MB\nFIXED fresh-keys rd 3  rss=   100.4MB heapUsed=    10.4MB external=    25.2MB\nFIXED fresh-keys rd 4  rss=   101.3MB heapUsed=    10.6MB external=    25.2MB\nFIXED fresh-keys rd 5  rss=   102.1MB heapUsed=    10.6MB external=    25.2MB\n```\n\n`heapUsed` 11.0 → 10.6 (was 29.9 → 80.6). `external` fixed at 25.2 MB = the 500-entry cap × 48 KB. RSS still creeps ~1 MB/round — that's heapTotal growth and allocator fragmentation, and it plateaus. Don't chase it.\n\n## Step 9 — Verify the specific populations, not just the curve\n\nA flat graph can hide a slower leak. Snapshot the fixed build and count the exact objects:\n\n```\n--- LEAKY (after 8000 requests) ---\nmatched 12000 nodes for /^closure:onReprice$/\nmatched  9007 nodes for /^object:Buffer$/\n--- FIXED (after 5000 requests) ---\nmatched     0 nodes for /^closure:onReprice$/\nmatched   507 nodes for /^object:Buffer$/\n```\n\n12,000 → 0 listeners. 9,007 → 507 buffers (the 500-entry cap plus 7 incidental). Both leaks closed.\n\n---\n\n## What to carry into a real service\n\n1. **Never trust RSS.** Sample `heapUsed` after a forced GC.\n2. **Vary your key space** or a leak looks like a cache — this cost me a full round of measurement above.\n3. **`Δcount` beats `Δsize`.** Anything growing 1:1 with request count is the leak.\n4. **Counts locate, retainers convict.** Don't patch anything before you have the root→object path.\n5. **`MaxListenersExceededWarning` is a leak detector.** Silencing it is the bug.\n6. **Re-run the exact protocol** on the fix. Two leaks hid behind one symptom here.\n\nCommon culprits, all shaped like the two above: unbounded `Map`/`Set` caches, `emitter.on` without `off`, `setInterval` without `clearInterval`, module-scope arrays of request data, and closures captured by any of those.\n\n**Not verified in this session** (I didn't run them, so treat as pointers rather than claims): the Chrome DevTools *Memory → Comparison* view over these same `.heapsnapshot` files; `kill -SIGUSR2 <pid>` snapshot triggering (Linux/macOS only — this is Windows); `node --heap-prof` for allocation-site sampling; and the `clinic` / `heapdump` npm packages.\n\nWant me to package `heaplib.js` + `diff.js` + `retain.js` as a standalone leak-triage CLI you can drop into a real repo, or wire the round-over-round check into a CI regression gate that fails the build on post-GC growth?\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-heap",
+          "passed": true,
+          "matches": 51,
+          "applicable": true
+        },
+        {
+          "id": "multi-step",
+          "passed": true,
+          "matches": 20,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 454757
+    },
+    {
+      "id": "asked-step-by-step",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "Done — every number below came from a real leaking service I built and debugged in `C:\\Users\\malik\\AppData\\Local\\Temp\\skillsmith-baseline-ZAMWrm\\leak-demo`.\n\n## The method, step by step\n\n### 1. Observe from outside first — don't reach for a profiler\nWatch RSS under repeated identical load. Three waves of 20 000 requests:\n\n```\nwave1  20000 reqs  ->  RSS=81.1MB\nwave2  20000 reqs  ->  RSS=96.6MB\nwave3  20000 reqs  ->  RSS=107.5MB      (baseline was 40.6MB)\n```\n\n**This is not yet a leak.** V8 grows its heap lazily and rarely returns pages to the OS. Idling 12 s dropped it to 77 MB — a GC clearly ran, still no verdict. Most false leak reports die here.\n\n### 2. Get a control plane without editing app code\n`node -r ./diag.js server.js` preloads a diagnostics module exposing `/mem`, `/gc`, `/snapshot` on a side port. Run the app with `--expose-gc`. (Never expose this port publicly.)\n\n### 3. The decisive measurement: post-GC `heapUsed`\nForce a full GC, *then* read the heap. This is the number that can't be explained by lazy allocation:\n\n```\npost-GC t0     heapUsed=   4.3MB  rss=  42.2MB  external= 1.7MB\npost-GC wave1  heapUsed=  16.4MB  rss=  83.3MB  external= 1.7MB\npost-GC wave2  heapUsed=  27.8MB  rss=  93.9MB  external= 1.7MB\npost-GC wave3  heapUsed=  38.2MB  rss= 105.2MB  external= 1.7MB\n```\n\nLinear, unreclaimed → real leak. **And `external` is flat at 1.7 MB** — that fork in the road decides your next hour:\n- `heapUsed` climbing → JS heap → heap snapshots work. (This case.)\n- `external`/`arrayBuffers` climbing → Buffers or a native addon → snapshots show nothing; you need `--max-semi-space-size` tuning, `process.report`, or valgrind-class tools instead.\n\n### 4. Snapshot, load a *known* amount, snapshot again\n`v8.writeHeapSnapshot()` forces a full GC first, so anything in B-minus-A survived collection. I diffed by constructor:\n\n```\n       Δ bytes    Δ count  constructor\n       5.49 MB     180000  concatenated string\n       1.07 MB      20000  object:Object\n       1.07 MB      20000  closure:\n       0.76 MB      20000  object:system / Context\n```\n\n**The single most useful signal in leak hunting: Δ count exactly equals request count.** The wave was 20 000 requests → one retained Object, one closure, one Context per request. Sizes lie (strings dominate the bytes); counts point at the mechanism.\n\n### 5. Trace the retainer path — sample many, group by shape\nNode IDs are stable across snapshots, so you can isolate objects *new in B*, BFS once from GC roots, and group paths. Grouping matters — my first single-object trace hit a transient stack root and would have sent me the wrong way. With 500 sampled:\n\n```\n#1  499/500 objects (100%) share this path:\n    Node / TCPServerWrap -> TCP -> Server -> _events -> request -> Context\n      context \"cache\" -> object:Map -> table -> object:Object\n```\n\n```\nbus (EventEmitter) -> _events -> \"invalidate\" -> Array -> element [60065] -> closure\n```\n\nTwo independent leaks, both named by the path: an unbounded `Map`, and a per-request listener on a process-lifetime emitter whose array had grown past 60 000 entries.\n\n### 6. Fix the mechanism, not the symptom\nBounded LRU (Map preserves insertion order, so `cache.keys().next().value` is the oldest — no dependency needed), and **one** `invalidate` listener registered at startup instead of one per request.\n\n### 7. Re-run the identical protocol\n```\npost-GC t0     heapUsed=   4.2MB    post-GC wave4  heapUsed=   5.7MB\npost-GC wave1  heapUsed=   5.5MB    post-GC wave5  heapUsed=   4.9MB\npost-GC wave2  heapUsed=   5.7MB    post-GC wave6  heapUsed=   4.9MB\npost-GC wave3  heapUsed=   5.6MB\n```\nFlat across 120 000 requests, vs 38.2 MB at 60 000 before. Snapshot diff on the fixed build: **0.3 MB growth vs 12.3 MB**, with `object:Object`, `closure:` and `system / Context` gone from the list entirely — only JIT code remains.\n\nNote RSS still plateaus at ~85 MB rather than returning to 41 MB. That's step 1's lesson landing: RSS never was the signal.\n\n## The cheapest step, which I saved for last\nThe original had `bus.setMaxListeners(0)` — \"we got a warning once, so we silenced it.\" Removing that one line:\n\n```\n(node:47668) MaxListenersExceededWarning: Possible EventEmitter memory leak detected.\n11 invalidate listeners added to [EventEmitter]. MaxListeners is 10.\n```\n\nNode caught leak #2 **in 11 requests**, for free, before any of the above. Grep your codebase for `setMaxListeners(0)` and `setMaxListeners(Infinity)` first — and run with `--trace-warnings` to get the stack.\n\n## Files\n`server.js` (leaky), `server-fixed.js`, `diag.js` (reusable), `load.js`, `diff-snapshots.cjs`, `retain-paths.cjs`. The last two are the reusable payoff — they do in a terminal what Chrome DevTools' comparison and retainer views do in a GUI, which matters when the leak only reproduces on a production box.\n\nTwo caveats I did **not** verify here: getting snapshots without a restart via `SIGUSR2`/CDP on Linux (Windows lacks those signals, so I used the preload route), and behavior on Node versions other than the 22.17.1 used throughout.\n\nWant me to turn this into a shareable playbook artifact, or adapt `diag.js` + the two analysis scripts to a specific service you're chasing?\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-heap",
+          "passed": true,
+          "matches": 30,
+          "applicable": true
+        },
+        {
+          "id": "multi-step",
+          "passed": true,
+          "matches": 17,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 342624
+    },
+    {
+      "id": "asked-tutorial",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "# Git Branching: A Beginner's Tutorial\n\nEvery command below was run in a real repo (git 2.50.1); the outputs shown are actual output, not illustrations.\n\n## What a branch actually is\n\nA branch is a **movable pointer to a commit** — a 41-byte file, not a copy of your project. That's why creating one is instant and why you should create them freely.\n\n`HEAD` is a pointer to whichever branch you're currently on. Commit, and the current branch pointer moves forward with you.\n\nSetup used throughout:\n\n```bash\ngit init -b main\necho \"hello\" > app.txt\ngit add .\ngit commit -m \"initial commit\"\n```\n\n---\n\n## 1. Seeing your branches\n\n```bash\ngit branch\n```\n```\n* main\n```\n\nThe `*` marks where `HEAD` is. Add `-v` to see each branch's tip commit:\n\n```bash\ngit branch -v\n```\n```\n* main 0f1a1f3 Merge feature/theme, keep red\n```\n\nUseful variants: `git branch -a` (include remote-tracking branches), `git branch --show-current` (just the name — handy in scripts).\n\n---\n\n## 2. Creating and switching\n\n`git switch -c <name>` creates a branch and moves onto it in one step:\n\n```bash\ngit switch -c feature/login\n```\n```\nSwitched to a new branch 'feature/login'\n```\n\nSplit into two steps if you prefer — `git branch feature/login` creates it *without* moving; `git switch feature/login` moves onto an existing one.\n\n> **`switch` vs `checkout`:** older tutorials use `git checkout -b`. It still works and does the same thing. `git switch` (Git 2.23+) exists because `checkout` was overloaded with unrelated jobs — switching branches *and* discarding file changes. Prefer `switch`; there is no `-b` on it, the flag is `-c` for create.\n\nNow commit on the branch:\n\n```bash\necho \"login page\" >> app.txt\ngit commit -am \"add login page\"\ngit log --oneline --graph --all\n```\n```\n* 0acd07d add login page\n* 6bae578 initial commit\n```\n\nTwo shortcuts worth memorizing:\n\n```bash\ngit switch -          # jump back to the previous branch\ngit branch -m old new # rename a branch\n```\n\n**Uncommitted changes when you switch:** Git carries them with you if they don't conflict with the destination. Verified — with a dirty `README.md`, `git switch -c other` succeeded and landed on `other` with the edit intact. If they *would* conflict, Git refuses and tells you; commit or `git stash` first.\n\n---\n\n## 3. Merging\n\nMerging means: take the work on branch X and bring it into the branch I'm standing on. **You must be on the destination branch.**\n\n### Fast-forward merge\n\nIf the destination hasn't moved since you branched, Git just slides the pointer forward — no merge commit:\n\n```bash\ngit switch main\ngit merge feature/login\n```\n```\nSwitched to branch 'main'\nUpdating 6bae578..0acd07d\nFast-forward\n app.txt | 1 +\n 1 file changed, 1 insertion(+)\n```\n\n### Three-way merge\n\nIf both branches gained commits, Git builds a **merge commit** with two parents:\n\n```bash\ngit switch main\ngit merge feature/signup -m \"Merge branch 'feature/signup'\"\n```\n```\nMerge made by the 'ort' strategy.\n signup.txt | 1 +\n 1 file changed, 1 insertion(+)\n create mode 100644 signup.txt\n```\n\nThe history now forks and rejoins:\n\n```bash\ngit log --oneline --graph -n 5\n```\n```\n*   454ff2f Merge branch 'feature/signup'\n|\\\n| * 3edc89d add signup page\n* | 38c68aa add readme\n|/\n* 0acd07d add login page\n* 6bae578 initial commit\n```\n\n### When it conflicts\n\nBoth branches changed the same lines of `style.css`:\n\n```bash\ngit merge feature/theme\n```\n```\nAuto-merging style.css\nCONFLICT (add/add): Merge conflict in style.css\nAutomatic merge failed; fix conflicts and then commit the result.\n```\n\n`git status -s` shows `AA style.css` — both sides added it. The file now contains markers:\n\n```\n<<<<<<< HEAD\ncolor: red\n=======\ncolor: blue\n>>>>>>> feature/theme\n```\n\n`HEAD` is your current branch; below `=======` is the incoming branch. Resolve by editing the file into what you actually want — **delete all three marker lines** — then:\n\n```bash\ngit add style.css\ngit commit -m \"Merge feature/theme, keep red\"\n```\n```\n0f1a1f3 Merge feature/theme, keep red\n```\n\nEscape hatch: `git merge --abort` puts you back exactly where you were before the merge started.\n\n---\n\n## 4. Deleting branches\n\nOnce merged, the branch pointer is redundant — the commits live on in the destination.\n\n```bash\ngit branch -d feature/login\n```\n```\nDeleted branch feature/login (was 0acd07d).\n```\n\nLowercase `-d` is the safe delete: it refuses if the branch holds commits nothing else has.\n\n```bash\ngit branch -d scratch\n```\n```\nerror: the branch 'scratch' is not fully merged\nhint: If you are sure you want to delete it, run 'git branch -D scratch'\n```\n\n`-D` forces it, discarding that work:\n\n```bash\ngit branch -D scratch\n```\n```\nDeleted branch scratch (was b80041e).\n```\n\nNote the `was b80041e` — that hash is your undo. `git switch -c scratch b80041e` restores the branch, and the commit stays reachable in `git reflog` for ~30 days.\n\nYou cannot delete the branch you're standing on; switch away first.\n\n**Deleting the remote copy** is a separate command — `git push origin --delete feature/login`. Unverified: no remote existed in the test repo.\n\n---\n\n## Typical workflow, end to end\n\n```bash\ngit switch main\ngit pull                        # start from current main\ngit switch -c feature/search    # branch off\n# ...edit, commit, repeat...\ngit switch main\ngit merge feature/search        # bring it in\ngit branch -d feature/search    # clean up\n```\n\n## Habits that keep this painless\n\n- **One branch per unit of work.** Cheap to make, cheap to throw away.\n- **Merge main into your branch periodically** on long-lived work (`git switch feature/x && git merge main`) — you resolve small conflicts as they appear instead of one large one at the end.\n- **Name with a prefix**: `feature/`, `fix/`, `docs/`. Git treats `/` as a plain character, but tooling and humans both group on it.\n- **Read the error text.** Git's hints tell you the exact command to run, as in the `-d` → `-D` case above.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-create",
+          "passed": true,
+          "matches": 36,
+          "applicable": true
+        },
+        {
+          "id": "covers-merge",
+          "passed": true,
+          "matches": 20,
+          "applicable": true
+        },
+        {
+          "id": "covers-delete",
+          "passed": true,
+          "matches": 14,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 75755
+    },
+    {
+      "id": "asked-tutorial",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "**Branching From Scratch** → https://claude.ai/code/artifact/d8fbd713-e2f9-415a-b6a3-f03e50411a87 (private; share from the page's menu)\n\nCovers: what a branch is (pointer, not copy), `git branch` / `switch -c` / `switch`, fast-forward vs. merge-commit merges, conflict markers and resolution, `-d` vs. `-D` deletion, plus a cheat-sheet table and the everyday loop.\n\nEvery command and output in it was run for real against Git 2.50.1 in a scratch repo — nothing is invented. Sample receipts:\n\n```\n$ git merge feature-login\nUpdating c5d5dcc..5e42eed\nFast-forward\n login.txt | 1 +\n\n$ git branch -d experiment\nerror: the branch 'experiment' is not fully merged\nhint: If you are sure you want to delete it, run 'git branch -D experiment'\n\n$ git push origin --delete fix/typo-in-header\nTo ../origin.git\n - [deleted]         fix/typo-in-header\n```\n\nThe remote-delete was verified against a local bare repo, not GitHub. Local `git stash` / `git stash pop` is mentioned in a callout but was not run — unverified.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-create",
+          "passed": true,
+          "matches": 5,
+          "applicable": true
+        },
+        {
+          "id": "covers-merge",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "covers-delete",
+          "passed": true,
+          "matches": 7,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 194171
+    },
+    {
+      "id": "asked-tutorial",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "Every command and output below was run against a real repo (git 2.50.1); outputs are copied from the run, not invented.\n\n---\n\n# Git Branching for Beginners\n\nA branch is just a movable name pointing at a commit. Creating one costs nothing and copies nothing — that's why Git users branch constantly.\n\n## Setup\n\n```bash\ngit init -b main\necho \"# Recipes\" > README.md\ngit add README.md\ngit commit -m \"Initial commit\"\n```\n\n## 1. Seeing branches\n\n```bash\ngit branch\n```\n```\n* main\n```\n\nThe `*` marks the branch you're on. `git branch --show-current` prints just the name.\n\n## 2. Creating and switching\n\n`git switch -c <name>` creates a branch and moves onto it in one step:\n\n```bash\ngit switch -c add-pancakes\n```\n```\nSwitched to a new branch 'add-pancakes'\n```\n```bash\ngit branch\n```\n```\n* add-pancakes\n  main\n```\n\nBoth branches point at the same commit right now. They diverge when you commit:\n\n```bash\necho \"Pancakes: flour, eggs, milk\" > pancakes.md\ngit add pancakes.md\ngit commit -m \"Add pancake recipe\"\n```\n\nTo move between existing branches, drop the `-c`:\n\n```bash\ngit switch main\nls\n```\n```\nSwitched to branch 'main'\nREADME.md\n```\n\n`pancakes.md` is gone from the working directory — it only exists on `add-pancakes`. Nothing is lost; switching back brings it right back.\n\n> **`switch` vs `checkout`:** older tutorials use `git checkout -b name` and `git checkout main`. They still work. `git switch` was added in Git 2.23 to do only branch switching, so it's harder to misuse.\n\n## 3. Merging\n\nMerging brings another branch's commits into the one you're standing on. **Switch to the destination first**, then merge the source:\n\n```bash\ngit switch main\ngit merge add-pancakes\n```\n```\nUpdating 35337ca..d31407a\nFast-forward\n pancakes.md | 1 +\n 1 file changed, 1 insertion(+)\n create mode 100644 pancakes.md\n```\n\n\"Fast-forward\" means `main` hadn't moved since the branch was created, so Git just slid the `main` label forward. No merge commit needed.\n\nIf both branches have new commits, Git makes a real merge commit:\n\n```\nMerge made by the 'ort' strategy.\n waffles.md | 1 +\n 1 file changed, 1 insertion(+)\n```\n```bash\ngit log --oneline --graph\n```\n```\n*   2e668c6 Merge add-waffles\n|\\\n| * 353acc5 Add waffles\n* | a526229 Note units in README\n|/\n* d31407a Add pancake recipe\n* 35337ca Initial commit\n```\n\n### When it conflicts\n\nIf both branches changed the same lines, Git stops and asks you to decide:\n\n```\nAuto-merging README.md\nCONFLICT (content): Merge conflict in README.md\nAutomatic merge failed; fix conflicts and then commit the result.\n```\n```bash\ngit status -s\n```\n```\nUU README.md\n```\n\n`UU` = unmerged on both sides. Two ways out:\n\n- **Fix it:** open the file, delete the `<<<<<<<` / `=======` / `>>>>>>>` markers, leave the text you want, then `git add README.md` and `git commit`.\n- **Back out:** `git merge --abort` returns everything to how it was before you typed `merge`. Verified — after aborting, `git branch --show-current` prints `main` with a clean tree.\n\n## 4. Deleting\n\nOnce merged, the branch label has done its job:\n\n```bash\ngit branch -d add-pancakes\n```\n```\nDeleted branch add-pancakes (was d31407a).\n```\n\nThe commits stay in history — you deleted the label, not the work.\n\nLowercase `-d` refuses to delete a branch whose commits aren't merged anywhere:\n\n```\nerror: the branch 'rename-title' is not fully merged\nhint: If you are sure you want to delete it, run 'git branch -D rename-title'\n```\n\nThat's the safety net. `-D` overrides it and genuinely abandons those commits:\n\n```bash\ngit branch -D rename-title\n```\n```\nDeleted branch rename-title (was b48621d).\n```\n\nDelete a branch on the remote separately: `git push origin --delete rename-title`.\n\n## Cheat sheet\n\n| Goal | Command |\n|---|---|\n| List branches | `git branch` |\n| List remote ones too | `git branch -a` |\n| Create + switch | `git switch -c feature-x` |\n| Switch to existing | `git switch main` |\n| Back to previous branch | `git switch -` |\n| Rename current branch | `git branch -m new-name` |\n| Merge into current branch | `git merge feature-x` |\n| Abandon a conflicted merge | `git merge --abort` |\n| Delete merged branch | `git branch -d feature-x` |\n| Force-delete unmerged branch | `git branch -D feature-x` |\n| Delete remote branch | `git push origin --delete feature-x` |\n| See branch shape | `git log --oneline --graph --all` |\n\n## Two habits worth forming\n\n1. **Commit or stash before switching.** Git blocks a switch that would clobber uncommitted edits. `git stash` parks them; `git stash pop` restores them after.\n2. **One branch, one topic.** Small branches merge cleanly and are easy to throw away with `-D` when an idea doesn't pan out.\n\n---\n\nUnverified: the `git push origin --delete` and `git branch -a` rows — the demo repo has no remote, so those two weren't run.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-create",
+          "passed": true,
+          "matches": 35,
+          "applicable": true
+        },
+        {
+          "id": "covers-merge",
+          "passed": true,
+          "matches": 15,
+          "applicable": true
+        },
+        {
+          "id": "covers-delete",
+          "passed": true,
+          "matches": 19,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 55434
+    },
+    {
+      "id": "asked-detail",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "A Bloom filter is a bit array plus k hash functions that answers \"is x in the set?\" with either **definitely not** or **probably yes** — trading a tunable false-positive rate for roughly 10 bits per element regardless of how large the elements are.\n\n## Structure\n\nTwo things:\n\n- A bit array `B` of length `m`, all zeros initially.\n- `k` independent hash functions `h₁…h_k`, each mapping an element to a uniformly random index in `[0, m)`.\n\nThat's it. The elements themselves are never stored — this is why a filter over 1M URLs averaging 60 bytes each costs ~1.2 MB instead of 60 MB.\n\n## Operations\n\n**Insert(x):** compute `h₁(x)…h_k(x)`, set all k of those bits to 1. Bits already set stay set — no counter, no record of who set them.\n\n```\ninsert(\"cat\"):  h1=3, h2=9, h3=14\nB: 0 0 0 1 0 0 0 0 0 1 0 0 0 0 1 0\n        ↑           ↑         ↑\ninsert(\"dog\"):  h1=9, h2=11, h3=14      ← h1 collides with cat's h2\nB: 0 0 0 1 0 0 0 0 0 1 0 1 0 0 1 0\n```\n\n**Query(x):** compute the same k positions. If **any** is 0 → x was definitely never inserted. If **all** k are 1 → x is probably present.\n\n**No false negatives, ever.** Bits are only ever flipped 0→1. If x was inserted, its k bits were set at that moment and nothing can unset them, so the query cannot fail. This is a structural guarantee, not a probabilistic one.\n\n**False positives happen** because some other combination of insertions may have set all k of x's bits independently. In the diagram above, a query for an element hashing to {3, 9, 11} returns \"probably yes\" despite never being inserted.\n\n**No deletion.** Clearing x's bits would break every other element sharing one of them — and you can't tell whether one is shared. (Counting Bloom filters fix this; see below.)\n\n## The false positive rate\n\n### Step 1: probability a given bit is still 0\n\nOne hash operation picks a uniformly random index, so it misses any specific bit with probability `1 - 1/m`. Inserting n elements performs `kn` hash operations, so:\n\n```\nP(bit i is 0) = (1 - 1/m)^(kn)\n```\n\nUsing `(1 - 1/m)^m → e⁻¹` as m grows, rewrite the exponent as `(kn/m)·m`:\n\n```\nP(bit i is 0) ≈ e^(-kn/m)\n```\n\nCall this `p`. The fraction of set bits is `1 - p`. Note `kn/m` is the *load*: total hash operations per bit.\n\n### Step 2: probability all k bits are set\n\nTreating the k probed bits as independent:\n\n```\nε ≈ (1 - p)^k = (1 - e^(-kn/m))^k\n```\n\n**The independence assumption is a real approximation, not just hand-waving.** The exact statement conditions on X, the number of set bits: given `X = x`, the false positive probability is exactly `(x/m)^k`. The formula above substitutes `E[X] = m(1 - (1-1/m)^{kn})` for X. Since `(x/m)^k` is convex in x, Jensen's inequality means the substitution *understates* the true rate. Bose et al. (2008) showed the standard formula is a strict lower bound. The gap is negligible for realistic m (it vanishes as m grows), but if you're building something where the stated rate is a contractual bound, know it's slightly optimistic.\n\n### Step 3: the optimal k\n\nMore hash functions means more bits must coincide for a false positive (good), but also more bits set per insertion, filling the array faster (bad). Minimize:\n\n```\nf(k) = (1 - e^(-kn/m))^k\n```\n\nLet `b = n/m` and take logs — minimizing `f` is the same as minimizing `g(k) = k·ln(1 - e^(-kb))`:\n\n```\ng'(k) = ln(1 - e^(-kb)) + k · (b·e^(-kb))/(1 - e^(-kb)) = 0\n```\n\nBy symmetry (the expression is invariant under `e^(-kb) ↔ 1 - e^(-kb)`), the stationary point sits at `e^(-kb) = 1/2`. Verify by substituting `k = ln2/b`, which gives `e^(-kb) = 1/2`:\n\n```\nln(1/2) + (ln2/b) · (b · ½)/(½)  =  -ln2 + ln2  =  0  ✓\n```\n\nSo:\n\n```\nk* = (m/n) · ln 2  ≈  0.693 · m/n\n```\n\n**The optimum is exactly where half the bits are set.** That's the intuition worth keeping: a Bloom filter is best tuned when the bit array is a maximum-entropy coin flip. Above 50% occupancy you're wasting bits on collisions; below it you're wasting bits on emptiness.\n\n### Step 4: rate at the optimum\n\nAt `k = k*`, `p = 1/2`, so:\n\n```\nε = (1/2)^k = 2^(-k) = 2^(-0.693·m/n) ≈ 0.6185^(m/n)\n```\n\nEach additional bit per element multiplies the false positive rate by ~0.62.\n\n### Step 5: sizing for a target ε\n\nSolve `ε = (1/2)^((m/n)ln2)` for m:\n\n```\nln ε = (m/n)(ln 2)(ln ½) = -(m/n)(ln 2)²\n\nm = -n·ln ε / (ln 2)²  ≈  -1.44 · n · log₂ ε\n```\n\nBits per element: `1.44 · log₂(1/ε)`. Verified numerically:\n\n```\neps=0.1      m/n=  4.79  k*= 3.32  k_int=3   actual_fp=0.10071\neps=0.01     m/n=  9.59  k*= 6.64  k_int=7   actual_fp=0.01004\neps=0.001    m/n= 14.38  k*= 9.97  k_int=10  actual_fp=0.00100\neps=0.0001   m/n= 19.17  k*=13.29  k_int=13  actual_fp=0.00010\n```\n\n**Every 10× reduction in ε costs a flat ~4.8 bits per element and ~3.3 more hash functions.** The cost is logarithmic in the error rate and independent of the element size — this is the whole reason the structure is interesting.\n\nThe curve near the optimum is flat, which matters practically since k must be an integer. At `m/n = 9.585`:\n\n```\nk=5  → 0.011094\nk=6  → 0.010143\nk=7  → 0.010040   ← optimum\nk=8  → 0.010528\n```\n\nBeing one off costs ~5%. Being two off costs ~10%. Don't agonize over rounding; do avoid k=3 (94% worse) when k=7 is right.\n\n### The space lower bound\n\nAny structure answering approximate membership with error ε needs at least `n·log₂(1/ε)` bits. The Bloom filter uses `1.44·n·log₂(1/ε)` — **44% above optimal**. That overhead is the price of its simplicity. Quotient filters and cuckoo filters close most of the gap (~1.05–1.2×) and support deletion, at the cost of more complex code and worse behavior at high load. For ε ≥ 1%, cuckoo filters are also strictly smaller than Bloom filters.\n\n## Practical construction\n\n**You don't need k independent hash functions.** Kirsch and Mitzenmacher (2006) proved that\n\n```\ngᵢ(x) = (h₁(x) + i·h₂(x)) mod m,   i = 0…k-1\n```\n\nbuilt from two independent hashes yields asymptotically the same false positive rate. In practice you compute one 128-bit hash (MurmurHash3, xxHash3) and split it into two 64-bit halves. Use a fast non-cryptographic hash — SHA-256 buys nothing here and costs 20×.\n\nMake `m` a power of two so `mod m` is a mask, or accept the modulo bias of a prime m.\n\n**Cache behavior is the real performance limit.** k probes into a multi-megabyte array are k independent cache misses — at k=7 that dominates the hash computation by an order of magnitude. A **blocked Bloom filter** fixes this: use one hash to select a cache-line-sized block (512 bits), then set all k bits within that block. All probes hit one cache line, so a lookup is one miss instead of seven. The false positive rate degrades slightly (blocks fill unevenly), typically requiring ~10-20% more space for the same ε. RocksDB uses this.\n\n## Set operations\n\n**Union is exact.** For two filters with identical m and k built with the same hash functions, `B₁ | B₂` is precisely the filter you'd get from inserting both sets. This makes Bloom filters trivially mergeable across shards or MapReduce workers.\n\n**Intersection is not.** `B₁ & B₂` is a valid filter for the intersection — no false negatives — but its false positive rate is *higher* than a filter built directly on the intersection, because bits surviving the AND include ones that were coincidentally set on both sides.\n\nDifferent m, k, or hash seeds → neither operation works at all.\n\n## Variants worth knowing\n\n| Variant | What it adds | Cost |\n|---|---|---|\n| **Counting Bloom filter** | Deletion — 4-bit counters instead of bits, incremented on insert, decremented on delete | 4× space; counters can saturate (overflow makes deletion unsound) |\n| **Blocked Bloom filter** | One cache miss per lookup | ~10-20% more space |\n| **Scalable Bloom filter** | Unknown n — chain filters with geometrically tightening ε as each fills | ε is the sum of the chain's rates; lookups probe every layer |\n| **Cuckoo filter** | Deletion + smaller than Bloom for ε < 3% | Insert can fail at high load; more complex |\n| **Quotient filter** | Deletion, merging, better locality | More complex; degrades near full |\n\n## Where the tradeoff pays\n\nThe pattern is always: **an expensive negative lookup guarded by a cheap probabilistic one.**\n\n- **LSM-tree storage** (RocksDB, Cassandra, BigTable): each SSTable carries a filter over its keys. A read must check many SSTables; the filter skips the disk seek for tables that don't contain the key. False positive = one wasted seek. False negative would mean silent data loss — which is exactly why the one-sided guarantee matters.\n- **CDN caching**: don't cache an object until it's been requested twice. A filter of \"seen once\" URLs eliminates one-hit-wonders from cache without storing the URL list.\n- **Chrome Safe Browsing** (historically): a local filter over malicious URLs; only on a hit does the browser make a network call to confirm. False positive = one extra round trip.\n- **Deduplication / crawl frontiers**: \"have I fetched this URL?\" — a false positive drops a page, which is usually acceptable.\n\nThe anti-pattern: anything where a false positive is *unrecoverable*. Bloom filters only work when a \"probably yes\" can be resolved by a slower authoritative check, or when the cost of being wrong is bounded and small.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-hash",
+          "passed": true,
+          "matches": 18,
+          "applicable": true
+        },
+        {
+          "id": "covers-fp-math",
+          "passed": true,
+          "matches": 32,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 88968
+    },
+    {
+      "id": "asked-detail",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "# Bloom Filters\n\nA Bloom filter is a probabilistic set membership structure. It answers \"is x in S?\" with either **definitely not** or **probably yes**. It never produces false negatives, and in exchange it uses dramatically less space than storing the elements themselves — it stores no elements at all.\n\n---\n\n## 1. The structure\n\nTwo things:\n\n- A bit array `B` of `m` bits, all zero initially.\n- `k` independent hash functions `h₁…h_k`, each mapping an element to a uniformly random index in `[0, m)`.\n\nThat's it. No buckets, no chains, no stored keys.\n\n**Insert(x):** set `B[hᵢ(x)] = 1` for all `i ∈ 1..k`. Bits already set stay set; there's no counter, no collision handling.\n\n**Query(x):** return true iff `B[hᵢ(x)] == 1` for all `i`.\n\nThe asymmetry falls straight out of this. If x was inserted, all k of its bits were set and were never cleared, so the query returns true — **no false negatives, ever**. If x was never inserted, its k bits may nonetheless all happen to be 1, set by *other* elements. That's a false positive.\n\n**Delete is not supported.** Clearing x's bits would clear bits shared with other elements, creating false negatives — which destroys the structure's one hard guarantee. (See §7 for variants that restore deletion.)\n\n---\n\n## 2. The false positive rate\n\n### Step 1: probability a given bit is still 0\n\nOne hash sets one specific position. The probability that a particular bit is *not* that position:\n\n$$1 - \\frac{1}{m}$$\n\nInserting `n` elements performs `kn` hash operations. Assuming independence, the probability a given bit survives all of them as 0:\n\n$$P(\\text{bit} = 0) = \\left(1 - \\frac{1}{m}\\right)^{kn}$$\n\nUsing $\\lim_{m\\to\\infty}(1 - 1/m)^m = e^{-1}$, rewrite the exponent as $m \\cdot \\frac{kn}{m}$:\n\n$$\\left(1 - \\frac{1}{m}\\right)^{kn} = \\left[\\left(1 - \\frac{1}{m}\\right)^{m}\\right]^{kn/m} \\approx e^{-kn/m}$$\n\nSo the expected **fill ratio** (fraction of bits set) is:\n\n$$\\rho = 1 - e^{-kn/m}$$\n\n### Step 2: probability all k bits are set\n\nA false positive requires all k probed bits to be 1:\n\n$$\\boxed{\\;p \\approx \\left(1 - e^{-kn/m}\\right)^{k}\\;}$$\n\n### The approximation is not exact\n\nThis step assumes the k bit-tests are independent, and they aren't — the bits were set by a shared process, so observing one bit set is weak evidence the array is fuller than average. Bose et al. (2008) showed $(1-e^{-kn/m})^k$ is a slight **underestimate** of the true rate. The error is negligible for large m (it vanishes as $m \\to \\infty$ with $n/m$ fixed) but real for small filters. The measurements in §6 show the measured rate sitting consistently a hair above the prediction, which is exactly this effect.\n\n---\n\n## 3. Optimal k\n\nMore hash functions means more bits must coincidentally be 1 (pushes p down), but also fills the array faster (pushes p up). There's an interior optimum.\n\nMinimize $p = (1 - e^{-kn/m})^k$. Take logs:\n\n$$g(k) = k \\ln\\left(1 - e^{-kn/m}\\right)$$\n\nSubstitute $b = e^{-kn/m}$, so $k = -\\frac{m}{n}\\ln b$:\n\n$$g = -\\frac{m}{n} \\ln b \\cdot \\ln(1 - b)$$\n\nThe $-\\ln b \\ln(1-b)$ term is symmetric under $b \\leftrightarrow 1-b$ and is maximized at $b = 1/2$ (equivalently: minimize $g$, which is negative — same critical point). So the optimum is at\n\n$$e^{-kn/m} = \\tfrac{1}{2} \\quad\\Longrightarrow\\quad \\boxed{k^* = \\frac{m}{n}\\ln 2 \\approx 0.693 \\frac{m}{n}}$$\n\n**The optimum is exactly where half the bits are set.** That's the memorable form: a well-tuned Bloom filter is half full. Each bit then carries maximum entropy — one full bit of information.\n\nSubstituting back, $\\rho = 1/2$ and:\n\n$$p^* = 2^{-k^*} = 2^{-(m/n)\\ln 2} \\approx 0.6185^{\\,m/n}$$\n\n### Sizing for a target p\n\nInvert it. From $p = 2^{-(m/n)\\ln 2}$, take $\\ln$ of both sides:\n\n$$\\ln p = -\\frac{m}{n}(\\ln 2)^2 \\quad\\Longrightarrow\\quad \\boxed{\\frac{m}{n} = \\frac{-\\ln p}{(\\ln 2)^2} \\approx -1.44\\log_2 p}$$\n\nSo: **~9.6 bits per element for 1%, ~14.4 for 0.1%, ~19.2 for 0.01%.** Every additional factor-of-10 reduction in p costs a flat 4.8 bits per element. Note that `m/n` — bits per element — depends *only* on the target error rate, not on n. A filter for a billion items at 1% costs the same per item as one for a thousand.\n\n### How close to optimal is this?\n\nInformation-theoretically, any structure with false positive rate p on a universe far larger than n needs at least $n\\log_2(1/p)$ bits. The Bloom filter uses $1.44\\, n\\log_2(1/p)$ — it's a constant factor **1.44× (i.e. $1/(\\ln 2)^2$) off the lower bound**, and that gap is why cuckoo filters and quotient filters exist.\n\n### k must be an integer\n\n$k^* $ is rarely a whole number. Round to either neighbor and check both with the formula — the curve is flat near the optimum (see the sweep in §6: k=6, 7, and 8 at m/n=10 give 0.0084, 0.0082, 0.0085). Getting k slightly wrong costs almost nothing; getting it badly wrong (k=1 or k=12 there) costs a factor of 10 or 1.6.\n\n---\n\n## 4. Implementation notes\n\n**You don't need k independent hash functions.** Kirsch–Mitzenmacher (2006) proved that\n\n$$g_i(x) = \\big(h_1(x) + i \\cdot h_2(x)\\big) \\bmod m$$\n\nwith two independent hashes gives asymptotically the same false positive rate. In practice: take one 128-bit hash (SHA-256 truncated, or better, a fast non-cryptographic hash like MurmurHash3 or xxHash), split it into two 64-bit halves, and derive all k indices. This is what the simulation in §6 does.\n\n**Choose m as a power of two** so `% m` becomes a mask. If you can't, be aware that modulo by a non-power-of-two adds a division to every probe.\n\n**Cache behavior is the real cost.** k probes into a large bit array are k independent cache misses. *Blocked* Bloom filters confine all k bits of an element to a single cache line — one miss instead of k, at the cost of a slightly worse false positive rate from the coarser distribution.\n\n---\n\n## 5. Properties that follow from the construction\n\n**Union is bitwise OR.** Two filters with identical m and k over sets A and B: `B_A | B_B` is a valid filter for A ∪ B, with exactly the false positive rate you'd get from inserting A ∪ B directly. This is why Bloom filters distribute well.\n\n**Intersection is not bitwise AND.** `B_A & B_B` is a filter that *contains* A ∩ B but has an inflated error rate — bits set by unrelated elements in both filters survive the AND. It's an approximation, not the real thing.\n\n**You can estimate cardinality from the bit count.** Invert the fill ratio: with X bits set,\n\n$$\\hat{n} = -\\frac{m}{k}\\ln\\left(1 - \\frac{X}{m}\\right)$$\n\nThis degrades badly as the filter saturates (the log blows up as X → m), so it's only useful below the design load.\n\n**The error rate is per-query, not per-filter.** p is the probability a *single* negative lookup returns true. Over N negative queries you expect Np false positives. If a Bloom filter guards an expensive backend, the cost is p × N wasted backend calls — size for the query volume, not just the set size.\n\n**Queries do not degrade gracefully past n.** If you insert more than the design n, the fill ratio rises and p climbs *exponentially* in the overshoot. Bloom filters have no resize: rebuilding means re-inserting every element from the original source, which you no longer have (the filter doesn't store them). Plan capacity up front, or use a scalable variant.\n\n---\n\n## 6. Verification\n\nI implemented the above (`m/n` bits per element, `k = round(0.693·m/n)`, Kirsch–Mitzenmacher double hashing off SHA-256), inserted n=10,000 elements, and queried 200,000 elements known to be absent:\n\n```\n  m/n   k  predicted   measured    fill pred_fill\n    4   3    0.14689    0.14865  0.5283    0.5276\n    8   6    0.02158    0.02214  0.5289    0.5276\n   10   7    0.00819    0.00829  0.5030    0.5034\n   16  11    0.00046    0.00053  0.4980    0.4972\n```\n\nThree things confirmed: the formula $(1-e^{-kn/m})^k$ tracks reality to within a few percent; the measured fill ratio sits at ~0.50 at optimal k, as §3 predicts; and every measured rate is *above* its prediction, the Bose underestimate from §2.\n\nThe k-sweep at m/n = 10, where theory says $k^* = 6.93$:\n\n```\nm/n=10 sweep;  theoretical optimum k = 6.93\n  k  predicted   measured\n  1    0.09516    0.09546\n  2    0.03286    0.03247\n  3    0.01741    0.01738\n  4    0.01181    0.01213\n  5    0.00943    0.00940\n  6    0.00844    0.00846\n  7    0.00819    0.00829\n  8    0.00846    0.00899\n  9    0.00913    0.00937\n 12    0.01356    0.01313\n```\n\nMeasured minimum is at k=7 (0.00829), matching $\\lceil 6.93 \\rceil$. The basin is visibly flat between 6 and 8 and steep outside it.\n\nScript: `…/scratchpad/bloom.py`.\n\n---\n\n## 7. Variants worth knowing\n\n| Variant | What it changes |\n|---|---|\n| **Counting Bloom filter** | Replaces each bit with a small counter (typically 4 bits). Delete decrements. Costs 4× the space and can still corrupt on counter overflow. |\n| **Scalable Bloom filter** | A chain of filters with geometrically tightening error rates. Grows without knowing n up front; query checks every layer. |\n| **Blocked Bloom filter** | All k bits of an element land in one cache line. Much faster, slightly worse p. |\n| **Cuckoo filter** | Stores fingerprints in a cuckoo hash table. Supports deletion, and beats Bloom on space for p below ~3%. |\n| **Quotient filter** | Cache-friendly, resizable, mergeable, supports deletion. More complex. |\n| **XOR / Ribbon filter** | Static (build-once, no inserts) but reaches ~1.23× the information-theoretic bound versus Bloom's 1.44×. |\n\n**Where Bloom filters actually appear:** LSM-tree storage engines (RocksDB, Cassandra, LevelDB) put one per SSTable so a read can skip disk entirely; CDNs use them to avoid caching one-hit-wonders; Chrome used one for malicious-URL prescreening; Bitcoin SPV clients used them (BIP 37) for transaction filtering — and abandoned them, because the filter parameters leaked which addresses the client cared about, a good reminder that \"probabilistic\" doesn't mean \"private.\"\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-hash",
+          "passed": true,
+          "matches": 12,
+          "applicable": true
+        },
+        {
+          "id": "covers-fp-math",
+          "passed": true,
+          "matches": 30,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 91183
+    },
+    {
+      "id": "asked-detail",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "## The structure\n\nA Bloom filter is a bit array of length `m`, all zeros, plus `k` independent hash functions each mapping a key to a position in `[0, m)`.\n\n**Insert(x):** compute `h₁(x) … h_k(x)`, set those `k` bits to 1. Bits are never cleared, and collisions are simply ignored — a bit already set stays set.\n\n**Query(x):** compute the same `k` positions. If *any* is 0, `x` was definitely never inserted. If *all* are 1, `x` is *probably* present.\n\nThat asymmetry is the whole object. A zero bit is proof of absence, because insertion would have set it. All-ones is not proof of presence, because `k` other elements could have set those `k` bits between them. So:\n\n- **False negatives: impossible.**\n- **False positives: possible**, at a rate you control by choosing `m` and `k`.\n- **No deletion**, and no retrieval — you cannot enumerate what's in the filter or get the key back out. It stores no keys, only their shadow.\n\nA working implementation is about fifteen lines:\n\n```python\nclass Bloom:\n    def __init__(self, m, k):\n        self.m, self.k, self.bits = m, k, bytearray((m + 7) // 8)\n    def _idx(self, key):\n        d = hashlib.blake2b(key, digest_size=16).digest()\n        h1 = int.from_bytes(d[:8], 'little')\n        h2 = int.from_bytes(d[8:], 'little') | 1   # odd → generates all residues mod 2^j\n        for i in range(self.k):                    # Kirsch–Mitzenmacher double hashing\n            yield (h1 + i * h2) % self.m\n    def add(self, key):\n        for i in self._idx(key): self.bits[i >> 3] |= 1 << (i & 7)\n    def __contains__(self, key):\n        return all(self.bits[i >> 3] >> (i & 7) & 1 for i in self._idx(key))\n```\n\nNote you don't need `k` real hash functions. Kirsch–Mitzenmacher (2006) proved that `gᵢ(x) = h₁(x) + i·h₂(x) mod m` gives asymptotically the same false-positive rate as `k` independent hashes, so one 128-bit hash split in half suffices.\n\n## The false positive rate\n\nInsert `n` elements into `m` bits with `k` hashes. Each of the `nk` hash evaluations picks a uniformly random bit.\n\n**Step 1 — a specific bit survives one hash.** Probability a given hash misses a given bit:\n\n$$1 - \\frac{1}{m}$$\n\n**Step 2 — it survives all of them.** There are `kn` independent hash evaluations:\n\n$$P(\\text{bit still } 0) = \\left(1 - \\frac{1}{m}\\right)^{kn} \\approx e^{-kn/m}$$\n\nusing $(1-1/m)^m \\to e^{-1}$. The approximation is excellent for any realistic `m`.\n\n**Step 3 — probability a bit is set:**\n\n$$p = 1 - e^{-kn/m}$$\n\nThis is the *fill ratio*, the fraction of the array that is 1.\n\n**Step 4 — a false positive** requires all `k` bits of a non-member to be set. Treating those as independent:\n\n$$\\boxed{\\;\\varepsilon \\approx \\left(1 - e^{-kn/m}\\right)^{k}\\;}$$\n\n### The caveat everyone skips\n\nStep 4's independence assumption is false. The bits are negatively correlated (knowing one bit is set makes it slightly likelier that hashing was \"concentrated\" elsewhere), and the number of set bits `X` is itself a random variable. The exact rate is $\\mathbb{E}[(X/m)^k]$, and Bose et al. (2008) showed the classic formula is a strict **lower bound** — the true rate is slightly higher. In practice the gap is tiny; it matters only when you need a hard guarantee rather than a design target, and my simulation below shows it as a consistent few-tenths-of-a-percent relative excess.\n\n## Choosing k\n\nMore hashes means more chances to find a 0 bit (good) but also fills the array faster (bad). Minimize $\\varepsilon$ over `k`. Take logs with $b = n/m$:\n\n$$\\ln \\varepsilon = k \\ln\\left(1 - e^{-kb}\\right)$$\n\n$$\\frac{d}{dk}\\ln\\varepsilon = \\ln\\left(1 - e^{-kb}\\right) + \\frac{kb\\,e^{-kb}}{1 - e^{-kb}}$$\n\nSetting this to zero and substituting $k = \\ln 2 / b$ gives $e^{-kb} = 1/2$, so the first term is $\\ln(1/2) = -\\ln 2$ and the second is $(\\ln 2/b)(b \\cdot \\tfrac12)/\\tfrac12 = \\ln 2$. They cancel:\n\n$$\\boxed{\\;k^\\* = \\frac{m}{n}\\ln 2 \\approx 0.693\\,\\frac{m}{n}\\;}$$\n\nThe interpretation is elegant: **the optimum is exactly where half the bits are set.** Maximum entropy per bit. The filter is doing the most work it can when the array is a fair coin.\n\nSubstituting back, $\\varepsilon = (1/2)^{k^\\*}$, so:\n\n$$\\varepsilon^\\* = 2^{-(m/n)\\ln 2} \\approx 0.6185^{\\,m/n}$$\n\nEach additional bit per element cuts the false-positive rate by a factor of ~1.62.\n\n## Sizing for a target ε\n\nInvert it. Solving $\\varepsilon = 2^{-(m/n)\\ln 2}$ for `m`:\n\n$$\\frac{m}{n} = \\frac{-\\ln \\varepsilon}{(\\ln 2)^2} \\approx -1.44\\log_2 \\varepsilon$$\n\n| target ε | bits/element | optimal k |\n|---|---|---|\n| 10% | 4.8 | 3 |\n| 1% | 9.6 | 7 |\n| 0.1% | 14.4 | 10 |\n| 0.01% | 19.2 | 13 |\n\nTwo things fall out of this table that are worth internalizing:\n\n**The cost is independent of key size.** Ten bytes per element buys 1% error whether the keys are 8-byte integers or 2 KB URLs. A hash set storing those URLs would need ~200× more memory.\n\n**You must know `n` in advance.** The rate degrades as you overfill — insert 2n and ε roughly squares in exponent terms, badly. This is the single most common way Bloom filters fail in production. If `n` is unknown, use a *scalable* Bloom filter: a chain of filters with geometrically tightening error rates, adding a new one when the current fills.\n\n**Optimality:** an information-theoretic argument says any structure with false-positive rate ε needs at least $n\\log_2(1/\\varepsilon)$ bits. The Bloom filter uses $\\frac{1}{\\ln 2} \\approx 1.44\\times$ that — within 44% of the theoretical floor, with O(k) lookups and no pointers.\n\n## Empirical check\n\nI built the filter above, loaded n = 100,000 keys, and tested 1,000,000 known non-members at several bits-per-element settings:\n\n```\n  m/n   k  set bits  predicted   observed\n    4   3   0.5279  14.68916%  14.68590%\n    8   6   0.5279   2.15771%   2.16530%\n9.585   7   0.5182   1.00395%   1.01040%\n   12   8   0.4864   0.31424%   0.31770%\n   16  11   0.4968   0.04587%   0.04680%\nfalse negatives: 0\n```\n\nThree predictions confirmed: the formula tracks reality to within a percent relative across four orders of magnitude of ε; the fill ratio sits at ≈0.5 exactly as the optimal-`k` derivation requires (it deviates where rounding `k` to an integer pulls it off, e.g. `m/n`=12 wanting k=8.3); and observed ε is *slightly above* predicted in four of five rows — the Bose underestimate, visible in the data.\n\nThe 9.585 row is the \"1% target\" from the sizing formula, and it delivered 1.0104%.\n\n## Variants worth knowing\n\n**Counting Bloom filter** — replace each bit with a 4-bit counter; increment on insert, decrement on delete. Supports removal at 4× the space. Counters can saturate; 4 bits overflow with probability ~10⁻¹⁵ at optimal load.\n\n**Blocked Bloom filter** — confine all `k` bits of a key to a single cache line (512 bits). One cache miss per query instead of `k`. Slightly worse ε for a large constant-factor speedup; this is what high-performance systems actually ship.\n\n**Cuckoo filter / quotient filter** — store short fingerprints in a hash table instead. Support deletion, are more space-efficient below ε ≈ 3%, and have better locality. Cuckoo filters can fail to insert when the table is near-full, which Bloom filters never do.\n\n**Set operations** — union is bitwise OR of two filters with identical `m`, `k`, and hash functions, and is exact. Intersection via AND is *not* exact: it yields a filter whose FP rate is higher than a filter built from the true intersection.\n\n## Where they earn their keep\n\nThe pattern is always: a cheap in-memory filter guarding an expensive lookup, where the expensive path is correct anyway so a false positive costs only a wasted trip.\n\n- **LSM-tree storage** (RocksDB, Cassandra, LevelDB): each SSTable carries a Bloom filter over its keys. A read checks filters first and skips the disk seek for tables that definitely lack the key. This is arguably the highest-value deployment of the structure anywhere.\n- **CDNs**: \"cache on second hit\" — a filter tracks seen URLs so one-hit-wonders never get cached.\n- **Chrome's safe-browsing** (historically): a local filter over malicious URLs; a hit triggers a server round-trip that resolves the truth.\n- **Bitcoin BIP 37**: light clients send a filter of their addresses so peers forward relevant transactions without learning the exact address set.\n\nThe failure mode to watch for is the inverse: never use one where a false positive is *silently wrong* rather than merely expensive. \"Have I already sent this user an email?\" — a false positive there means someone never gets their email, with nothing downstream to catch it.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-hash",
+          "passed": true,
+          "matches": 16,
+          "applicable": true
+        },
+        {
+          "id": "covers-fp-math",
+          "passed": true,
+          "matches": 22,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 94726
+    },
+    {
+      "id": "asked-design-doc",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "# Rate Limiter Service — Design Doc\n\n## Goals\n\n- Enforce per-key quotas (API key, user ID, IP, or endpoint) on all ingress traffic.\n- Added latency p99 < 1ms at the gateway; no synchronous network hop on the hot path.\n- Accuracy within ~5% of the configured limit over the window.\n- Rule changes take effect fleet-wide in < 10s, with no gateway restart.\n- Fail open by default; a limiter outage must not become an API outage.\n\n**Non-goals:** L3/L4 DDoS mitigation, quota-based billing, authentication. Those live upstream or downstream.\n\n**Scale assumption:** ~500k rps across the fleet, ~1M distinct active keys. (Illustrative — replace with real numbers from the gateway's metrics before sizing Redis.)\n\n## Approach\n\n**Algorithm: token bucket (GCRA).** Per-key state is two values — `tokens` and `last_refill_ts` — refilled lazily on read. It expresses rate and burst in one primitive, costs O(1) memory per key, and needs no window bookkeeping. Sliding-window logs are exact but store one entry per request; fixed windows allow 2× bursts at the boundary.\n\n**Topology: local buckets, leased from a central store.** Each gateway node keeps an in-process bucket per active key and asynchronously draws leases from a Redis cluster (Lua script, atomic decrement of the global bucket). A lease is a block of tokens the node may spend without further coordination — the request path never touches Redis.\n\n- Lease size = 10% of the key's limit, or 1 token for very low limits (which degrades to synchronous, correctly).\n- Worst-case overshoot = `lease_size × nodes_holding_a_lease`. Bounded and tunable.\n- Unspent leases expire on a TTL so idle nodes return capacity.\n\n**Control plane.** Rules (`key_pattern → {rate, burst, scope, enforce}`) live in a versioned config service. Gateways long-poll and hot-swap; last-known-good config is cached on disk so a control-plane outage is inert.\n\n**Client contract.** `429` with `Retry-After`, plus `RateLimit-Limit` / `-Remaining` / `-Reset` on every response so clients can self-pace.\n\n## Tradeoffs\n\n| Decision | Chosen | Cost |\n|---|---|---|\n| Where counters live | Local + leases | Overshoot up to one lease per node; not exact |\n| vs. Redis on every request | rejected | Exact, but +0.5–2ms p99 and Redis is a hard dependency at 500k rps |\n| vs. pure local, no coordination | rejected | Zero latency, but effective limit multiplies by node count |\n| Algorithm | Token bucket | Permits bursts by design — wrong for strictly-paced backends |\n| Failure mode | Fail open | A limiter outage lets abuse through; per-rule `fail_closed` for expensive endpoints |\n| Key cardinality | LRU-bounded per node | Cold keys pay a lease round-trip on first request |\n\nThe honest weak spot: accuracy degrades as fleet size grows relative to the limit. A 100 rps limit across 200 nodes cannot be enforced locally — those rules fall back to synchronous Redis checks, and we should expect a small tail of them.\n\n## Rollout\n\n1. **Shadow (2 weeks).** Evaluate every request, emit `would_block` metrics, reject nothing. Compare projected block rate against traffic per tenant; anything above ~0.1% is a mis-set rule, not abuse.\n2. **Internal tenants.** Flip `enforce` on for first-party services only. Confirm 429 handling and backoff in their clients.\n3. **Fleet ramp.** 1% → 10% → 50% → 100% of gateway nodes, held at each step for 24h. Enforcement is a per-rule flag, so a single bad rule reverts without a deploy.\n4. **Kill switch.** One control-plane value returns the whole fleet to shadow mode in < 10s. Test it during step 3, not during an incident.\n\n**Guardrails to alert on:** 429 rate by tenant, lease-acquisition latency p99, Redis error rate, local-vs-global counter drift, and shadow/enforce divergence.\n\n**Open questions:** whether limits are per-region or global (cross-region leasing adds a WAN hop); whether tenants need burst credit that accrues over hours; and who owns rule changes — platform, or each service team.\n\n---\n\nNothing here was executed — this is a design proposal, so all figures are targets to validate in shadow mode, not measurements.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-tradeoffs",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        },
+        {
+          "id": "covers-rollout",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 49105
+    },
+    {
+      "id": "asked-design-doc",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "## Rate Limiter Service — Design Doc\n\n### Goals\n- Enforce per-key quotas (API key, user, IP, endpoint) across all app instances.\n- Add < 1ms p99 to request latency; never be the reason a request fails.\n- Change limits without a deploy; propagate in < 30s.\n- Accurate enough that a 100 req/s limit never admits > 110 req/s sustained.\n\n**Non-goals:** L3/L4 DDoS mitigation (edge/CDN's job), usage metering for billing, per-request quota *cost* beyond a simple weight.\n\n### Approach\nA client library in the request path backed by Redis, not a separate network hop.\n\n- **Algorithm:** GCRA (token bucket, stored as one `float` per key — the theoretical arrival time). Single Redis key per limiter, updated by a Lua script so check-and-consume is atomic.\n- **Storage:** Redis Cluster, key = `rl:{scope}:{id}`, TTL = window duration so idle keys self-evict. No persistence — a cold cache means one window of over-admission, which is acceptable.\n- **Hot-path optimization:** in-process cache of recently-denied keys (TTL = time until next token). A key that is already over its limit is rejected locally without touching Redis, which is exactly the case where load is highest.\n- **Config:** limits live in a versioned config service, polled every 10s, cached in-process. Last-known-good config survives config-service outage.\n- **Failure mode:** fail open. Redis timeout (5ms budget) → allow, increment a `rate_limiter_fail_open` counter, alert if sustained.\n\n### Tradeoffs\n\n| Decision | Chosen | Rejected | Why |\n|---|---|---|---|\n| Placement | In-process library | Standalone gRPC service | Removes a network hop and a failure domain; cost is polyglot support and coupled deploys. |\n| Algorithm | GCRA | Sliding-window log | O(1) memory and one key per limiter vs. O(n) per key; loses per-request audit trail. |\n| Algorithm | GCRA | Fixed window | No 2× burst at window boundaries. |\n| Consistency | Single Redis, atomic Lua | Local counters + async sync | Correct under multi-instance traffic; costs one round trip on the allow path. |\n| Failure | Fail open | Fail closed | An outage in a protective control should not become an outage in the product. Accepts a window of unprotected traffic. |\n\n**Known weakness:** Redis is a shared dependency for every rate-limited request. Mitigated by the local deny-cache, a tight timeout, and per-shard key distribution — but a full Redis outage means no limiting at all.\n\n### Rollout\n1. **Shadow (week 1–2).** Library deployed, evaluates every request, enforces nothing. Emit `would_have_limited`. Validate: predicted denies match hand-computed expectations; p99 latency delta measured.\n2. **Tune (week 3).** Set per-endpoint limits from the shadow data at ~p99.9 of observed legitimate traffic. Contact the top 10 tenants who would have been limited.\n3. **Enforce, internal (week 4).** Real 429s for internal service-to-service traffic only.\n4. **Enforce, ramped (week 5–6).** External traffic at 1% → 10% → 50% → 100% of keys, hashed by key ID so a given customer's experience is stable. Hold ≥ 24h at each step.\n5. **GA.**\n\n**Kill switch:** a config flag flips any limiter back to shadow mode, effective within one poll interval (10s). No deploy required. Rollback criteria: 429 rate on any tenant > 0.1% of their traffic without a corresponding traffic spike, or p99 latency delta > 2ms.\n\n**Client contract:** 429 with `Retry-After`, plus `RateLimit-Limit` / `RateLimit-Remaining` / `RateLimit-Reset` headers from step 1 onward — so clients see the headers during shadow mode and can adapt before enforcement starts.\n\n---\n\nNothing here was executed — this is a document, so there is no command output to attach. The latency and accuracy numbers are targets to be validated in step 1, not measurements.\n\nWant me to publish this as a shareable Artifact?\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-tradeoffs",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "covers-rollout",
+          "passed": true,
+          "matches": 5,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 69851
+    },
+    {
+      "id": "asked-design-doc",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "# Rate Limiter Service — Design Doc\n\n**Status:** Draft · **Author:** maliksmithm@gmail.com · **Date:** 2026-08-20\n\n## Goals\n\n- Enforce per-key request quotas (`key` = API token, user ID, IP, or tuple) across all service instances.\n- p99 decision latency < 5 ms in-region; the limiter must never be the slowest hop.\n- Quotas configurable at runtime without redeploy.\n- Fail open: a limiter outage degrades to unlimited, not to a global outage.\n- Callers get standard `X-RateLimit-{Limit,Remaining,Reset}` and `Retry-After` headers.\n\n## Non-goals\n\n- Billing-grade exactness. Overcount/undercount at window edges is acceptable.\n- Quota enforcement across regions (each region enforces its own budget).\n- DDoS absorption — that stays at the edge/CDN layer.\n\n## Approach\n\n**Algorithm: sliding window counter.** Two fixed buckets (current + previous) with weighted interpolation. Fixed windows allow 2× burst at boundaries; true sliding logs cost O(requests) memory. The counter approximation is within a few percent of a true log at ~2 integers per key.\n\n**Topology: client library + Redis, no standalone service.** Each app instance calls Redis directly via a Lua script that reads, interpolates, increments, and sets TTL in one round trip — atomic, one RTT, no extra hop. A separate limiter service would add a network hop and its own failure domain to buy nothing but language independence.\n\n**Hot-key relief.** The library keeps an in-process token bucket per key, pre-allocating a slice of the quota (default 10%, adaptive by observed rate). Keys under ~10 rps skip it entirely and go straight to Redis. This caps Redis QPS on the top talkers, at the cost of slightly early rejections when instance traffic is skewed.\n\n**Config.** Rules live in a versioned config store, pushed to instances over a watch stream; last-known-good cached on disk. Rule = `(key_pattern, limit, window, action)` where action ∈ `{allow, log_only, reject}`.\n\n**Failure behavior.** Redis timeout (5 ms budget) or error → local token bucket decides alone; if that's cold, allow. Emit `limiter_fail_open` metric. A circuit breaker sheds Redis calls for 10 s after sustained failures rather than paying the timeout on every request.\n\n## Tradeoffs\n\n| Choice | Gets us | Costs us |\n|---|---|---|\n| Sliding window counter vs. token bucket | Simple state, natural `Reset` semantics | No burst credit accrual; bursty-but-legitimate clients get clipped |\n| Library vs. standalone service | One less hop, one less thing to run | Every language needs a client; upgrades roll out at app deploy speed |\n| Redis vs. local-only | Correct global limits | Redis is a dependency on the request path |\n| Fail open | Limiter outage ≠ site outage | An attack coinciding with a Redis outage is unmitigated |\n| Per-region budgets | No cross-region latency | Global limit is effectively `regions × limit` |\n\n## Rollout Plan\n\n1. **Week 1 — shadow.** Deploy with all rules in `log_only`. Emit `would_have_rejected` counters. Verify Redis load and p99 against the latency budget.\n2. **Week 2 — tune.** Compare shadow rejections against known-good traffic. Raise limits until the false-positive rate on internal and top-partner traffic is zero. Publish the proposed limits to API consumers.\n3. **Week 3 — one endpoint.** Flip the most-abused endpoint to `reject` at 1% of traffic (hash on key), then 10%, 50%, 100% over the week. Watch partner error rates, not just aggregate 429 count — one large partner can hide inside the average.\n4. **Week 4+ — expand.** One endpoint class per week. Each promotion requires: 48 h clean in `log_only`, an owner sign-off, and a documented limit in the public API docs.\n\n**Rollback:** single config push sets `action: log_only` globally; takes effect in seconds, no deploy.\n\n**Kill switch:** env flag `LIMITER_DISABLED=1` bypasses the library entirely, for the case where the bug is in the library itself and the config path can't be trusted.\n\n## Open Questions\n\n- Do partners get per-partner limits at launch, or a shared default until we have usage data?\n- Does `log_only` traffic still consume quota (affecting later real rejections), or is it fully passive? Recommend passive.\n\n---\n\nNothing here was executed — this is a written artifact with no runnable claims. The latency and percentage figures are design targets, **unverified** until step 1 measures them.\n\nWant this published as a shareable Artifact page, or dropped into a file in the repo?\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-tradeoffs",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "covers-rollout",
+          "passed": true,
+          "matches": 6,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 39830
+    },
+    {
+      "id": "asked-step-by-step",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "I built a leaking service and actually ran every step. All output below is real. Working dir: `…/scratchpad/leakdemo/`.\n\n## Step 1 — Confirm it's a leak, not just growth\n\nSample `process.memoryUsage()` under steady load. A leak is memory that stays up **after** a forced GC.\n\n```\n--- baseline (after gc)\nrss=41.7MB heapUsed=4.3MB external=1.7MB cache=0 listeners=0\n--- after 2000 requests\nrss=84.7MB heapUsed=6.6MB external=33.0MB cache=2000 listeners=2000\n--- after 4000 requests\nrss=121.5MB heapUsed=7.5MB external=64.2MB cache=4000 listeners=4000   <- post-GC, still 121MB\n```\n\nRead the columns separately — this is where most people go wrong:\n- `heapUsed` grew only **3MB**. If you watch only this, you conclude \"no leak.\"\n- `external` grew **62MB**. `Buffer` payloads live off the V8 heap. `rss` is the number that gets you OOM-killed.\n- Run with `--expose-gc` and hit GC before each reading, or you're measuring garbage that hasn't been collected yet.\n\n## Step 2 — Capture snapshots at two points in the growth\n\n```js\nconst v8 = require('v8');\nv8.writeHeapSnapshot('/tmp/s1.heapsnapshot');   // Node 12+, no dependency\n```\n\nExpose it on an admin route or bind it to a signal. Three ways, in order of preference for production:\n\n| Method | Use when |\n|---|---|\n| `node --heapsnapshot-signal=SIGUSR2` | Linux prod; `kill -USR2 <pid>` on demand |\n| `node --heapsnapshot-near-heap-limit=1` | Leak only reproduces in prod and you can't catch it in time |\n| Admin HTTP route calling `v8.writeHeapSnapshot()` | Windows/dev, or when you need exact timing |\n\nSnapshot writing forces a full GC and **stops the world** — mine took ~1s for a 9MB heap. Don't wire it to an unauthenticated route.\n\nThe near-heap-limit flag works, verified:\n\n```\n$ node --max-old-space-size=64 --heapsnapshot-near-heap-limit=1 oom.js\nWrote snapshot to …\\Heap.20260820.051439.48064.0.001.heapsnapshot\n<--- Last few GCs --->\n```\n160MB snapshot on disk, written *before* the fatal OOM. Budget the disk space; it fires per heap-limit approach.\n\n## Step 3 — Diff the snapshots to find *what* grew\n\nChrome DevTools (`chrome://inspect` → Memory → Load both → \"Comparison\") does this in a GUI. I wrote `heapdiff.js` to do it headless, since prod snapshots rarely make it to your laptop:\n\n```\n$ node heapdiff.js s1.heapsnapshot s3.heapsnapshot\n   Δsize   Δcount    total  constructor\n  64000K     4000     4131  (native)\n    407K     8009     8735  Object\n    375K     4000     4007  Buffer\n    344K     4000     4039  ArrayBuffer\n    219K     4000    10851  (closure)\n    156K     4000     4789  system / Context\n```\n\n4000 requests → 4000 of everything. The count matching your request count exactly is the tell: one retained object per operation. `(closure)` + `system / Context` growing in lockstep means **closures are being retained** — a callback registered and never removed.\n\n## Step 4 — Find *who* holds it (the step people skip)\n\nKnowing \"4000 Buffers\" is useless. You need the retaining path. The naive move — trace a path to a `Buffer` — fails:\n\n```\n$ node retainers.js s3.heapsnapshot Buffer\nretaining path to Buffer (depth 4):\n  [1]  →  synthetic (GC roots)\n   [19]  →  synthetic (Stack roots)\n    .85  →  object system / Context\n     .requestTimeoutResponse  →  object Buffer     <- Node internals, not your leak\n```\n\nBreadth-first finds the *shallowest* instance, which is always some framework internal. Instead, find the **container**: the object with an abnormal number of outgoing references.\n\n```\n$ node fatnodes.js s1.heapsnapshot        $ node fatnodes.js s3.heapsnapshot\n   refs  type / name                         refs  type / name\n  10188  synthetic (Internalized strings)   10188  synthetic (Internalized strings)\n   6923  synthetic (Shareable object cache)  8001  array                    <-- new\n   2051  object Array                        4003  object Array             <-- was 2051\n                                             4000  array (object elements)  <-- new\n```\n\nThen walk from the GC roots to those fat nodes — this names the variable:\n\n```\n$ node whoholds.js s3.heapsnapshot 3500\n\narray (8001 refs)\n [1]  →  synthetic (GC roots)\n  [19]  →  synthetic (Stack roots)\n   .35  →  object system / Context\n    .sessionCache  →  object Map (3 refs)\n     .table  →  array (8001 refs)\n\nobject Array (4003 refs)\n [1]  →  synthetic (GC roots)\n   .35  →  object system / Context\n    .bus  →  object EventEmitter\n     ._events  →  object Object\n      .tick  →  object Array (4003 refs)\n```\n\nBoth leaks, by name: an unbounded `sessionCache` Map, and `bus._events.tick` — 4000 listeners on one long-lived emitter. 8001 refs on a Map's `.table` is 4000 key/value pairs; that's how Map internals show up.\n\n## Step 5 — Map the path back to the code\n\n`.sessionCache` and `.bus` are properties on a `system / Context` — a **closure scope**, i.e. module-level `const`s. That's the signature of the classic leak: a long-lived container declared at module scope, written to per request, never bounded.\n\n```js\nconst bus = new EventEmitter();\nbus.setMaxListeners(0);      // <-- this silenced the warning that would have caught it\nconst sessionCache = new Map();\n\nfunction handle(req, res) {\n  sessionCache.set(id, entry);           // never evicted\n  bus.on('tick', () => { void entry; }); // never removed; closure pins `entry`\n}\n```\n\n`setMaxListeners(0)` is a red flag in a code review. Node's default warning at 11 listeners exists precisely to catch step 4 for you.\n\n## Step 6 — Fix, then re-run the *same* measurement\n\nBound the cache; delete the per-request listener (it was never needed per-request — that's usually the real answer, not `removeListener`).\n\n```\n--- fixed: baseline    rss=41.4MB external=1.7MB  cache=0   listeners=0\n--- fixed: after 2000  rss=55.0MB external=17.2MB cache=500 listeners=0\n--- fixed: after 4000  rss=55.4MB external=25.1MB cache=500 listeners=0\n--- fixed: after 8000  rss=60.7MB external=24.5MB cache=500 listeners=0\n```\n\n121MB at 4000 requests → 55MB, and **flat** at double the load. A fix is proven by the plateau across increasing load, not by one lower number. Note it plateaus at 55MB rather than returning to 41MB — that's the 500 retained entries, which is correct and bounded.\n\n## What didn't work\n\n`--heap-prof` (the sampling allocation profiler) produced **1 sample** on this build across three attempts, including 650,000 retained objects allocated over time:\n\n```\n$ node --heap-prof --heap-prof-name=p4.heapprofile prof3.js\nretained 650000\nsamples: 1\n    0.5MB  compileForInternalLoader  realm:384\n```\n\nNode v22.17.1 on Windows. I'd have recommended it for attributing allocations to call sites; on this platform it doesn't produce usable data, so verify it yields samples before relying on it. Heap snapshot diffing did the whole job.\n\n## Reusable tooling\n\n`heapdiff.js`, `fatnodes.js`, `whoholds.js` — dependency-free, parse `.heapsnapshot` JSON directly, run on a server with no GUI. Copy them next to any service. `whoholds.js <snapshot> <minRefs>` is the one that finds leaks; start `minRefs` near your request count and lower it until something in your own code appears.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-heap",
+          "passed": true,
+          "matches": 57,
+          "applicable": true
+        },
+        {
+          "id": "multi-step",
+          "passed": true,
+          "matches": 19,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 271131
+    },
+    {
+      "id": "asked-step-by-step",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "I built a leaking service and debugged it end to end so every step below has real output. Files: `…\\scratchpad\\leakdemo\\` (`server.js`, `monitor.js`, `load.js`, `diff.js`, `path.js`, `server-fixed.js`). Node v22.17.1, win32.\n\n---\n\n## Step 1 — Decide it's actually a leak\n\nRSS growing is not a leak. A leak is **`heapUsed` after GC that never comes back down**. Sample it:\n\n```js\n// monitor.js — preload with: node -r ./monitor.js server.js\nsetInterval(() => {\n  const m = process.memoryUsage(), h = require('v8').getHeapStatistics();\n  console.log(`rss=${mb(m.rss)} heapUsed=${mb(m.heapUsed)} heapTotal=${mb(m.heapTotal)} external=${mb(m.external)} limit=${mb(h.heap_size_limit)}`);\n}, 2000);\n```\n\nFour numbers, four different bugs:\n- **`heapUsed`** climbing across GCs → JS object leak. Snapshots will find it.\n- **`external`** climbing, `heapUsed` flat → `Buffer`/ArrayBuffer leak. Snapshots barely show it; look for retained Buffers or a native addon.\n- **`rss`** climbing, both flat → native/fragmentation. Snapshots are useless here; that's a different hunt.\n- **`heapTotal`** high but `heapUsed` sawtoothing → not a leak, just a big working set.\n\n## Step 2 — Reproduce under load you control\n\nProd is a bad debugger. Drive it yourself so the leak arrives in seconds, not days:\n\n```js\n// load.js — 10 keep-alive sockets, ~330 req/s for 20s\nconst agent = new http.Agent({ keepAlive: true, maxSockets: 10 });\n```\n\n## Step 3 — Read the curve\n\n```\n$ node -r ./monitor.js server.js   # while load.js runs\nt=2s  rss=52.5MB  heapUsed=10.1MB  heapTotal=17.1MB\nt=6s  rss=73.5MB  heapUsed=25.7MB  heapTotal=41.3MB\nt=10s rss=101.2MB heapUsed=44.7MB  heapTotal=66.1MB\nt=14s rss=124.5MB heapUsed=61.3MB  heapTotal=85.3MB\nt=18s rss=125.0MB heapUsed=71.7MB  heapTotal=79.5MB\n```\n\n`heapUsed` is monotonic: 10 → 71.7 MB, never dipping. That is the leak signature. Compare against Step 10.\n\nFree bonus in that same log — Node told me half the answer before I asked:\n\n```\nMaxListenersExceededWarning: Possible EventEmitter memory leak detected.\n11 flush listeners added to [EventEmitter].\n```\n\nRun with `--trace-warnings` to get the stack for that line. Never dismiss this warning by raising `setMaxListeners`.\n\n## Step 4 — Prove it, don't infer it\n\nShrink the heap ceiling and see if it dies. A leak dies; a big-but-bounded working set doesn't:\n\n```\n$ node --max-old-space-size=64 server.js\nFATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory\n```\n\nIt crashed after 4,757 completed requests. Now the bug is a fact, and you have a 30-second reproduction instead of a 3-day one.\n\n## Step 5 — Capture two snapshots\n\nOne snapshot tells you what's big. **Two tell you what's growing** — that's the one you want.\n\n```js\nrequire('v8').writeHeapSnapshot('./snap-2.heapsnapshot');   // early, after warmup\nrequire('v8').writeHeapSnapshot('./snap-8.heapsnapshot');   // later, same load\n```\n\nRules that saved me a rerun: take the first snapshot **after** warmup (module loading and JIT churn otherwise drown the signal), and keep the heap small — my first attempt hit 2 GB and produced a 1.1 GB snapshot file that was unusable. Throttling the load gave me 13 MB and 37 MB files instead.\n\n`writeHeapSnapshot` stops the world for the duration. In prod, prefer `--heapsnapshot-near-heap-limit=1`, which dumps automatically just before the OOM (verified in Step 11).\n\n## Step 6 — Diff the snapshots\n\nChrome DevTools' Comparison view does this; so does 30 lines of JS, which works over SSH. Group every node by constructor, subtract:\n\n```\n$ node diff.js snap-2.heapsnapshot snap-8.heapsnapshot\nobjects: 72692 -> 95889\n\n  Δsize      Δcount  constructor\n   40.3 MB      3859  string:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n    6.0 MB      3858  array:(object elements)\n    0.4 MB      7717  object:Object\n    0.2 MB      3859  closure:onFlush\n    0.1 MB      3849  object:Array\n```\n\nRead the **counts**, not just the bytes. Three classes all grew by ~3,859 — one per request, none released. `closure:onFlush` is a named function in my code, so that's a direct pointer. The 40 MB of base64 is the payload being retained. Two distinct leaks, visible in one table.\n\n## Step 7 — Ask *who is holding it*\n\nKnowing what leaked is useless without knowing what retains it. BFS from the GC roots to one leaked object gives the shortest retaining path:\n\n```\n$ node path.js snap-8.heapsnapshot \"closure:onFlush\"\n(root)                 ->  synthetic:\n[15]                   ->  synthetic:Node / TCPServerWrap\n.native_to_javascript  ->  object:TCP\n.<symbol owner_symbol> ->  object:Server\n._events               ->  object:Object\n.request               ->  closure:handle\n.context               ->  object:system / Context\n.bus                   ->  object:EventEmitter\n._events               ->  object:Object\n.flush                 ->  object:Array\n[0]                    ->  closure:onFlush\n```\n\nRead it bottom-up: the closure is in `bus._events.flush[]`, and `bus` lives in the module scope captured by `handle`. That is `bus.on('flush', …)` with no matching `off`. And the second one:\n\n```\n$ node path.js snap-8.heapsnapshot \"edge:sessionCache\"\n.request      ->  closure:handle\n.context      ->  object:system / Context\n.sessionCache ->  object:Map\n```\n\nA module-scope `Map`. Every leak I've ever met terminates in the same place: a **module-scope container, a long-lived emitter, a timer, or a global**. The retaining path names which.\n\n## Step 8 — Read the code at that address\n\n```js\nconst bus = new EventEmitter();\nconst sessionCache = new Map();          // never evicts\n\nfunction handle(req, res) {\n  bus.on('flush', () => {});             // never removed\n  sessionCache.set(id, { body: Buffer.alloc(8*1024).toString('base64'), … });\n}\n```\n\nBoth diagnoses confirmed by reading, not guessing. Note neither is exotic — a cache with no eviction and a per-request listener are the two most common Node leaks there are.\n\n## Step 9 — Fix\n\n```js\nbus.on('flush', () => {});               // once, at module scope — not per request\n\nconst MAX = 500;\nfunction remember(id, value) {           // Map is insertion-ordered → 3-line LRU\n  if (sessionCache.size >= MAX) sessionCache.delete(sessionCache.keys().next().value);\n  sessionCache.set(id, value);\n}\n```\n\nNo dependency needed. If entries must be keyed by an object that dies on its own, `WeakMap`/`WeakRef` removes the eviction question entirely — but a `WeakMap` keyed by a string won't help you, since the key here is a request id.\n\n## Step 10 — Verify with the identical load\n\nSame `load.js`, same duration, only the server changed:\n\n```\nt=2s  rss=52.5MB heapUsed=10.0MB\nt=6s  rss=66.5MB heapUsed=13.4MB\nt=10s rss=86.8MB heapUsed=23.1MB\nt=14s rss=96.4MB heapUsed=20.2MB\nt=18s rss=67.0MB heapUsed=12.5MB\n```\n\nSawtooth, not a ramp — 10 → 23 → 12.5, and no `MaxListenersExceededWarning`. Then the harsher test, the burst that killed the original at a 64 MB cap:\n\n```\n$ node --max-old-space-size=64 server-fixed.js\nload: sent=521969 completed=521969\nt=16s rss=102.9MB heapUsed=21.3MB\nexit-status: 0 OOM lines\n```\n\n**521,969 requests survived** where the leaky build died at 4,757.\n\n## Step 11 — Leave the instrumentation behind\n\nThe next leak will be different. What makes it cheap to catch:\n\n```\n$ node --max-old-space-size=64 --heapsnapshot-near-heap-limit=1 server.js\nWrote snapshot to …\\Heap.20260820.051702.53232.0.001.heapsnapshot\nFATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory\n```\n\nA 36 MB snapshot of the exact moment of death, written automatically. Keep that flag on in prod with a writable disk path, export `memoryUsage()` to your metrics, alert on **`heapUsed` slope over hours** rather than absolute RSS, and keep `--max-old-space-size` well under the container limit so V8 OOMs (with a snapshot) instead of the kernel OOM-killing you (with nothing).\n\n---\n\n**Unverified here:** the Chrome DevTools GUI path (`node --inspect` → `chrome://inspect` → Memory → Comparison) and `clinic.js`/`heapdump` — I did all of this from the CLI, so I didn't exercise those. The DevTools Comparison view shows the same data as Step 6 and its Retainers pane the same data as Step 7.\n\nWant me to run this against your actual service instead of the demo?\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-heap",
+          "passed": true,
+          "matches": 76,
+          "applicable": true
+        },
+        {
+          "id": "multi-step",
+          "passed": true,
+          "matches": 27,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 364837
+    },
+    {
+      "id": "asked-step-by-step",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "# Debugging a Node.js memory leak, end to end\n\nEverything below was run against a real leaking service I built for this in `scratchpad/leakdemo`. Every table is actual output.\n\n---\n\n## Step 0 — Decide whether you have a leak at all\n\nThe single most common wasted week: chasing RSS. **RSS is not your heap.** V8 grows its heap greedily and returns pages to the OS lazily, so RSS climbing to a plateau is normal.\n\nWatch `heapUsed` across GC cycles, not RSS. Instrument this before anything else:\n\n```js\nconst m = process.memoryUsage();  // { rss, heapUsed, heapTotal, external, arrayBuffers }\n```\n\n**The distinction, from my fixed run** — a healthy service, RSS climbing anyway:\n\n```\nround\trssMB\theapUsedMB\n1\t80.1\t20.5\n2\t52.8\t10.4     <- RSS dropped 27MB; heap sawtooths\n7\t79.9\t9.1\n8\t80.4\t16.1\n```\n\nRSS went 52→80 and *back*. `heapUsed` oscillates 9–25MB and never trends. That's not a leak. If your graph looks like this, stop — go look at `external`/`arrayBuffers` (Buffers, native addons) or at RSS fragmentation instead, both of which are different investigations.\n\n**A real leak looks like this** (same service before the fix, identical load):\n\n```\nround\trssMB\theapUsedMB\tcacheEntries\tlisteners\n1\t51.8\t9.6\t\t2000\t\t2000\n2\t61.6\t14.4\t\t4000\t\t4000\n3\t66.2\t19.9\t\t6000\t\t6000\n4\t79.1\t28.0\t\t8000\t\t8000\n5\t85.4\t29.5\t\t10000\t\t10000\n```\n\n`heapUsed` monotonic across five rounds, each preceded by a forced GC. That's a leak.\n\n**Force the GC before you sample.** Run with `--expose-gc` and call `global.gc()` before reading. Without it you cannot distinguish \"leaked\" from \"garbage not yet collected,\" and you'll chase noise.\n\n---\n\n## Step 1 — Get a reproduction with a knob\n\nYou need to make the leak happen on demand, and you need a workload parameter you can turn up. Mine drives N rounds of M requests with unique user ids.\n\nTwo rules that matter more than they sound:\n\n- **Vary the high-cardinality inputs.** If every request uses `?u=1`, a cache keyed by user id never grows and the leak hides completely. Leaks live in cardinality.\n- **Sample at round boundaries, not continuously.** You want the same point in the GC cycle each time.\n\nExpose a stats endpoint with your own suspects alongside the memory numbers — `cache: priceCache.size`, `listeners: bus.listenerCount('tick')`. Those two columns solved most of this case before I opened a single snapshot.\n\n---\n\n## Step 2 — Take two heap snapshots, not one\n\nOne snapshot tells you what's in memory. It cannot tell you what's *growing*, and in a real service the biggest thing in the heap is almost never the leak.\n\nTake snapshot A **after warmup** (so one-time init allocations don't pollute the diff), then load, then snapshot B.\n\nIn-process, no debugger needed:\n\n```js\nconst v8 = require('v8');\nv8.writeHeapSnapshot();   // returns the filename\n```\n\nWire it to an admin route or a `SIGUSR2` handler. Two warnings:\n\n- **It's stop-the-world.** My first attempt died exactly this way — the snapshot froze the loop long enough to reset a keep-alive socket: `Error: read ECONNRESET`. Don't take snapshots on a box serving live traffic without draining it.\n- **It writes to the process CWD** and it's big — mine were 33MB and 47MB.\n\n```\n33059837 Heap.20260820.051755.36824.0.001.heapsnapshot\n47593976 Heap.20260820.051759.36824.0.002.heapsnapshot\n```\n\nFor production, prefer `--heapsnapshot-near-heap-limit=2`, which dumps automatically just before an OOM kill — the moment you most want a snapshot and least want to be at a keyboard. Also set `--max-old-space-size` explicitly so that limit is a number you chose.\n\n---\n\n## Step 3 — Diff by constructor\n\nChrome DevTools does this (Memory tab → load both → \"Comparison\" view), but the `.heapsnapshot` file is plain JSON and parsing it yourself scales past what DevTools will open. Mine tallies nodes per constructor in both files and sorts by byte delta:\n\n```\ndelta_bytes\tdelta_count\ttotal_count\tconstructor\n+3314K\t\t+1999\t\t7127\t\t(array)\n+328K\t\t+6000\t\t16852\t\t(closure)\n+234K\t\t+6000\t\t10789\t\tsystem / Context\n+188K\t\t+6000\t\t18721\t\t(concatenated string)\n+156K\t\t+5999\t\t30635\t\t(string)\n+94K\t\t+2000\t\t6739\t\tObject\n+63K\t\t+2000\t\t6158\t\tArray\n```\n\n**Read the counts, not the bytes.** The bytes told me `(array)` was biggest; the counts told me what was happening:\n\n- `+6000` closures and `+6000` Contexts against exactly **6000 requests** in that window → one retained closure per request.\n- `+2000` Objects and `+2000` Arrays against exactly **2000 new cache keys** → one retained entry per unique key.\n\nWhen a delta divides evenly by your request count, you have a per-request leak and you've found its multiplicity. `system / Context` appearing at 1:1 is a specific tell: it means closures are keeping their enclosing scopes alive.\n\n---\n\n## Step 4 — Walk the retainer path\n\nThis is the step that ends the investigation. Class counts say *what* leaked; the retainer path says *who is holding it*, which is the only thing you can actually fix.\n\nDo a BFS from the GC roots over the snapshot's forward edges, recording each node's parent, then walk back from a leaked instance. Root-to-leaf for a leaked `Object`:\n\n```\n synthetic (GC roots)\n   --element:[19]--> synthetic (Stack roots)\n     --internal:53 / deoptimization literal--> object Map @32B\n       --internal:table--> array @229416B\n         --internal:21977--> object Object @48B\n```\n\nA **Map**, its internal hash **table** grown to 229KB, holding the object. That's the unbounded `priceCache` — and it also explains the `(array)` line topping the byte chart, since that array *is* the Map's backing store. One path collapsed two rows of the table into one bug.\n\nAnd the second leak:\n\n```\n       --internal:62--> object Object @24B\n         --property:tick--> object Array @32B\n           --element:[9999]--> closure onTick @56B\n```\n\n`_events.tick` is an array with **10,000 entries**. That's an `EventEmitter` accumulating one listener per request. Note `element:[9999]` — the index is the leak counter, printed for free.\n\nThe edge labels are the diagnosis. `property:tick` names the field. Follow the path to the first node you recognize from your own source — that's your bug, and everything below it is just V8 internals.\n\n> Aside on `emitter.setMaxListeners(0)`: my leaky server called it. That warning at 11 listeners is a leak detector, and silencing it is how this bug reached production. If you need more than 10 listeners, raise the limit to a specific number, never to `0`.\n\n---\n\n## Step 5 — Fix, then re-run the *identical* load\n\nThe fix was two lines — bound the cache, and don't retain the listener:\n\n```diff\n+   if (priceCache.size >= 500) { priceCache.delete(priceCache.keys().next().value); }\n    if (!priceCache.has(key)) {\n-   bus.on('tick', onTick);                 // never removed\n+   bus.once('tick', onTick); bus.removeListener('tick', onTick);\n```\n\nSame load driver, same rounds, same request count:\n\n```\nround\trssMB\theapUsedMB\tcacheEntries\tlisteners\n1\t51.4\t11.1\t\t500\t\t0\n2\t59.2\t10.8\t\t500\t\t0\n3\t67.6\t22.9\t\t500\t\t0\n4\t78.1\t19.5\t\t500\t\t0\n5\t79.6\t13.6\t\t500\t\t0\n```\n\n`heapUsed` 9.6→29.5 monotonic became 11.1→13.6 oscillating. Cache pinned at its 500 bound, listeners at 0.\n\n**Run longer than feels necessary.** At round 5 above, RSS was still climbing 51→79 and I could not yet tell a plateau from a slow leak. The 8-round soak in Step 0 settled it: RSS topped out at ~80MB and dropped back to 52.8 mid-run. A 5-round soak would have left that ambiguous.\n\n---\n\n## The checklist\n\n1. Graph `heapUsed` after a forced GC — not RSS. No monotonic trend, no leak.\n2. Build a repro whose **high-cardinality inputs vary**.\n3. Snapshot after warmup, load, snapshot again. `--heapsnapshot-near-heap-limit=2` in prod.\n4. Diff by constructor. Divide deltas by request count; a clean integer names your multiplicity.\n5. Walk the retainer path to the first node you recognize. That's the bug.\n6. Fix, re-run the identical load, soak longer than feels necessary.\n\n## Where these leaks actually live\n\nIn rough order of how often they're the answer: module-scope `Map`/`Array`/`Set` caches with no bound or TTL; `EventEmitter` listeners added per-request and never removed; timers (`setInterval`) never cleared, holding their closures; closures over large scopes stored in long-lived structures; global registries keyed by request/socket id.\n\nNote the pattern — **it's nearly always something long-lived holding something short-lived**. Every unbounded `Map` is a leak with a slow fuse. Give caches a size bound or a TTL at the moment you write them, not after the incident.\n\n**Files:** `scratchpad/leakdemo/` — `server.js` (leaky), `server-fixed.js`, `load.js`, `heapdiff.js` (the diff + retainer-path tool, reusable on any `.heapsnapshot` pair: `node heapdiff.js a.heapsnapshot b.heapsnapshot [ConstructorName]`). Demo server stopped.\n\nOne thing I did not verify: none of this covers leaks in `external`/`arrayBuffers` memory — Buffers, native addons, WASM. Heap snapshots largely don't see that memory, and it needs `--heap-prof` or a native profiler instead. Say the word if that's the shape you're actually facing.\n",
+      "checks": [
+        {
+          "id": "long-enough",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "covers-heap",
+          "passed": true,
+          "matches": 54,
+          "applicable": true
+        },
+        {
+          "id": "multi-step",
+          "passed": true,
+          "matches": 21,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 231423
+    }
+  ],
+  "summary": [
+    {
+      "caseId": "asked-tutorial",
+      "checkId": "long-enough",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "asked-tutorial",
+      "checkId": "covers-create",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "asked-tutorial",
+      "checkId": "covers-merge",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "asked-tutorial",
+      "checkId": "covers-delete",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "asked-detail",
+      "checkId": "long-enough",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "asked-detail",
+      "checkId": "covers-hash",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "asked-detail",
+      "checkId": "covers-fp-math",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "asked-design-doc",
+      "checkId": "long-enough",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "asked-design-doc",
+      "checkId": "covers-tradeoffs",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "asked-design-doc",
+      "checkId": "covers-rollout",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "asked-step-by-step",
+      "checkId": "long-enough",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "asked-step-by-step",
+      "checkId": "covers-heap",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "asked-step-by-step",
+      "checkId": "multi-step",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    }
+  ],
+  "baselineScore": 1,
+  "skillScore": 1,
+  "significance": {
+    "delta": 0,
+    "p": 1,
+    "significant": false,
+    "suggestMoreRuns": false,
+    "baseline": {
+      "point": 1,
+      "low": 0.9103331462924287,
+      "high": 1
+    },
+    "skill": {
+      "point": 1,
+      "low": 0.9103331462924287,
+      "high": 1
+    },
+    "baselinePassed": 39,
+    "skillPassed": 39,
+    "total": 39
+  },
+  "cost": {
+    "baselineMedian": null,
+    "skillMedian": null,
+    "delta": null
+  },
+  "metrics": [
+    {
+      "name": "response length",
+      "unit": "chars",
+      "comparison": {
+        "medianBaseline": 5781.5,
+        "medianSkill": 6502,
+        "delta": 0.12462163798322234,
+        "u": 72,
+        "p": 0.9999999989999999,
+        "significant": false,
+        "n": 12
+      }
+    },
+    {
+      "name": "wall clock",
+      "unit": "ms",
+      "comparison": {
+        "medianBaseline": 306569.5,
+        "medianSkill": 90075.5,
+        "delta": -0.7061824480256516,
+        "u": 28,
+        "p": 0.011074483461493312,
+        "significant": true,
+        "n": 12
+      }
+    }
+  ]
+}
