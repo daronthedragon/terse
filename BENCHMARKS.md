@@ -102,6 +102,23 @@ second pass also carried the wall-clock metric: **24,765 → 11,593 ms median,
 −53%, p = 4.6e-14** — the shorter reply is roughly 2.1× faster to produce, with
 the concurrency caveat above.
 
+### The three levels are a real gradient
+
+`lite`, `full` and `ultra` were three files making a claim about each other. Run
+against the same eight prompts, they turn out to be ordered the way the names
+suggest:
+
+| level | median reply | reduction | p | answer present |
+|---|---|---|---|---|
+| `terse-lite` | 836 | −53.5% | 6.6e-8 | 24/24 |
+| `terse` | 662 | −69.5% | 3.4e-14 | 40/40 |
+| `terse-ultra` | 259 | −87.6% | 2.9e-9 | 24/24 |
+
+Every run exited 0 and every reduction is significant. The line worth noting is
+the last column: **`ultra` removes seven eighths of the reply and still answers
+every question.** The compression is coming out of the explanation at all three
+settings, which is the only reason a level that aggressive is safe to ship.
+
 ### Caveat retention — no loss
 
 Four questions where a short answer is only correct if it keeps one caveat.

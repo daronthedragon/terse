@@ -63,15 +63,17 @@ Other agents (Cursor, Windsurf, Cline, or anything that reads [`AGENTS.md`](AGEN
 
 ## Levels
 
-Three output styles ship, so you can dial how hard the reflex cuts. Set the one you want as `outputStyle`:
+Three output styles ship, so you can dial how hard the reflex cuts. Each was run against the same eight prompts, so the gradient is measured rather than asserted:
 
-| Level | File | Cuts |
-|---|---|---|
-| `terse-lite` | [`output-styles/terse-lite.md`](output-styles/terse-lite.md) | Drops the greeting and the recap; leaves room for one line of context. |
-| `terse` (default) | [`output-styles/terse.md`](output-styles/terse.md) | Answer first, one receipt, no recap — the measured −68%. |
-| `terse-ultra` | [`output-styles/terse-ultra.md`](output-styles/terse-ultra.md) | The answer in one or two sentences, nothing around it. |
+| Level | Cuts | Median reply | Answer still present |
+|---|---|---|---|
+| [`terse-lite`](output-styles/terse-lite.md) | **−53%** | 836 chars | 24/24 |
+| [`terse`](output-styles/terse.md) (default) | **−69%** | 662 chars | 40/40 |
+| [`terse-ultra`](output-styles/terse-ultra.md) | **−88%** | 259 chars | 24/24 |
 
-Copy the levels you want into `~/.claude/output-styles/` and switch by changing the one `outputStyle` line. Off again by setting it to `"default"`.
+All three reductions are significant (p ≤ 6.6e-8), every run exited 0, and **the answer survives at every level** — including `ultra`, which cuts nearly nine tenths of the reply and still answered all 24. Pick by how much context you want left around the answer, not by how much you trust it.
+
+Install one with `node install.mjs --level lite|full|ultra`, or copy the file yourself and change the one `outputStyle` line. Off again by setting it to `"default"`.
 
 ## Does it actually work?
 
@@ -83,22 +85,22 @@ A skill is worth having only if a measurement shows it changing behaviour. terse
 
 Those binary checks turned out to be blind to terse's real effect (the model has no boilerplate phrases to cut), so the eval also measures the **magnitude** that matters — the length of the answer — and compares the two arms with a Mann-Whitney U test. That is the metric that shows the win.
 
-### The measured result: −68% response length, significant
+### The measured result: −69% response length, significant
 
 This eval measures the **shipped artifact** — the output style, staged exactly as you install it (`.claude/output-styles/terse.md` + `outputStyle` in settings), not a different form of the rules. Run against `claude -p` (Claude Code 2.1.236), 8 cases × 5 repeats, all 80 runs exited 0. Full report: [`eval-report.json`](eval-report.json), captured with [runshot](https://github.com/daronthedragon/runshot).
 
-The effect replicates: an earlier 80-run pass of the same eval measured 2,069 → 654 (−68.4%), this one 1,980 → 634 (−68.0%).
+The effect replicates across three independent 80-run passes: 2,069 → 654 (−68.4%), 1,980 → 634 (−68.0%), and this one 2,170 → 662 (−69.5%).
 
 <p align="center">
   <img src="assets/eval.svg" width="765"
-       alt="skillsmith eval render for terse: pass-rate checks flat near 100 percent, and response length drops from 2069 to 654 characters median, minus 68 percent, significant.">
+       alt="skillsmith eval render for terse: pass-rate checks flat at 100 percent, and response length drops from 2170 to 662 characters median, minus 69 percent, significant.">
 </p>
 
-**terse cuts replies to a third — median 1,980 → 634 characters, −68%, Mann-Whitney p = 2.2e-14.** That is a real, significant behavioural change, and it is the same order as ponytail's number on the other axis: ponytail writes ~54% less *code*, terse writes ~68% less *around the answer*.
+**terse cuts replies to a third — median 2,170 → 662 characters, −69%, Mann-Whitney p = 3.4e-14.** That is a real, significant behavioural change, and it is the same order as ponytail's number on the other axis: ponytail writes ~54% less *code*, terse writes ~68% less *around the answer*.
 
-It is also **~2.1× faster**: wall clock per reply fell 24,765 → 11,593 ms median, −53%, p = 4.6e-14. Fewer characters take less time to generate, which is the one benefit of brevity you feel rather than read. Those runs execute through a concurrency pool, so the absolute milliseconds are inflated by load and are not a single-request latency figure — both arms interleave through the same pool, so the ratio is the part that carries.
+It is also faster: wall clock per reply fell 22,229 → 11,954 ms median, −46%, p = 2.5e-14 — about 1.9×. Fewer characters take less time to generate, which is the one benefit of brevity you feel rather than read. Those runs execute through a concurrency pool, so the absolute milliseconds are inflated by load and are not a single-request latency figure — both arms interleave through the same pool, so the ratio is the part that carries.
 
-Two details the table shows that the headline does not. The padding checks are not entirely flat: on the two questions where the base model *did* reach for a lead-in (`git-merge-vs-rebase`, `node-eaddrinuse` — 80% clean without), terse took them to 100%. And one run cost an `answered` check: on `json-number-keys` terse replied *"`json.dumps` coerces the int `1` into `"1"` — the value survives, the type doesn't"*, which is correct but never plainly says "no, keys must be strings", so the answer-presence regex did not credit it. **39/40** on answer presence, not a clean sweep — that is the honest number, and it is the kind of thing a brevity skill has to be watched for.
+In this pass every binary check reads 100% in both arms, and answer presence is **40/40** — brevity cost nothing measurable. That has not always been true: an earlier pass of the same eval scored 37/40, all three misses on one question where terse answered by pointing at its evidence (*"Receipt above: parser rejects `{1: 2}`"*) instead of stating the answer. That case swings run to run — measured properly at twelve repeats it scores 11/12 either way — and the rule written to fix it changed nothing at p = 1.00, so it is not in the skill. The full story, including the rejected rule, is in [BENCHMARKS.md](BENCHMARKS.md).
 
 The interesting part is *how* the measurement found it. The pass-rate checks came back flat — every arm near 100% — because the base model in headless mode **never says "Great question" or "I hope this helps" to begin with.** It has no boilerplate phrases to cut; it is verbose in a subtler way, with long explanations. A binary present/absent check is blind to that. What catches it is measuring the **magnitude** — the length of the answer — and testing the two arms with a non-parametric Mann-Whitney U. On that axis the skill's effect is unmistakable and significant.
 

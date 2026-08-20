@@ -11,16 +11,16 @@
 <text y="124.2" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  case / check                              without    with    delta</tspan></text>
 <text y="143.8" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  ──────────────────────────────────────────────────────────────────</tspan></text>
 <text y="163.4" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  git-merge-vs-rebase / answered              100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
-<text y="182.9" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  git-merge-vs-rebase / no-preamble            80%     100% </tspan><tspan fill="#3fb950">    +20%</tspan></text>
+<text y="182.9" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  git-merge-vs-rebase / no-preamble           100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
 <text y="202.5" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  git-merge-vs-rebase / no-closing-summary    100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
 <text y="222.1" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  dockerfile-cache / answered                 100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
 <text y="241.7" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  dockerfile-cache / no-preamble              100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
 <text y="261.3" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  dockerfile-cache / no-closing-summary       100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
 <text y="280.8" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  force-push-shared / answered                100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
-<text y="300.4" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  force-push-shared / no-preamble              80%      80% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
+<text y="300.4" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  force-push-shared / no-preamble             100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
 <text y="320.0" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  force-push-shared / no-closing-summary      100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
-<text y="339.6" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  json-number-keys / answered                 100%      40% </tspan><tspan fill="#ff7b72">    -60%</tspan></text>
-<text y="359.1" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  json-number-keys / no-preamble               80%     100% </tspan><tspan fill="#3fb950">    +20%</tspan></text>
+<text y="339.6" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  json-number-keys / answered                 100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
+<text y="359.1" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  json-number-keys / no-preamble              100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
 <text y="378.7" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  json-number-keys / no-closing-summary       100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
 <text y="398.3" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  python-gil-parallel / answered              100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
 <text y="417.8" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  python-gil-parallel / no-preamble           100%     100% </tspan><tspan fill="#6e7681">     +0%</tspan></text>
@@ -60,10 +60,10 @@
 <text y="1103.0" textLength="599.40" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#6e7681">    node-eaddrinuse / no-preamble          triggered 5/5 without, 5/5 with</tspan></text>
 <text y="1122.5" textLength="599.40" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#6e7681">    node-eaddrinuse / no-closing-summary   triggered 5/5 without, 5/5 with</tspan></text>
 <text y="1142.1" textLength="550.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  ──────────────────────────────────────────────────────────────────</tspan></text>
-<text y="1161.7" textLength="251.10" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  </tspan><tspan fill="#ff7b72">mean pass rate fell 98% → 97%</tspan></text>
-<text y="1181.3" textLength="332.10" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  </tspan><tspan fill="#6e7681">not distinguishable from noise (p=0.70)</tspan></text>
-<text y="1200.8" textLength="388.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#6e7681">  95% CI  without 98% [93-99]   with 97% [92-99]</tspan></text>
-<text y="1220.4" textLength="575.10" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  response length 1,980 → 634 chars median  -68%  </tspan><tspan fill="#3fb950">significant (p=0.000)</tspan></text>
-<text y="1240.0" textLength="583.20" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  wall clock      24,765 → 11,593 ms median  -53%  </tspan><tspan fill="#3fb950">significant (p=0.000)</tspan></text>
+<text y="1161.7" textLength="275.40" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  </tspan><tspan fill="#d29922">mean pass rate unchanged at 100%</tspan></text>
+<text y="1181.3" textLength="332.10" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  </tspan><tspan fill="#6e7681">not distinguishable from noise (p=1.00)</tspan></text>
+<text y="1200.8" textLength="421.20" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#6e7681">  95% CI  without 100% [97-100]   with 100% [97-100]</tspan></text>
+<text y="1220.4" textLength="575.10" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  response length 2,170 → 662 chars median  -69%  </tspan><tspan fill="#3fb950">significant (p=0.000)</tspan></text>
+<text y="1240.0" textLength="583.20" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#c9d1d9">  wall clock      22,229 → 11,954 ms median  -46%  </tspan><tspan fill="#3fb950">significant (p=0.000)</tspan></text>
 <text y="1279.1" textLength="388.80" lengthAdjust="spacing" xml:space="preserve"><tspan x="22" fill="#6e7681">  80 runs. Transcripts are in the --json output.</tspan></text>
 </svg>

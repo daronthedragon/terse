@@ -4,16 +4,16 @@
   case / check                              without    with    delta
   ──────────────────────────────────────────────────────────────────
   git-merge-vs-rebase / answered              100%     100%      +0%
-  git-merge-vs-rebase / no-preamble            80%     100%     +20%
+  git-merge-vs-rebase / no-preamble           100%     100%      +0%
   git-merge-vs-rebase / no-closing-summary    100%     100%      +0%
   dockerfile-cache / answered                 100%     100%      +0%
   dockerfile-cache / no-preamble              100%     100%      +0%
   dockerfile-cache / no-closing-summary       100%     100%      +0%
   force-push-shared / answered                100%     100%      +0%
-  force-push-shared / no-preamble              80%      80%      +0%
+  force-push-shared / no-preamble             100%     100%      +0%
   force-push-shared / no-closing-summary      100%     100%      +0%
-  json-number-keys / answered                 100%      40%     -60%
-  json-number-keys / no-preamble               80%     100%     +20%
+  json-number-keys / answered                 100%     100%      +0%
+  json-number-keys / no-preamble              100%     100%      +0%
   json-number-keys / no-closing-summary       100%     100%      +0%
   python-gil-parallel / answered              100%     100%      +0%
   python-gil-parallel / no-preamble           100%     100%      +0%
@@ -54,10 +54,10 @@
     node-eaddrinuse / no-preamble          triggered 5/5 without, 5/5 with
     node-eaddrinuse / no-closing-summary   triggered 5/5 without, 5/5 with
   ──────────────────────────────────────────────────────────────────
-  mean pass rate fell 98% → 97%
-  not distinguishable from noise (p=0.70)
-  95% CI  without 98% [93-99]   with 97% [92-99]
-  response length 1,980 → 634 chars median  -68%  significant (p=0.000)
-  wall clock      24,765 → 11,593 ms median  -53%  significant (p=0.000)
+  mean pass rate unchanged at 100%
+  not distinguishable from noise (p=1.00)
+  95% CI  without 100% [97-100]   with 100% [97-100]
+  response length 2,170 → 662 chars median  -69%  significant (p=0.000)
+  wall clock      22,229 → 11,954 ms median  -46%  significant (p=0.000)
 
   80 runs. Transcripts are in the --json output.

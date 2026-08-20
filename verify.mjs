@@ -71,6 +71,33 @@ if (!existsSync(reportPath)) {
   const exits = [...new Set(report.results.map((r) => r.exitCode))]
   if (exits.some((e) => e !== 0)) bad(`the committed report contains failed runs (exit codes ${exits.join(', ')})`)
   else ok(`all ${report.results.length} runs in the committed report exited 0`)
+
+  // The latency claim drifted once while the length claim stayed correct,
+  // because only the length was ever checked. Any number the README quotes
+  // from this report has to be checkable, or it is only a matter of time.
+  const wall = report.metrics?.find((m) => m.name === 'wall clock')?.comparison
+  if (wall) {
+    const wallPct = Math.round(-wall.delta * 100)
+    if (/wall clock per reply fell/.test(readme)) {
+      const wb = Math.round(wall.medianBaseline)
+      const ws = Math.round(wall.medianSkill)
+      const quotes = (n) => new RegExp(`\\b${n.toLocaleString('en-US').replace(',', ',?')}\\b`).test(readme)
+      if (!quotes(wb) || !quotes(ws)) bad(`README quotes a wall-clock pair the report does not show (${wb.toLocaleString()} → ${ws.toLocaleString()} ms)`)
+      else if (!new RegExp(`[-−]${wallPct}%`).test(readme)) bad(`README does not quote the measured latency reduction (-${wallPct}%)`)
+      else ok(`README quotes the latency ${wb.toLocaleString()} → ${ws.toLocaleString()} ms (-${wallPct}%)`)
+    }
+  }
+
+  // Answer presence is the one number where being wrong matters most: it is the
+  // claim that brevity did not cost correctness.
+  const skillRuns = report.results.filter((r) => r.arm === 'skill')
+  const answered = skillRuns.filter((r) => r.checks.find((c) => c.id === 'answered')?.passed).length
+  const claim = new RegExp(`\\*\\*${answered}/${skillRuns.length}\\*\\*`).test(readme)
+  if (/answer presence is/.test(readme) && !claim) {
+    bad(`README states an answer-presence figure other than the measured ${answered}/${skillRuns.length}`)
+  } else if (claim) {
+    ok(`README quotes answer presence ${answered}/${skillRuns.length}`)
+  }
 }
 
 // ------------------------------------------------------ platform rule parity
