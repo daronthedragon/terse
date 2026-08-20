@@ -1,0 +1,654 @@
+{
+  "spec": {
+    "outputStyle": {
+      "name": "terse",
+      "file": "C:\\Users\\malik\\New folder (12)\\terse\\output-styles\\terse.md"
+    },
+    "runner": "node bench/multiturn.mjs {prompt} {skill}",
+    "repeat": 3,
+    "concurrency": 3,
+    "timeoutMs": 900000,
+    "cases": [
+      {
+        "id": "deep-budget",
+        "prompt": "deep-budget",
+        "checks": [
+          {
+            "id": "recalls-computed-cost",
+            "describe": "holds the 3,600 it computed 4 turns earlier",
+            "pattern": "\\$? ?400\\b",
+            "expect": true,
+            "examples": {
+              "match": [
+                "$400 under.",
+                "**$400 under.**",
+                "You are under by 400 dollars."
+              ],
+              "reject": [
+                "I do not have the earlier figure.",
+                "Could you remind me of the monthly cost?"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "deep-constraint",
+        "prompt": "deep-constraint",
+        "checks": [
+          {
+            "id": "recalls-window",
+            "describe": "the 2-hour window from turn 1",
+            "pattern": "(2 ?-? ?hour|two[- ]hour|120 ?min)",
+            "expect": true,
+            "examples": {
+              "match": [
+                "fits your 2-hour window",
+                "the two-hour maintenance window",
+                "well under 120 minutes"
+              ],
+              "reject": [
+                "what is your maintenance window?"
+              ]
+            }
+          },
+          {
+            "id": "recalls-estimate",
+            "describe": "the estimate it computed in turn 5",
+            "pattern": "(\\b3[34]\\b|2,?000 ?s|2000 ?seconds)",
+            "expect": true,
+            "examples": {
+              "match": [
+                "about 33 minutes",
+                "~34 min",
+                "2,000 seconds"
+              ],
+              "reject": [
+                "it depends on your hardware"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "deep-identity",
+        "prompt": "deep-identity",
+        "checks": [
+          {
+            "id": "recalls-user",
+            "describe": "the user flt",
+            "pattern": "\\bflt\\b",
+            "expect": true,
+            "examples": {
+              "match": [
+                "User=flt",
+                "Group=flt",
+                "runs as flt"
+              ],
+              "reject": [
+                "User=nobody",
+                "run it as the service account"
+              ]
+            }
+          },
+          {
+            "id": "recalls-port",
+            "describe": "port 8443",
+            "pattern": "8443",
+            "expect": true,
+            "examples": {
+              "match": [
+                "listens on 8443",
+                "Port=8443"
+              ],
+              "reject": [
+                "listens on 8080"
+              ]
+            }
+          },
+          {
+            "id": "recalls-config",
+            "describe": "the config path",
+            "pattern": "flotilla",
+            "expect": true,
+            "examples": {
+              "match": [
+                "/etc/flotilla/api.yaml"
+              ],
+              "reject": [
+                "/etc/myservice/api.yaml"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "skill": "C:\\Users\\malik\\New folder (12)\\terse\\output-styles\\terse.md"
+  },
+  "results": [
+    {
+      "id": "deep-budget",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "**$400 under.**\n\n```\npost-cache: $3600  -> under budget by $400\n```\n\n$4,000 − $3,600 = $400/month, post-cache. (Pre-cache it's $2,000 **over**.)",
+      "checks": [
+        {
+          "id": "recalls-computed-cost",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 129533
+    },
+    {
+      "id": "deep-budget",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "**$400 under.**\n\n```\n$ python -c \"print(4000 - 3600)\"\n400\n```\n\n$4,000 budget − $3,600 post-cache cost = **$400/month under**.",
+      "checks": [
+        {
+          "id": "recalls-computed-cost",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 141211
+    },
+    {
+      "id": "deep-budget",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "$400.\n\n```\n$ python -c \"print(4000 - 3600)\"\n400\n```",
+      "checks": [
+        {
+          "id": "recalls-computed-cost",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 111350
+    },
+    {
+      "id": "deep-constraint",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "**Window: 2h00m00s (7,200s).** Your stated constraint, confirmed from the saved project memory.\n\n**Estimate: 33m20s (2,000s).** 40M rows ÷ 20,000 rows/s.\n\n**Yes — it fits.** 28% of the window, 87 minutes spare.\n\n```\nwindow   = 7200s = 2h00m00s\nestimate = 2000s = 33m20s\nverdict  = FITS, uses 28% of window, 87m spare\n```\n\nOne qualifier on the estimate, unchanged from the last turn: **33m20s is the heap rewrite only.** A rewrite also rebuilds every index on the table, and that time is not in your 20k rows/s figure. With several indexes on a 40M-row events table, index rebuild is often the larger half of the total — so the realistic figure could be 60–90 minutes, which spends most of the spare 87 minutes rather than a fraction of it.\n\nThe margin is still real: you'd need to drop below **5,556 rows/s** to overrun, a 3.6x cushion on the rate itself.\n\n**Verified:** the arithmetic (node output above) and the window (grep against the memory file). **Unverified:** the 20,000 rows/s premise is yours and I have not measured it — no Postgres on this machine — and the index-rebuild add-on is a shape, not a number, since I don't know how many indexes `events` carries. Tell me the index count and I'll tighten it; better, measure a 1M-row slice with indexes present and check the observed rate against 5,556.",
+      "checks": [
+        {
+          "id": "recalls-window",
+          "passed": false,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "recalls-estimate",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 320223
+    },
+    {
+      "id": "deep-constraint",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "Yes — it fits, with room to spare.\n\n```\n$ python -c \"...\"\nwindow   = 2 h  = 120.0 min = 7,200 s\nestimate = 40,000,000 rows / 20,000 rows/s = 33.3 min = 2,000 s\nverdict  = FITS — 27.8% of window used, 86.7 min spare\n```\n\n- **Maintenance window: 120 minutes** (2 hours, from your stated constraints)\n- **Estimated rewrite: 33 minutes** (40M rows at 20,000 rows/s)\n- **Spare: 87 minutes**\n\nThe margin is the part worth holding onto: throughput would have to fall to ~5,600 rows/s — a 3.6x collapse — before the rewrite alone consumes the window.\n\nTwo things that spare time is for, not free slack: the index rebuilds that follow a table rewrite (every index on `events` gets rebuilt, and that isn't in the 33 minutes), and the post-backfill vacuum. Budget those against the 87 minutes rather than counting the job as done at minute 33.\n\n**Verified:** the arithmetic, run above. **Unverified:** the 20,000 rows/s input — that's your figure, not a measurement I made; no database is reachable from this environment. If it came from a small warm-cache batch rather than a full-size staging run, the real number will be lower, and the 3.6x margin is what protects you.",
+      "checks": [
+        {
+          "id": "recalls-window",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "recalls-estimate",
+          "passed": true,
+          "matches": 5,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 295250
+    },
+    {
+      "id": "deep-constraint",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "**Window: 120 minutes (2 hours). Estimate: 33m 20s. Yes, it fits — with 86m 40s to spare.**\n\n```\nWINDOW          : 7200 s  = 120m 0s\nHEAP REWRITE EST: 2000 s  = 33m 20s  (40,000,000 / 20,000)\nVERDICT         : FITS, margin 86m 40s\n```\n\n## What that verdict is actually conditional on\n\nThe 33m 20s is heap rows only. Index rebuilds are the unmeasured term, and here is where they'd break it:\n\n```\nbreaks the window if index rebuilds exceed: 86m 40s (= 2.6x the heap time)\n\nidx_time  total   verdict\n    0m    33m 20s   fits\n   30m    63m 20s   fits\n   60m    93m 20s   fits\n   86m   119m 20s   fits\n   90m   123m 20s   OVERRUNS\n```\n\nSo the answer holds unless rebuilding every index on `events` takes more than **2.6× as long as rewriting the heap itself**. That's a wide tolerance, but it isn't unreachable — a table with several large or expression indexes can land there, since each rebuild is its own sort.\n\n## The number that would close this\n\nOne query converts the open term into a measured one:\n\n```sql\nSELECT indexrelname, pg_size_pretty(pg_relation_size(indexrelid))\nFROM pg_stat_user_indexes WHERE relname = 'events' ORDER BY pg_relation_size(indexrelid) DESC;\n```\n\nIndex count and total size is what decides whether you're at the 30m end of that table or the 90m end.\n\n## Practical framing for the window\n\nBecause an aborted `ALTER TABLE` rewrite discards the new relfilenode rather than undoing work row by row, your abort cost is near-zero. That makes the operational rule simple: **don't start the rewrite with less than ~40 minutes left in the window.** If it's still running at T+100m, cancel and you're back to the original table intact, having lost only time.\n\nAlso note the fit verdict applies to the *volatile-default rewrite path only*. On the constant-default path, the `ALTER TABLE` is a catalog write and the window is irrelevant; on the batched-backfill path, each batch commits, so the work doesn't need to fit the window at all.\n\n**Unverified:** both inputs are yours, not measured by me — 40M rows and 20,000 rows/s. No Postgres in this environment (`command -v psql docker` → exit 127; WSL not installed), so I've run the arithmetic, not the migration. The division is exact; the fit verdict inherits whatever error is in the 20,000 rows/s figure, and a 3.6× miss on that input is what it would take to overrun on the heap pass alone.",
+      "checks": [
+        {
+          "id": "recalls-window",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "recalls-estimate",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 346894
+    },
+    {
+      "id": "deep-identity",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "Here it is — `scratchpad/flotilla-api.service`, printed in full above.\n\nEvery value you gave me is in it: `Description=flotilla-api`, `User=flt`, and `--config /etc/flotilla/api.yaml`. Port 8443 needs no line at all — it's unprivileged, so `flt` can bind it without `AmbientCapabilities`.\n\n**One line is a guess, and it's the one that matters:** `ExecStart=/usr/local/bin/flotilla-api`. You never gave me the binary path, so I marked it in the file rather than letting it blend in. My probe for it failed:\n\n```\nls: cannot access '/usr/local/bin/flotilla-api': No such file or directory\nflotilla-api binary: not found on this machine\n```\n\nThat's a Windows box, so the failure proves nothing about your host — it just means I couldn't resolve the path from here. Fix it on the host with `command -v flotilla-api`, or `systemctl cat flotilla-api` if a unit already exists. Get this wrong and systemd throws `status=203/EXEC` in a loop every 5 seconds.\n\nNotes on the choices, carrying forward the earlier turns:\n\n- `StartLimitIntervalSec=60` / `StartLimitBurst=10` in `[Unit]` (they belong there, not `[Service]`, since systemd v230) — headroom over the default 5-in-10s so a flapping dependency doesn't strand the unit in `failed`.\n- `ExecReload=/bin/kill -HUP $MAINPID` is what the logrotate `postrotate` from the earlier turn calls. Delete it if the app doesn't handle SIGHUP.\n- `KillMode=mixed` sends SIGTERM to the main process only, then SIGKILL to the whole group after `TimeoutStopSec=30s` — lets in-flight requests drain.\n\nI also wrote `scratchpad/hardening.conf` as a **separate drop-in**, not folded into the unit, because those directives can break a service in ways I can't test from here — `ProtectSystem=strict` makes the filesystem read-only, so if flotilla-api writes logs or state you must uncomment the matching `ReadWritePaths`. Install the plain unit first, confirm it runs, then add hardening.\n\n**What I verified vs. not.** Both files parse structurally, with duplicate-key detection on, and the real values read back correctly:\n\n```\nflotilla-api.service: parsed OK, sections=['Unit', 'Service', 'Install']\nhardening.conf: parsed OK, sections=['Service']\n  [Service] User = flt   Restart = on-failure   RestartSec = 5s\n```\n\nThat is `configparser`, **not** `systemd-analyze verify` — it confirms INI structure and that no key is defined twice, and says nothing about whether systemd accepts the directives. Also unverified: the binary path and its config flag spelling, that `flt` exists as both user and group (`Group=flt` is my assumption — check with `id flt`), and whether the process runs in the foreground as `Type=simple` requires.\n\nOn the host, this settles all of it:\n\n```bash\nsudo cp flotilla-api.service /etc/systemd/system/ && sudo systemd-analyze verify /etc/systemd/system/flotilla-api.service\nsudo systemctl daemon-reload && sudo systemctl enable --now flotilla-api\nsystemctl show flotilla-api -p ExecStart,Restart,User --value && curl -sI http://127.0.0.1:8443/\n```\n\nPaste that output back and I'll confirm against the real state rather than a parse check.",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "passed": true,
+          "matches": 6,
+          "applicable": true
+        },
+        {
+          "id": "recalls-port",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "recalls-config",
+          "passed": true,
+          "matches": 14,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 281101
+    },
+    {
+      "id": "deep-identity",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "Written to `scratchpad/flotilla-api.service`. Your four values are in it verbatim; **one value is a placeholder I can't know** — the binary path.\n\n```ini\n# /etc/systemd/system/flotilla-api.service\n[Unit]\nDescription=flotilla-api\nDocumentation=man:flotilla-api(8)\nAfter=network-online.target\nWants=network-online.target\nStartLimitIntervalSec=300\nStartLimitBurst=5\n\n[Service]\nType=simple\nUser=flt\nGroup=flt\n\n# >>> THE ONE VALUE YOU MUST SUPPLY <<<\n# Find it with:  command -v flotilla-api  ||  systemctl cat flotilla-api | grep ExecStart\nExecStart=/usr/bin/flotilla-api --config /etc/flotilla/api.yaml\n\nExecReload=/bin/kill -HUP $MAINPID\nRestart=on-failure\nRestartSec=5s\nTimeoutStopSec=30s\nKillSignal=SIGTERM\n\n# journald drops >1000 msgs/30s per service by default\nLogRateLimitIntervalSec=30s\nLogRateLimitBurst=20000\n\n# Hardening. Port 8443 is unprivileged, so no capabilities are needed.\nNoNewPrivileges=true\nPrivateTmp=true\nPrivateDevices=true\nProtectSystem=strict\nProtectHome=true\nProtectKernelTunables=true\nProtectKernelModules=true\nProtectControlGroups=true\nRestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX\nRestrictSUIDSGID=true\nLockPersonality=true\nCapabilityBoundingSet=\nAmbientCapabilities=\n\n# ProtectSystem=strict makes all of / read-only. Uncomment what the app writes:\n#StateDirectory=flotilla\n#RuntimeDirectory=flotilla\n#LogsDirectory=flotilla\n#ReadWritePaths=/var/log/flotilla\n\n[Install]\nWantedBy=multi-user.target\n```\n\n**Real, from what you told me:** `flotilla-api`, `/etc/flotilla/api.yaml`, `User=flt`. Port 8443 shows up only as the reason `CapabilityBoundingSet=` can be empty — it's above 1024, so the process needs no privileges to bind it. The port itself belongs in `api.yaml`, not here.\n\n**Three things I assumed, flagged so you can correct them:**\n\n1. **`ExecStart=/usr/bin/flotilla-api`** — a guess at the path and the flag spelling. If the app takes `-c`, `--conf`, or reads `FLOTILLA_CONFIG` from the environment instead, this line is wrong and it won't start.\n2. **`Group=flt`** — I assumed a matching group. `id flt` will tell you.\n3. **`Type=simple`** — correct if the process stays in the foreground. If it daemonizes, you need `Type=forking` + `PIDFile=`; if it calls `sd_notify`, `Type=notify` is better (and unlocks `WatchdogSec=`).\n\nTwo notes on the hardening block: `ProtectSystem=strict` makes the filesystem read-only, not invisible, so **reading `/etc/flotilla/api.yaml` still works** — only writes break. And if that config holds secrets, `sudo chown root:flt /etc/flotilla/api.yaml && sudo chmod 0640` keeps it out of other users' reach.\n\nThis unit supersedes the `restart.conf` and `logging.conf` drop-ins from earlier — those settings are inline now. Drop-ins are for units you don't own; if you own this file, don't split it.\n\n## What I verified\n\nThe file parses as INI and the real values landed in the right keys:\n\n```\n$ python - flotilla-api.service   # configparser\nsections: ['Unit', 'Service', 'Install']\n  User = flt\n  Group = flt\n  ExecStart = /usr/bin/flotilla-api --config /etc/flotilla/api.yaml\n  Restart = on-failure\n  RestartSec = 5s\n```\n\nThat is a **syntax check only** — configparser knows nothing about systemd. It cannot tell you whether `ProtectSystem=strict` is a real directive, whether the binary exists, or whether the service starts. There is no systemd on this Windows box (`systemd-analyze`: NOT FOUND; WSL: not installed), so **the unit is unverified against systemd itself.**\n\nOne thing the syntax check does confirm indirectly: every comment sits on its own line. systemd does not support trailing inline comments — `Restart=on-failure  # comment` parses the comment as part of the value. Keep it that way if you edit.\n\nOn the host:\n\n```bash\ncommand -v flotilla-api                     # fix ExecStart before anything else\nid flt                                      # confirm the group\nsudo systemd-analyze verify /etc/systemd/system/flotilla-api.service   # real validation\nsudo systemctl daemon-reload && sudo systemctl enable --now flotilla-api\nsystemctl status flotilla-api               # expect active (running)\nss -ltnp | grep 8443                        # expect it listening, owned by flt\nsudo systemd-analyze security flotilla-api  # scores the hardening block\n```\n\nIf it fails to start with a permissions or read-only error, comment out `ProtectSystem=strict` first — that's the line most likely to break a working service.",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "passed": true,
+          "matches": 10,
+          "applicable": true
+        },
+        {
+          "id": "recalls-port",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        },
+        {
+          "id": "recalls-config",
+          "passed": true,
+          "matches": 26,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 297363
+    },
+    {
+      "id": "deep-identity",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "`/etc/systemd/system/flotilla-api.service`\n\n```ini\n[Unit]\nDescription=flotilla-api\nAfter=network-online.target\nWants=network-online.target\nStartLimitIntervalSec=60\nStartLimitBurst=5\n\n[Service]\nType=simple\n\nUser=flt\nGroup=flt\n\nExecStart=/usr/local/bin/flotilla-api --config /etc/flotilla/api.yaml\nExecReload=/bin/kill -HUP $MAINPID\n\nRestart=on-failure\nRestartSec=5s\nTimeoutStopSec=30s\nKillSignal=SIGTERM\n\nSyslogIdentifier=flotilla-api\n\n# --- Hardening ---\nNoNewPrivileges=yes\nPrivateTmp=yes\nPrivateDevices=yes\nProtectSystem=strict\nProtectHome=yes\nProtectKernelTunables=yes\nProtectKernelModules=yes\nProtectControlGroups=yes\nRestrictSUIDSGID=yes\nRestrictNamespaces=yes\nRestrictRealtime=yes\nLockPersonality=yes\nMemoryDenyWriteExecute=yes\nRestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX\nSystemCallFilter=@system-service\nSystemCallErrorNumber=EPERM\n\n# flotilla-api listens on 8443 (>1024), so no CAP_NET_BIND_SERVICE is needed.\nCapabilityBoundingSet=\nAmbientCapabilities=\n\n# ProtectSystem=strict makes all of /usr, /boot and /etc read-only.\n# Anything the service must write to needs an explicit exception here.\nReadWritePaths=/var/log/flotilla\n\n[Install]\nWantedBy=multi-user.target\n```\n\nWritten to `scratchpad/flotilla/flotilla-api.service` — 51 lines, LF endings (CRLF count `0`, checked above; a CRLF unit file fails to parse on Linux). It parses as three sections / 36 directives, with `User=flt`, `Group=flt`, `Restart=on-failure` reading back correctly.\n\n## What's real vs. what I filled in\n\n**Real** — your four values: `flotilla-api`, `/etc/flotilla/api.yaml`, `flt`, `8443` (the last one only as the reason no capabilities are needed; the port itself lives in the YAML, not here).\n\n**Guessed — fix these before installing:**\n\n| Line | Guess | How to resolve |\n|---|---|---|\n| `ExecStart=` | `/usr/local/bin/flotilla-api --config <path>` | `command -v flotilla-api`, then `flotilla-api --help \\| grep -i conf` |\n| `Group=flt` | group matches username | `id flt` |\n| `ReadWritePaths=/var/log/flotilla` | log dir from the rotation discussion | drop this line entirely if it logs to journald |\n| `Type=simple` | doesn't daemonize | if it forks, `simple` makes systemd track the wrong PID |\n| `ExecReload=` | reopens logs / rereads config on SIGHUP | same unverified assumption as the logrotate `postrotate` |\n\nI removed a `Documentation=man:flotilla-api(8)` line I'd written — I have no evidence that man page exists.\n\n## Two lines most likely to break it\n\n`ProtectSystem=strict` and `SystemCallFilter=@system-service` are the usual suspects when a hardened unit won't start. If it fails, comment both out, confirm it starts, then re-add one at a time. `journalctl -u flotilla-api | grep -i 'operation not permitted'` points at the syscall filter specifically.\n\nAlso note `ProtectSystem=strict` makes `/etc` read-only, so if flotilla-api ever rewrites its own `api.yaml`, add it to `ReadWritePaths`.\n\n## Install and verify\n\n```bash\nsudo install -m 0644 flotilla-api.service /etc/systemd/system/flotilla-api.service\nsudo systemd-analyze verify flotilla-api.service     # 1. syntax + unit resolution\nsudo systemctl daemon-reload\nsudo systemctl enable --now flotilla-api\nsystemctl status flotilla-api                        # 2. did it actually start\nsudo ss -lntp | grep 8443                            # 3. is it listening as flt\nsudo systemd-analyze security flotilla-api           # 4. hardening score\n```\n\nThen the restart behaviour from your first question, which only step 5 proves:\n\n```bash\nsudo kill -9 \"$(systemctl show flotilla-api -p MainPID --value)\"\nsleep 8 && systemctl status flotilla-api             # 5. new PID, active\n```\n\n**I ran none of steps 1–5.** There is no systemd in this environment and `wsl -l -q` returns no installed distro, so the unit is **unverified against a real systemd** — the only checks that passed are the local ones above: it parses as INI, and it has clean LF line endings. `systemd-analyze verify` on the host is the first real test.",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "recalls-port",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        },
+        {
+          "id": "recalls-config",
+          "passed": true,
+          "matches": 26,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 312981
+    },
+    {
+      "id": "deep-budget",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "`4200.0 200.0`",
+      "checks": [
+        {
+          "id": "recalls-computed-cost",
+          "passed": false,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 67036
+    },
+    {
+      "id": "deep-budget",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "$400.\n\n```\n$ python -c \"print(4000 - 3600.0)\"\n400.0\n```",
+      "checks": [
+        {
+          "id": "recalls-computed-cost",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 64554
+    },
+    {
+      "id": "deep-budget",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "$400 under.",
+      "checks": [
+        {
+          "id": "recalls-computed-cost",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 56201
+    },
+    {
+      "id": "deep-constraint",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "**Yes. Window: 120 minutes. Estimate: 33 minutes.**\n\n```\nwindow_s=7200 (120 min)\nestimate_s=2000 (33.3 min)\nfits=True  headroom_s=5200 (87 min)\nmargin_factor=3.6x  breakeven_rate=5556 rows/s\n```\n\n87 minutes of headroom, 3.6× margin. The rate would have to fall below **5,556 rows/sec** — a 3.6× degradation — before the rewrite overruns the window.\n\nThat margin is wide enough to absorb index rebuild overhead, which is the most likely cause of a slowdown. It does not cover a disk-space failure, which doesn't slow the migration down so much as abort it partway.\n\nUnverified: the 20,000 rows/sec rate is the figure you supplied, not one I measured — no Postgres in this environment. Only the arithmetic is checked.",
+      "checks": [
+        {
+          "id": "recalls-window",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "recalls-estimate",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 124213
+    },
+    {
+      "id": "deep-constraint",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "Yes. Window is **120 minutes**; estimate is **33.3 minutes** — 86.7 minutes of headroom.\n\n```\n$ awk 'BEGIN{w=120; e=40000000/20000/60; printf \"window=%d min  est=%.1f min  headroom=%.1f min  used=%.0f%%\\n\", w, e, w-e, 100*e/w}'\nwindow=120 min  est=33.3 min  headroom=86.7 min  used=27%\n```\n\nThe estimate rests on 20,000 rows/sec, which is **unverified** — no Postgres on this box to measure it. At the break-even rate of 5,556 rows/sec the rewrite consumes the entire window, so you have roughly 3.6× margin on the throughput assumption before the window is at risk.",
+      "checks": [
+        {
+          "id": "recalls-window",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "recalls-estimate",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 114976
+    },
+    {
+      "id": "deep-constraint",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "**Yes — window 120 min, heap rewrite 33 min, leaving 87 min of headroom.**\n\n```\n$ awk 'BEGIN{w=7200; s=40000000/20000; printf \"window %.0f min | rewrite %.1f min | headroom %.1f min (%.0f%% used)\\n\", w/60, s/60, (w-s)/60, 100*s/w}'\nwindow 120 min | rewrite 33.3 min | headroom 86.7 min (28% used)\n```\n\nThe 33 min is verified arithmetic on your stated 20k rows/sec. Whether the *whole migration* fits is unverified, because the remaining 87 min has to cover index rebuilds, and I don't know how many indexes `events` carries. Rough shape at 40M rows: two or three indexes fits comfortably; eight or more puts you against the wall.\n\nTwo numbers turn this from estimate to fact — both are quick, and worth running before the window opens:\n\n```sql\n-- how much index work follows the heap pass\nSELECT count(*) AS n_indexes, pg_size_pretty(sum(pg_relation_size(indexrelid))) AS idx_bytes\nFROM pg_index WHERE indrelid = 'events'::regclass;\n\n-- is 20k/sec real on this hardware\n\\timing on\nCREATE TABLE events_sample AS SELECT * FROM events LIMIT 100000;\n```\n\nDivide 100k by the elapsed seconds. If it comes back at 20k/sec, the 33 min holds; at 5k/sec it's 133 min and you're over the window before indexes.",
+      "checks": [
+        {
+          "id": "recalls-window",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "recalls-estimate",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 118814
+    },
+    {
+      "id": "deep-identity",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "Written to `scratchpad/flotilla-api.service` — install to `/etc/systemd/system/flotilla-api.service`:\n\n```ini\n[Unit]\nDescription=flotilla-api\nDocumentation=file:/etc/flotilla/api.yaml\nAfter=network-online.target\nWants=network-online.target\nStartLimitIntervalSec=60\nStartLimitBurst=5\n\n[Service]\nType=exec\nUser=flt\nGroup=flt\n\nExecStart=/usr/local/bin/flotilla-api --config /etc/flotilla/api.yaml\nExecReload=/bin/kill -HUP $MAINPID\n\nRestart=on-failure\nRestartSec=5s\nTimeoutStopSec=30s\nKillSignal=SIGTERM\n\nStandardOutput=journal\nStandardError=journal\nSyslogIdentifier=flotilla-api\n\n# Config is read-only to the service; it never needs to write there.\nConfigurationDirectory=flotilla\nConfigurationDirectoryMode=0750\n\n# Hardening. Drop any line here that the binary actually needs.\nNoNewPrivileges=true\nPrivateTmp=true\nPrivateDevices=true\nProtectSystem=strict\nProtectHome=true\nProtectKernelTunables=true\nProtectKernelModules=true\nProtectControlGroups=true\nProtectClock=true\nProtectHostname=true\nProtectProc=invisible\nRestrictNamespaces=true\nRestrictRealtime=true\nRestrictSUIDSGID=true\nLockPersonality=true\nMemoryDenyWriteExecute=true\nRestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX\nSystemCallFilter=@system-service\nSystemCallErrorNumber=EPERM\nUMask=0077\n\nLimitNOFILE=65535\n\n[Install]\nWantedBy=multi-user.target\n```\n\n**One value is a guess, not yours: `ExecStart`.** You gave me the name, config path, user, and port — never the binary path or its CLI flags. I assumed `/usr/local/bin/flotilla-api --config /etc/flotilla/api.yaml`. Fix that line before installing; everything else uses your real values. Port 8443 appears nowhere in the unit because it comes from `api.yaml` — it needs no `CAP_NET_BIND_SERVICE` since it's above 1024.\n\nThree lines to check against the actual binary:\n- `Type=exec` — if it double-forks, use `Type=forking` with `PIDFile=`; if it does sd_notify, `Type=notify` (best, plus `WatchdogSec=`).\n- `ExecReload` SIGHUP — this is what the logrotate `postrotate` from earlier depends on. If it doesn't reopen on HUP, drop both.\n- `ProtectSystem=strict` makes the whole filesystem read-only. If it writes logs to `/var/log/flotilla` or any state, add `LogsDirectory=flotilla` / `StateDirectory=flotilla`, or it fails at startup.\n\nInstall:\n```bash\nsystemctl daemon-reload\nsystemctl enable --now flotilla-api\nsystemctl status flotilla-api\n```\n\nUnverified — nothing here was run against systemd. `command -v systemctl` returned nothing earlier and `wsl -l -q` reported \"The Windows Subsystem for Linux is not installed\", so this file has not been parsed by systemd. Validate on the host:\n\n```bash\nsystemd-analyze verify /etc/systemd/system/flotilla-api.service   # syntax + directive names\nsystemd-analyze security flotilla-api.service                     # scores the hardening block\n```",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "recalls-port",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "recalls-config",
+          "passed": true,
+          "matches": 17,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 171374
+    },
+    {
+      "id": "deep-identity",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "turn 1 failed: ENOENT for claude\n",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "passed": false,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "recalls-port",
+          "passed": false,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "recalls-config",
+          "passed": false,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 1,
+      "tokens": null,
+      "durationMs": 58
+    },
+    {
+      "id": "deep-identity",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "turn 1 failed: ENOENT for claude\n",
+      "checks": [
+        {
+          "id": "recalls-user",
+          "passed": false,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "recalls-port",
+          "passed": false,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "recalls-config",
+          "passed": false,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 1,
+      "tokens": null,
+      "durationMs": 54
+    }
+  ],
+  "summary": [
+    {
+      "caseId": "deep-budget",
+      "checkId": "recalls-computed-cost",
+      "baseline": 1,
+      "skill": 0.6666666666666666,
+      "delta": -0.33333333333333337,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "deep-constraint",
+      "checkId": "recalls-window",
+      "baseline": 0.6666666666666666,
+      "skill": 1,
+      "delta": 0.33333333333333337,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "deep-constraint",
+      "checkId": "recalls-estimate",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "deep-identity",
+      "checkId": "recalls-user",
+      "baseline": 1,
+      "skill": 0.3333333333333333,
+      "delta": -0.6666666666666667,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "deep-identity",
+      "checkId": "recalls-port",
+      "baseline": 1,
+      "skill": 0.3333333333333333,
+      "delta": -0.6666666666666667,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "deep-identity",
+      "checkId": "recalls-config",
+      "baseline": 1,
+      "skill": 0.3333333333333333,
+      "delta": -0.6666666666666667,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    }
+  ],
+  "baselineScore": 0.9444444444444443,
+  "skillScore": 0.6111111111111112,
+  "significance": {
+    "delta": -0.33333333333333326,
+    "p": 0.01615692016796677,
+    "significant": true,
+    "suggestMoreRuns": false,
+    "baseline": {
+      "point": 0.9444444444444444,
+      "low": 0.7424269921812741,
+      "high": 0.990124809021697
+    },
+    "skill": {
+      "point": 0.6111111111111112,
+      "low": 0.38619041602237913,
+      "high": 0.7969475342783637
+    },
+    "baselinePassed": 17,
+    "skillPassed": 11,
+    "total": 18
+  },
+  "cost": {
+    "baselineMedian": null,
+    "skillMedian": null,
+    "delta": null
+  },
+  "metrics": [
+    {
+      "name": "response length",
+      "unit": "chars",
+      "comparison": {
+        "medianBaseline": 1311,
+        "medianSkill": 55,
+        "delta": -0.958047292143402,
+        "u": 17,
+        "p": 0.03787789172520695,
+        "significant": true,
+        "n": 9
+      }
+    },
+    {
+      "name": "wall clock",
+      "unit": "ms",
+      "comparison": {
+        "medianBaseline": 295250,
+        "medianSkill": 67036,
+        "delta": -0.7729517358171042,
+        "u": 6,
+        "p": 0.002315945088902982,
+        "significant": true,
+        "n": 9
+      }
+    }
+  ]
+}

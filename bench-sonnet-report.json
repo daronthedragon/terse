@@ -1,0 +1,1873 @@
+{
+  "spec": {
+    "outputStyle": {
+      "name": "terse",
+      "file": "C:\\Users\\malik\\New folder (12)\\terse\\output-styles\\terse.md"
+    },
+    "runner": "cd {skill} && claude -p {prompt} --model sonnet --output-format text --dangerously-skip-permissions --no-session-persistence",
+    "repeat": 3,
+    "concurrency": 4,
+    "timeoutMs": 180000,
+    "cases": [
+      {
+        "id": "git-merge-vs-rebase",
+        "prompt": "What's the difference between git merge and git rebase?",
+        "checks": [
+          {
+            "id": "answered",
+            "describe": "correct answer present",
+            "pattern": "\\b(history|linear|merge commit|rewrit)\\b",
+            "expect": true
+          },
+          {
+            "id": "no-preamble",
+            "describe": "no lead-in boilerplate (opening only)",
+            "pattern": "^[\\s\\S]{0,80}?\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
+            "expect": false
+          },
+          {
+            "id": "no-closing-summary",
+            "describe": "no recap tail",
+            "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
+            "expect": false
+          }
+        ]
+      },
+      {
+        "id": "dockerfile-cache",
+        "prompt": "Why does reordering lines in a Dockerfile sometimes bust the build cache?",
+        "checks": [
+          {
+            "id": "answered",
+            "describe": "correct answer present",
+            "pattern": "\\b(layer|cache|invalidat|order)\\b",
+            "expect": true
+          },
+          {
+            "id": "no-preamble",
+            "describe": "no lead-in boilerplate (opening only)",
+            "pattern": "^[\\s\\S]{0,80}?\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
+            "expect": false
+          },
+          {
+            "id": "no-closing-summary",
+            "describe": "no recap tail",
+            "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
+            "expect": false
+          }
+        ]
+      },
+      {
+        "id": "force-push-shared",
+        "prompt": "Is it safe to use git push --force on a shared branch?",
+        "checks": [
+          {
+            "id": "answered",
+            "describe": "correct answer present",
+            "pattern": "(\\bno\\b|force-with-lease|overwrit|don'?t|shouldn'?t|avoid)",
+            "expect": true
+          },
+          {
+            "id": "no-preamble",
+            "describe": "no lead-in boilerplate (opening only)",
+            "pattern": "^[\\s\\S]{0,80}?\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
+            "expect": false
+          },
+          {
+            "id": "no-closing-summary",
+            "describe": "no recap tail",
+            "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
+            "expect": false
+          }
+        ]
+      },
+      {
+        "id": "json-number-keys",
+        "prompt": "Can JSON object keys be numbers?",
+        "checks": [
+          {
+            "id": "answered",
+            "describe": "correct answer present",
+            "pattern": "(\\bno\\b|string|must be)",
+            "expect": true
+          },
+          {
+            "id": "no-preamble",
+            "describe": "no lead-in boilerplate (opening only)",
+            "pattern": "^[\\s\\S]{0,80}?\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
+            "expect": false
+          },
+          {
+            "id": "no-closing-summary",
+            "describe": "no recap tail",
+            "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
+            "expect": false
+          }
+        ]
+      },
+      {
+        "id": "python-gil-parallel",
+        "prompt": "Does Python's GIL prevent all parallelism?",
+        "checks": [
+          {
+            "id": "answered",
+            "describe": "correct answer present",
+            "pattern": "(\\bno\\b|process|multiprocess|I/?O|release|C ext)",
+            "expect": true
+          },
+          {
+            "id": "no-preamble",
+            "describe": "no lead-in boilerplate (opening only)",
+            "pattern": "^[\\s\\S]{0,80}?\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
+            "expect": false
+          },
+          {
+            "id": "no-closing-summary",
+            "describe": "no recap tail",
+            "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
+            "expect": false
+          }
+        ]
+      },
+      {
+        "id": "put-vs-post-id",
+        "prompt": "For creating a resource where the client chooses the ID, should I use PUT or POST?",
+        "checks": [
+          {
+            "id": "answered",
+            "describe": "correct answer present",
+            "pattern": "\\bPUT\\b",
+            "expect": true
+          },
+          {
+            "id": "no-preamble",
+            "describe": "no lead-in boilerplate (opening only)",
+            "pattern": "^[\\s\\S]{0,80}?\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
+            "expect": false
+          },
+          {
+            "id": "no-closing-summary",
+            "describe": "no recap tail",
+            "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
+            "expect": false
+          }
+        ]
+      },
+      {
+        "id": "semver-optional-param",
+        "prompt": "I added a new optional parameter to a public function. Which semver bump - major, minor, or patch?",
+        "checks": [
+          {
+            "id": "answered",
+            "describe": "correct answer present",
+            "pattern": "\\bminor\\b",
+            "expect": true
+          },
+          {
+            "id": "no-preamble",
+            "describe": "no lead-in boilerplate (opening only)",
+            "pattern": "^[\\s\\S]{0,80}?\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
+            "expect": false
+          },
+          {
+            "id": "no-closing-summary",
+            "describe": "no recap tail",
+            "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
+            "expect": false
+          }
+        ]
+      },
+      {
+        "id": "node-eaddrinuse",
+        "prompt": "Node throws EADDRINUSE when my server starts. What's the cause?",
+        "checks": [
+          {
+            "id": "answered",
+            "describe": "correct answer present",
+            "pattern": "(port|in use|bound|already|another (process|program|server))",
+            "expect": true
+          },
+          {
+            "id": "no-preamble",
+            "describe": "no lead-in boilerplate (opening only)",
+            "pattern": "^[\\s\\S]{0,80}?\\b(sure|certainly|great question|happy to help|of course|let me|here'?s|i'?d be happy|good question|there are a few)\\b",
+            "expect": false
+          },
+          {
+            "id": "no-closing-summary",
+            "describe": "no recap tail",
+            "pattern": "\\b(in summary|to summari[sz]e|in conclusion|i hope (this|that) helps|hope (this|that) helps|let me know if you|in short)\\b",
+            "expect": false
+          }
+        ]
+      }
+    ],
+    "skill": "C:\\Users\\malik\\New folder (12)\\terse\\output-styles\\terse.md"
+  },
+  "results": [
+    {
+      "id": "git-merge-vs-rebase",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "**git merge** creates a new commit that joins two branch histories together, preserving both branches' commit history exactly as it happened. It's non-destructive — nothing gets rewritten.\n\n**git rebase** replays your branch's commits one by one on top of another branch, creating new commits with new hashes. It produces a linear history but rewrites commit history.\n\nKey tradeoffs:\n\n| | merge | rebase |\n|---|---|---|\n| History | Preserves actual history, adds a merge commit | Linear, rewritten history |\n| Commit hashes | Unchanged | Changed (new commits) |\n| Safety | Safe on shared/public branches | Never rebase commits others have already pulled — it breaks their history |\n| Conflict resolution | Once, at merge time | Potentially once per replayed commit |\n| Use case | Integrating a feature branch back into main | Cleaning up a local feature branch before sharing, or keeping it up to date with main without merge clutter |\n\nCommon convention: rebase your local/feature branch to keep it tidy before pushing, merge when combining into a shared branch like `main`.\n\nThis is a conceptual explanation, not a code change — nothing to run or verify here.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 10,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 11459
+    },
+    {
+      "id": "git-merge-vs-rebase",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "Both integrate changes from one branch into another, but differently:\n\n**`git merge`**\n- Combines histories by creating a new merge commit (unless fast-forward) that has two parents.\n- Preserves the exact history of both branches — nothing is rewritten.\n- Non-destructive and safe for shared/public branches.\n- History ends up with branching/merge points, which can get messy with many contributors.\n\n**`git rebase`**\n- Replays your branch's commits one by one on top of another branch's tip, creating new commits (new SHAs) with the same changes.\n- Produces a linear, cleaner history with no merge commits.\n- Rewrites commit history — never rebase commits that others have already pulled/pushed, since it changes commit hashes and can cause conflicts for collaborators.\n\n**Rule of thumb:** use `rebase` to clean up your local/feature branch before sharing it (keeps history linear), and `merge` when integrating into a shared branch like `main` (preserves true history and is safe for others).\n\nThis is a conceptual explanation, not a code change — nothing to run or verify here.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 9,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 10707
+    },
+    {
+      "id": "git-merge-vs-rebase",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "**git merge** combines two branches by creating a new \"merge commit\" that has two parents, preserving the full history of both branches exactly as it happened. It's non-destructive — no existing commits are changed.\n\n**git rebase** takes the commits from your branch and replays them one-by-one on top of another branch's tip, creating new commits (with new hashes) as if you'd started your work from there. It produces a linear history but rewrites commit history.\n\nKey tradeoffs:\n\n| | merge | rebase |\n|---|---|---|\n| History | Preserves actual history, shows branching | Linear, rewritten history |\n| Commit hashes | Unchanged | Changed for every replayed commit |\n| Safety on shared branches | Safe | Risky — never rebase commits others have pulled |\n| Result | Extra merge commits, \"diamond\" graph | Clean, linear log |\n\nRule of thumb: rebase local/unpushed branches to keep history tidy before merging; use merge (not rebase) for integrating shared/public branches to avoid rewriting history others depend on.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 12,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 10740
+    },
+    {
+      "id": "dockerfile-cache",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "Docker builds each `RUN`/`COPY`/`ADD` instruction as a layer, and caches it keyed on: (1) the instruction's content itself, and (2) the cache state of every layer before it. The cache lookup is strictly sequential from the top of the file — as soon as one layer misses, every layer after it also misses, even if those later instructions didn't change at all.\n\nSo reordering lines busts the cache in two ways:\n\n1. **Direct reorder of instructions**: if you move a `RUN apt-get install foo` above a `COPY . .`, Docker now has to re-evaluate cache at that new position. Even though the instruction text is identical to before, its *position in the chain* changed, so the cache key (which includes the parent layer's cache ID) is different.\n\n2. **Cascading invalidation**: this is the bigger one. If you put a frequently-changing step (like `COPY . .` for your source code) *before* a rarely-changing step (like `RUN npm install`), then every source change invalidates the cache for that `COPY`, which cascades and invalidates `npm install` too — even though your dependencies didn't change. That's why the standard pattern is:\n\n```dockerfile\nCOPY package.json package-lock.json ./\nRUN npm install\nCOPY . .\n```\n\n— copy only the manifest first (rarely changes) so `npm install` stays cached, then copy the rest of the source (changes often) last, so only the final layers get invalidated on a typical code edit.\n\nSo the rule of thumb: order instructions from least-frequently-changing to most-frequently-changing, and any reorder shifts each instruction's position in that dependency chain, which changes its cache key regardless of whether the instruction's own content changed.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 14,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 14526
+    },
+    {
+      "id": "dockerfile-cache",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "Docker builds each instruction as a layer, and it caches layers based on two things:\n\n1. **Position in the file** — the cache key for a layer includes the instruction's content *and* the state of the layer before it. So if you reorder line 3 and line 5, every layer from that point onward gets a new cache key, even if the underlying commands are unchanged.\n2. **Content hash of each instruction** (and, for `COPY`/`ADD`, a hash of the files being copied).\n\nThe cache works like a chain: Docker walks the Dockerfile top to bottom, and the first layer whose instruction (or copied file contents) differs from the cached build invalidates that layer *and every layer after it*, regardless of whether those later layers would've produced identical output. So reordering breaks the cache not because the individual commands changed, but because the *sequence* changed — layer N is no longer preceded by the same layer N-1, so its cache key no longer matches, and the invalidation cascades downward.\n\nThis is why the standard advice is to order instructions from least-to-most frequently changing (e.g., install OS deps → copy dependency manifests → install dependencies → copy source code last), so that edits to source code don't bust the cache for the expensive dependency-install layers above them.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 16,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 12990
+    },
+    {
+      "id": "dockerfile-cache",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "Docker builds each layer sequentially and caches it keyed on: the instruction text itself, plus (for `COPY`/`ADD`) a hash of the files being copied, plus the cache state of the layer before it. As soon as one instruction's cache is invalidated, every instruction after it is invalidated too, even if their own content didn't change.\n\nSo reordering matters for two reasons:\n\n1. **Cache keys are positional, not just content-based.** Docker walks the instruction list top to bottom and compares each one against the cached layer at that *position* in the build history. If you swap two lines, the instruction now sits at a different point in the chain, so it no longer matches the parent layer that was cached for it — cache miss, even though the instruction text is identical to before.\n\n2. **Invalidation cascades forward.** A classic case:\n   ```dockerfile\n   COPY . .\n   RUN npm install\n   ```\n   Every source-code change invalidates `COPY . .`, which then invalidates `npm install` too, even though `package.json` didn't change — so dependencies get reinstalled on every build. Reordering to:\n   ```dockerfile\n   COPY package.json package-lock.json ./\n   RUN npm install\n   COPY . .\n   ```\n   puts the frequently-changing step last, so `npm install` only reruns when the lockfile actually changes. But if you later move `COPY . .` back above `RUN npm install`, you've reintroduced the cascade — that's the \"reordering busts the cache\" trap.\n\nThe general rule: order instructions from least-frequently-changing to most-frequently-changing, and keep narrow `COPY`s (just the files a step actually needs) before broad ones, so an unrelated file change doesn't invalidate expensive steps like dependency installation.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 10,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 13543
+    },
+    {
+      "id": "force-push-shared",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "No — not on a branch other people are actively pulling from or pushing to. Force-pushing rewrites history, and anyone with local commits based on the old history will get diverged branches, confusing merge conflicts, or silently lose commits if they `git reset --hard` to match.\n\n**When it's dangerous:**\n- Shared feature branches, `main`/`master`, or any branch others have checked out\n- Overwrites others' unpushed-to-that-branch work if their pushes land in between\n\n**Safer alternatives:**\n- `git push --force-with-lease` — fails if the remote has commits you haven't seen (someone else pushed since your last fetch), preventing accidental clobbering. Still not \"safe\" on a shared branch, just safer than plain `--force`.\n- Coordinate with the team first (announce it, make sure no one has unpushed work based on the old history) and have them `git fetch && git reset --hard origin/<branch>` afterward.\n- Prefer `git revert` for undoing changes on shared branches instead of rewriting history at all.\n\n**When it's fine:** your own personal/feature branch that no one else has pulled, or after a rebase before the first push (nothing shared yet).\n\nIf you're about to run this and want a second opinion on the specific situation, tell me more about the branch and who else touches it.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 5,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 13271
+    },
+    {
+      "id": "force-push-shared",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "No — `git push --force` on a shared branch is risky and generally best avoided. It overwrites the remote branch's history to match your local branch, which can silently discard commits that teammates have pushed since you last pulled.\n\n**Why it's dangerous:**\n- If someone else pushed commits after your last fetch, `--force` erases them from the remote. They only exist in that person's local reflog (if they even still have the branch checked out) — recovery isn't guaranteed.\n- Anyone with the branch checked out gets a diverged history next time they pull, often requiring a manual reset to recover.\n- CI runs, open PRs, and review comments tied to the old commits can break or become confusing.\n\n**Safer alternatives:**\n- `git push --force-with-lease` — refuses to push if the remote has commits you haven't seen (i.e., someone else pushed since your last fetch). This is the standard safer default for force-pushing.\n- Avoid rewriting history (rebase, amend, squash) on shared branches at all — reserve that for your own feature branches before others start building on them, or coordinate explicitly (\"I'm about to force-push branch X, don't push until I say go\").\n- On `main`/`master` or any long-lived shared branch, force-push should essentially never happen without explicit team sign-off.\n\nIf you're about to force-push somewhere shared, I'd recommend confirming with whoever else might have the branch checked out first, and using `--force-with-lease` rather than bare `--force`.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 7,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 12408
+    },
+    {
+      "id": "force-push-shared",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "No — `git push --force` on a shared branch is risky and generally not safe:\n\n- **It overwrites remote history.** If a teammate pushed commits after your local branch diverged, `--force` discards their work on the remote, often silently (no warning, no merge conflict — their commits just vanish from the branch).\n- **It breaks other people's local clones.** Anyone who already pulled the old history now has a branch that's diverged from the rewritten remote; their next `pull` creates a mess or they need to reset to match.\n- **CI/PR state can get corrupted** — in-flight reviews, comments tied to specific commits, and status checks can become confusing or invalid.\n\nSafer alternatives:\n- **`git push --force-with-lease`** — refuses to push if the remote has commits you haven't seen locally (i.e., someone else pushed since you last fetched). This is the standard safety net and should be the default over plain `--force`.\n- Avoid rewriting history (rebase/amend) on shared branches at all — reserve that for your own feature branches before others start building on them, or coordinate explicitly (\"don't push to this branch for the next 10 minutes, I'm rebasing\") before force-pushing.\n- On `main`/`master` or any branch others actively pull from, force-push should essentially never happen without team agreement.\n\nSo: never plain `--force` on shared branches without warning collaborators; if you must rewrite shared history, use `--force-with-lease` and communicate first.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 14285
+    },
+    {
+      "id": "json-number-keys",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "No — in JSON, object keys must always be strings (wrapped in double quotes), even if they look like numbers.\n\n```json\n{ \"1\": \"value\", \"42\": \"another\" }\n```\n\nThis is valid — but `{ 1: \"value\" }` is not, and is a syntax error under the JSON spec.\n\nNote: many languages' JSON libraries will let you *serialize* a map with numeric or other non-string keys by coercing them to strings on output (e.g., JavaScript's `JSON.stringify` on an object always does this since object keys are strings anyway; other languages vary), and some will *parse* JSON string keys back into numbers if you ask for that conversion explicitly. But the JSON format itself never has bare numeric keys.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 7,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 10123
+    },
+    {
+      "id": "json-number-keys",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "That confirms it: JSON itself requires string keys — the JSON grammar defines an object member as a string followed by `:` and a value, with no numeric-key form. Any numeric-looking key must be quoted (`\"1\"`, not `1`); parsers that accept bare numeric keys are being lenient with non-standard JSON, not implementing the spec.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 12756
+    },
+    {
+      "id": "json-number-keys",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "No — in JSON, object keys must be strings (wrapped in double quotes). If you write a bare number as a key, it's invalid JSON.\n\n```json\n{ 1: \"a\" }        // invalid\n{ \"1\": \"a\" }      // valid — key is the string \"1\"\n```\n\nIf you need numeric keys in JavaScript, you can use a `Map` instead of a plain object (which preserves real number keys), but once serialized to JSON, everything still gets stringified — `JSON.stringify` on an object with numeric-looking properties will quote them automatically:\n\n```js\nJSON.stringify({1: \"a\"})  // '{\"1\":\"a\"}'\n```\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 7,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 9941
+    },
+    {
+      "id": "python-gil-parallel",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "No — the GIL only prevents multiple Python threads from executing Python bytecode simultaneously within a single process. Several things still parallelize:\n\n- **I/O-bound work**: threads release the GIL during blocking I/O (network, disk, sleep), so multithreading gives real concurrency/throughput gains for I/O-heavy workloads.\n- **C extensions**: libraries like NumPy, Pandas, or anything with C/Cython internals can release the GIL during heavy computation (e.g., `numpy` matrix ops), allowing true parallel execution across threads.\n- **Multiprocessing**: the `multiprocessing` module (or libraries like `joblib`, `concurrent.futures.ProcessPoolExecutor`) spawns separate processes, each with its own interpreter and GIL, giving genuine CPU parallelism at the cost of IPC/serialization overhead.\n- **Free-threaded builds**: Python 3.13+ offers an experimental \"no-GIL\" build (PEP 703) that removes the GIL entirely, allowing true multi-threaded parallelism for pure-Python code — still maturing, not the default yet.\n\nThe GIL specifically blocks CPU-bound *pure-Python* code from parallelizing across threads — that's the main pain point people run into.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 17,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 12246
+    },
+    {
+      "id": "python-gil-parallel",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "No — the GIL (Global Interpreter Lock) in CPython prevents multiple **threads** from executing Python bytecode simultaneously within a single process, but it doesn't block parallelism entirely:\n\n**What the GIL does block:**\n- CPU-bound Python code running across threads in one process gains no speedup from extra cores — only one thread executes Python bytecode at a time.\n\n**Ways parallelism still happens:**\n- **`multiprocessing`** — separate processes, each with its own GIL, run truly in parallel across cores.\n- **C extensions that release the GIL** — NumPy, many I/O and compression libraries, and other C-implemented code often drop the GIL during heavy computation, letting other threads run concurrently.\n- **I/O-bound threading** — while one thread waits on network/disk I/O, the GIL is released, so other threads can run. Threading still helps for I/O-bound workloads even though it doesn't help CPU-bound ones.\n- **Free-threaded CPython (3.13+)** — an official build (`python3.13t`) can disable the GIL entirely (PEP 703), enabling real multi-threaded parallelism; still experimental/opt-in as of now.\n- **Subinterpreters (PEP 684, 3.12+)** — each subinterpreter can have its own GIL, enabling a form of intra-process parallelism via the `interpreters` module.\n- **Alternative runtimes** — Jython and IronPython have no GIL at all (different tradeoffs).\n\nSo the GIL specifically constrains multi-threaded CPU-bound execution in standard CPython — it doesn't prevent parallelism achieved via processes, GIL-releasing native code, or the newer free-threaded/subinterpreter mechanisms.\n\n(No code was run — this is a factual explanation, not a code claim to verify.)\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 22,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 15538
+    },
+    {
+      "id": "python-gil-parallel",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "No — the GIL prevents true parallel execution of Python *bytecode* across threads within a single process, but several forms of parallelism still work:\n\n**What the GIL blocks:**\n- Multiple threads running Python bytecode simultaneously on multiple cores. Only one thread holds the GIL at a time, so CPU-bound multithreaded Python code doesn't get faster with more cores (and can even be slower due to lock contention/switching overhead).\n\n**What still parallelizes:**\n1. **C extensions that release the GIL** — NumPy, pandas, many I/O and crypto operations, and other C-implemented libraries release the GIL during their heavy computation, allowing real parallel execution across threads.\n2. **I/O-bound work** — threads waiting on network/disk/DB calls release the GIL while blocked, so multithreading is genuinely effective for I/O concurrency.\n3. **Multiprocessing** — `multiprocessing`, `concurrent.futures.ProcessPoolExecutor`, or tools like `joblib` spawn separate processes, each with its own interpreter and GIL, giving true parallelism for CPU-bound work at the cost of inter-process communication overhead.\n4. **Subinterpreters (PEP 684, Python 3.12+)** — each subinterpreter can have its own GIL, enabling parallelism within one process via the `interpreters` module (stabilizing further in 3.13+).\n5. **Free-threaded CPython (PEP 703)** — since Python 3.13, an experimental build (`python3.13t`) removes the GIL entirely, enabling true multithreaded parallelism for pure Python code. It's still maturing (ecosystem/C-extension compatibility, some single-thread perf cost) but is the long-term path to removing this limitation.\n\nSo: the GIL constrains one specific case — CPU-bound pure-Python multithreading — not parallelism in general.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 24,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 14424
+    },
+    {
+      "id": "put-vs-post-id",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "Use **PUT**.\n\nPUT's semantics are \"create or replace the resource at this URI,\" and it's idempotent — calling it twice with the same body produces the same result. That fits client-chosen IDs naturally: `PUT /resources/{client-id}` with the full representation as the body.\n\nPOST is for server-assigned identity: `POST /resources` where the server decides the ID and returns it (often via `Location` header). It's not idempotent, so it's the wrong fit when the client already knows the target URI.\n\nOne caveat: with PUT-to-create, a retry after a network timeout is safe (idempotent), but you do need to handle the case where the ID already exists — typically either treat it as a replace (if that's semantically fine) or return 409 Conflict if IDs must be unique-on-create only.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 11156
+    },
+    {
+      "id": "put-vs-post-id",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "Use **PUT**.\n\nPUT is defined as idempotent and means \"create or replace the resource at this URI\" — which is exactly the semantics when the client picks the ID: `PUT /resources/{client-chosen-id}` with the body.\n\nPOST is for \"create a new resource under this collection, server assigns the identity\" — `POST /resources` returning a `Location` header with the server-generated ID.\n\nKey distinction: idempotency. Sending the same PUT twice with the same ID and body results in the same resource state (safe to retry). POST is not guaranteed idempotent — retrying could create duplicates, which is wrong when the client already committed to a specific ID.\n\nOne nuance: if the ID must be unique and you need to distinguish \"created new\" (201) vs \"overwrote existing\" (200) vs \"reject if exists,\" your server-side handler needs that check — PUT alone doesn't give you \"create-only\" semantics for free. If you specifically need \"create with client-supplied ID, but fail if it already exists,\" some APIs use PUT with a precondition header (`If-None-Match: *`) rather than plain POST.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 6,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 12166
+    },
+    {
+      "id": "put-vs-post-id",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "Use **PUT** to the full resource URI (e.g. `PUT /resources/{id}`).\n\n- PUT's semantics are \"create or replace the resource at this URI\" — it's a natural fit when the client owns the identifier, since the client is telling the server exactly where the resource lives.\n- PUT is idempotent: sending the same request twice yields the same end state, which matches client-generated IDs (often UUIDs) where retries shouldn't create duplicates.\n- POST is for server-assigned IDs: `POST /resources` returns `201 Created` with a `Location` header pointing at the new server-chosen URI. POST is not idempotent, so it's the wrong tool when you want safe retries on a known ID.\n\nEdge case: if creating the resource has side effects beyond a pure \"put it here\" (e.g., triggering a workflow), some APIs still use POST with the client-supplied ID in the body — but that's the exception, not the default.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 5,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 12426
+    },
+    {
+      "id": "semver-optional-param",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "**Minor.** Adding an optional parameter is backward compatible — existing callers don't need to change — which is exactly what a minor bump signals under semver (new functionality, no breaking changes).\n\nCaveat: this holds only if it's truly non-breaking in your language — e.g., a new optional param inserted before existing ones in a positional-args language (not appended last), or a language where \"optional\" is simulated via overloads that could collide with existing calls, could break callers and should be a major bump instead.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 10772
+    },
+    {
+      "id": "semver-optional-param",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "**Minor** bump.\n\nAdding an optional parameter is backward-compatible — existing callers that don't pass it keep working unchanged, so it's not a breaking change (no major bump). But it does add new functionality/capability to the public API, so it's more than a patch (patch = bug fixes with no API surface change).\n\nCaveat: this only holds if the parameter is truly optional in a way that doesn't alter existing behavior (e.g., a new optional kwarg/last positional arg with a default). If adding it changes existing call sites' behavior (e.g., inserted before existing required params in a positional-only language, shifting argument order), that's actually a breaking change and warrants a major bump instead.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 10525
+    },
+    {
+      "id": "semver-optional-param",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "**Minor.** Adding an optional parameter to a public function is backward compatible (existing callers don't break), which is exactly what a minor version bump signals under semver.\n\n- **Patch** would be wrong — patch is for backward-compatible *bug fixes*, not new functionality.\n- **Major** would be wrong unless the new parameter is *required* or otherwise breaks existing call sites (e.g., changes positional argument order, changes return type/behavior for existing callers).\n\nNote: this only holds if \"optional\" truly means non-breaking in your language — e.g., in some typed/positional-arg languages, inserting a new parameter (even with a default) ahead of existing ones can break positional callers, which would push it to major instead.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 10192
+    },
+    {
+      "id": "node-eaddrinuse",
+      "arm": "baseline",
+      "run": 1,
+      "transcript": "`EADDRINUSE` means the port your server is trying to bind to is already occupied by another process (or another instance of your own server). Common causes:\n\n- **A previous run of your server is still alive** — e.g., it crashed without releasing the socket, or you have a stray `node` process from an earlier `npm run dev` that didn't exit (common with nodemon/watch restarts or a debugger holding the process open).\n- **Another application is using that port** — e.g., something else on your machine already listens on 3000/8080/5432/etc.\n- **The OS hasn't released the socket yet** — after a process exits, the port can stay in `TIME_WAIT` briefly, especially without `SO_REUSEADDR`.\n- **You started the server twice** — e.g., both `npm start` and a test suite's server, or a cluster/worker setup binding the same port from multiple processes.\n\nTo find and fix it:\n\n**Windows (PowerShell):**\n```\nnetstat -ano | findstr :3000\ntaskkill /PID <pid> /F\n```\n\n**macOS/Linux:**\n```\nlsof -i :3000\nkill -9 <pid>\n```\n\nThen restart your server. If it keeps happening on every restart during development, it's usually an old process not exiting cleanly (check your watcher/nodemon config) — or just pick a different port via an env var.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 13129
+    },
+    {
+      "id": "node-eaddrinuse",
+      "arm": "baseline",
+      "run": 2,
+      "transcript": "EADDRINUSE means another process is already bound to the port your server is trying to listen on. Common causes:\n\n- **A previous instance of your own server is still running** — e.g., it wasn't killed cleanly after a crash, a `nodemon`/`ts-node-dev` restart didn't release the port, or you have multiple terminal tabs each running the app.\n- **Another unrelated program is using that port** — common with default ports like 3000, 5000, 8080 (AirPlay Receiver on macOS uses 5000; other dev tools often claim 3000/8080).\n- **A zombie/orphaned Node process** from a debugger or child process that didn't exit.\n- **The OS hasn't released the socket yet** (`TIME_WAIT` state) right after a restart, though this is less common than an actual live process.\n\nTo find and fix it, tell me your port number and OS and I can give exact commands, or if you share the relevant server startup code I can check for anything specific (e.g., `server.listen()` called twice, or a `cluster`/watch-mode setup restarting without cleanup).\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 13472
+    },
+    {
+      "id": "node-eaddrinuse",
+      "arm": "baseline",
+      "run": 3,
+      "transcript": "Replace `YOUR_PORT` with the port from your error message (e.g. 3000). The last column in the output is the PID. Then:\n\n```powershell\nGet-Process -Id <PID>          # confirm what it is\nStop-Process -Id <PID> -Force  # kill it, freeing the port\n```\n\nOther fixes: change the port your app uses, or if you're using `nodemon`, make sure the old instance actually exited (`Ctrl+C` sometimes leaves it running in the background on Windows).\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 21242
+    },
+    {
+      "id": "git-merge-vs-rebase",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "`git merge` creates a new commit joining two branch histories, keeping both branches' commits intact and preserving true history (including merge points).\n\n`git rebase` replays your branch's commits one-by-one on top of another branch, producing a linear history — but it rewrites commit hashes, so it's unsafe on commits others have already pulled.\n\nPractical rule: merge for integrating shared/public branches, rebase for cleaning up your own local branch before sharing it.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 8884
+    },
+    {
+      "id": "git-merge-vs-rebase",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "`git merge` combines branches by creating a new merge commit that ties both histories together, preserving each branch's original commits as-is.\n\n`git rebase` replays your branch's commits one-by-one onto the tip of the target branch, producing a linear history with new commit hashes (original commits are rewritten).\n\nKey tradeoff: merge is non-destructive and safe for shared branches; rebase gives cleaner linear history but rewrites commits, so never rebase commits others have already pulled.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 5,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 8704
+    },
+    {
+      "id": "git-merge-vs-rebase",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "**git merge** creates a new commit joining two branch histories, preserving both branches' commit history as-is.\n\n**git rebase** replays your branch's commits on top of another branch, rewriting history into a linear sequence.\n\nKey tradeoff: merge is non-destructive and safe for shared branches; rebase produces a cleaner linear history but rewrites commit SHAs, so never rebase commits others have already pulled.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 5,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 9421
+    },
+    {
+      "id": "dockerfile-cache",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "Docker layers are cached per-instruction, keyed on that instruction's content **plus** the cache state of every layer before it. Reordering a line changes what precedes it, so:\n\n- Docker walks the instruction list top-down comparing each one against cached layers.\n- The moment one instruction's cache key doesn't match (new position, new preceding context, or changed content), that layer rebuilds — and **every layer after it** rebuilds too, even if their own text didn't change.\n\nSo moving a `COPY` or `RUN` earlier/later shifts what's \"before\" every subsequent instruction, invalidating the chain from that point down. This is why the standard pattern is: put rarely-changing steps (installing deps) before frequently-changing ones (`COPY . .` of your source), not because order doesn't matter, but because order determines exactly how far the cache invalidation cascades.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 11227
+    },
+    {
+      "id": "dockerfile-cache",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "Docker builds each layer from the instruction text plus the state of the layer before it. The cache key for a `RUN`/`COPY`/etc. line is essentially a hash of (previous layer's cache state + this instruction's content, and for `COPY`/`ADD` also the copied files' contents).\n\nSo reordering busts the cache two ways:\n\n1. **Layer chain breaks.** Cache lookup is sequential — once one layer misses, every layer after it also misses, even if their own instructions didn't change, because their cache key includes the parent layer's ID.\n2. **Different execution context.** Moving a `COPY` earlier means it now runs against a different preceding layer (different installed packages, env vars, etc.), so its result can differ even with identical file contents — new cache key.\n\nPractical implication: put rarely-changing steps (base image, OS deps, `COPY package.json` + install) before frequently-changing ones (`COPY . .`, app code) — not the other way around — so edits to source don't invalidate the expensive dependency-install layers above them.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 14,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 11813
+    },
+    {
+      "id": "dockerfile-cache",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "Docker builds each layer from the instruction line above it plus that line's own content. Reordering changes what's \"above\" a given line, so its cache key changes even if the line's text is identical — and once one layer misses, every layer after it misses too (cache is invalidated from that point down).\n\nTwo concrete cases:\n- Swapping two `RUN`/`COPY` lines changes each one's build context (the layer state it starts from), so Docker can't match either against a previously cached layer.\n- Moving a frequently-changing line (like `COPY . .`) above a stable one (like `RUN npm install`) means the stable line now runs after something that busts cache almost every build — so it re-executes every time even though its own content never changed.\n\nThat's also why the standard advice is: put rarely-changing instructions (base image, system deps, `package.json` + install) first, and volatile ones (source code copy) last.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 8,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 10816
+    },
+    {
+      "id": "force-push-shared",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "No — force-pushing a shared branch overwrites remote history other people may have based work on, silently discarding their commits.\n\nUse `git push --force-with-lease` instead if you must force-push: it fails safely if the remote has commits you haven't seen, rather than clobbering them blind.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 7850
+    },
+    {
+      "id": "force-push-shared",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "No — force-pushing a shared branch overwrites remote commits other people may have based work on, silently discarding their history. Use `git push --force-with-lease` instead (fails if the remote has commits you haven't seen), and even then only on branches you're sure nobody else is actively pushing to.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 8146
+    },
+    {
+      "id": "force-push-shared",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "No — force-pushing a shared branch overwrites remote history other people's local branches are based on, causing their next pull to silently drop or conflict with commits. Use `git push --force-with-lease` instead if you must force-push, and only on branches you're sure no one else has pulled from since your rebase/amend.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 9020
+    },
+    {
+      "id": "json-number-keys",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "No — JSON spec requires object keys to be strings. `{1: \"a\"}` is invalid JSON; you must write `{\"1\": \"a\"}`.\n\nIn JS, `JSON.stringify({1: \"a\"})` produces `{\"1\":\"a\"}` — numeric keys get coerced to strings automatically.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 8467
+    },
+    {
+      "id": "json-number-keys",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "No — JSON object keys must be strings. `{1: \"a\"}` is invalid; you need `{\"1\": \"a\"}`. Numeric-looking keys get quoted and stay strings even when parsed (e.g. in JS, `Object.keys({1:\"a\"})` gives `[\"1\"]`, a string).\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 5,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 5839
+    },
+    {
+      "id": "json-number-keys",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "No — JSON object keys must be strings. Numbers get coerced to strings if you use them: `{1: \"a\"}` is invalid JSON; `{\"1\": \"a\"}` is valid.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 8243
+    },
+    {
+      "id": "python-gil-parallel",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "No — the GIL only serializes execution of Python bytecode within a single process. Parallelism still happens in several cases:\n\n- **I/O-bound work**: threads release the GIL during blocking I/O (network, disk), so I/O-bound multithreading gets real concurrency.\n- **C extensions**: libraries like NumPy, or any C extension that releases the GIL for long-running native code, run in parallel with Python threads.\n- **Multiprocessing**: separate processes each have their own GIL, giving true CPU parallelism at the cost of IPC overhead.\n- **Free-threaded builds**: CPython 3.13+ offers an experimental no-GIL build (PEP 703) that removes this limitation entirely.\n\nSo it prevents parallelism only for CPU-bound pure-Python bytecode running on threads within one interpreter — not universally.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 16,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 10948
+    },
+    {
+      "id": "python-gil-parallel",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "No — it prevents parallel execution of Python bytecode across threads within one process, but not parallelism generally.\n\nWhat it doesn't block:\n- **Multiprocessing** (`multiprocessing`, `concurrent.futures.ProcessPoolExecutor`) — separate processes, separate GILs, true CPU parallelism.\n- **I/O-bound work** — threads release the GIL during blocking I/O (network, disk), so threaded I/O concurrency works fine.\n- **C extensions** (NumPy, etc.) — many release the GIL during heavy compute, letting threads run in parallel for that portion.\n- **Python 3.13+** — has an experimental free-threaded build (`--disable-gil`) that removes the GIL entirely (PEP 703).\n\nWhat it does block: two Python threads in the same process executing pure-Python bytecode simultaneously on separate cores.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 16,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 10266
+    },
+    {
+      "id": "python-gil-parallel",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "No — the GIL only prevents true parallel execution of Python *bytecode* across threads within a single CPython process. Parallelism still happens via:\n\n- **multiprocessing** — separate processes, each with its own GIL\n- **C extensions releasing the GIL** — NumPy, most I/O, some pandas/ML ops run compute in C without holding it\n- **I/O-bound threads** — the GIL is released during blocking I/O, so threaded I/O concurrency works fine\n- **Free-threaded CPython (3.13+)** — the `--disable-gil` build removes it entirely (still experimental)\n- **Alternative implementations** — Jython, IronPython have no GIL\n\nIt specifically blocks CPU-bound, pure-Python multi-threaded code from using multiple cores.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 14,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 13398
+    },
+    {
+      "id": "put-vs-post-id",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "PUT — the client supplies the full resource state at a specific URI (`PUT /resources/{id}`), and PUT is idempotent, which matches \"client picks the ID.\" POST is for server-assigned IDs (`POST /resources` → server returns the new ID/location).\n\nThis is a design/knowledge question, not a code change — no command to run or verify here.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 7714
+    },
+    {
+      "id": "put-vs-post-id",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "PUT — the client picking the ID means the client is defining the resource's URI (`PUT /resources/{id}`), which fits PUT's semantics of \"create or replace the resource at this URI.\" POST is for server-assigned IDs, where the client posts to a collection endpoint (`POST /resources`) and gets the new ID back.\n\nOne caveat: PUT should be idempotent (same request repeated = same result, no duplicate side effects), so only use it if your creation logic actually satisfies that.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 8373
+    },
+    {
+      "id": "put-vs-post-id",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "PUT — it's idempotent and the client is specifying the resource's URI/identity, which is exactly the case PUT models (create-or-replace at a known URI). POST is for when the server assigns the ID.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 7368
+    },
+    {
+      "id": "semver-optional-param",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "Minor.\n\nBackwards-compatible new capability with a default that doesn't break existing callers.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 7343
+    },
+    {
+      "id": "semver-optional-param",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "Minor. Adding an optional parameter to a public function is backward-compatible for existing callers — no breaking change, so it's not major; it's new functionality, not a fix, so not patch.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 1,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 4327
+    },
+    {
+      "id": "semver-optional-param",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "Minor. Adding an optional parameter is backward-compatible (existing callers unaffected), which is a new feature = minor bump under semver.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 2,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 5874
+    },
+    {
+      "id": "node-eaddrinuse",
+      "arm": "skill",
+      "run": 1,
+      "transcript": "Port already in use — another process (often a previous, still-running instance of your own server) is bound to that port.\n\nFix:\n\n- `lsof -i :PORT` (mac/Linux) or `netstat -ano | findstr :PORT` (Windows) to find the PID, then kill it.\n- Or change the port your server listens on.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 9,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 9556
+    },
+    {
+      "id": "node-eaddrinuse",
+      "arm": "skill",
+      "run": 2,
+      "transcript": "No process currently on the common dev ports (3000/5000/8080) — nothing conflicting right now. To pin the actual conflict, tell me the port your server uses; then:\n\n```\nnetstat -ano | findstr :<PORT>\ntasklist /FI \"PID eq <PID>\"\ntaskkill /PID <PID> /F\n```\n\nThat kills whatever's holding the port.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 4,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 13382
+    },
+    {
+      "id": "node-eaddrinuse",
+      "arm": "skill",
+      "run": 3,
+      "transcript": "Nothing's currently listening that looks like your dev server — no known project or port in this session, so I can't pinpoint the culprit for you. Tell me the port your server uses and I'll check `netstat -ano | findstr :<port>`, then `taskkill /PID <pid> /F` to free it if something's squatting on it.\n",
+      "checks": [
+        {
+          "id": "answered",
+          "passed": true,
+          "matches": 3,
+          "applicable": true
+        },
+        {
+          "id": "no-preamble",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        },
+        {
+          "id": "no-closing-summary",
+          "passed": true,
+          "matches": 0,
+          "applicable": true
+        }
+      ],
+      "exitCode": 0,
+      "tokens": null,
+      "durationMs": 14675
+    }
+  ],
+  "summary": [
+    {
+      "caseId": "git-merge-vs-rebase",
+      "checkId": "answered",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "git-merge-vs-rebase",
+      "checkId": "no-preamble",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "git-merge-vs-rebase",
+      "checkId": "no-closing-summary",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "dockerfile-cache",
+      "checkId": "answered",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "dockerfile-cache",
+      "checkId": "no-preamble",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "dockerfile-cache",
+      "checkId": "no-closing-summary",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "force-push-shared",
+      "checkId": "answered",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "force-push-shared",
+      "checkId": "no-preamble",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "force-push-shared",
+      "checkId": "no-closing-summary",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "json-number-keys",
+      "checkId": "answered",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "json-number-keys",
+      "checkId": "no-preamble",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "json-number-keys",
+      "checkId": "no-closing-summary",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "python-gil-parallel",
+      "checkId": "answered",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "python-gil-parallel",
+      "checkId": "no-preamble",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "python-gil-parallel",
+      "checkId": "no-closing-summary",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "put-vs-post-id",
+      "checkId": "answered",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "put-vs-post-id",
+      "checkId": "no-preamble",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "put-vs-post-id",
+      "checkId": "no-closing-summary",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "semver-optional-param",
+      "checkId": "answered",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "semver-optional-param",
+      "checkId": "no-preamble",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "semver-optional-param",
+      "checkId": "no-closing-summary",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "node-eaddrinuse",
+      "checkId": "answered",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "node-eaddrinuse",
+      "checkId": "no-preamble",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    },
+    {
+      "caseId": "node-eaddrinuse",
+      "checkId": "no-closing-summary",
+      "baseline": 1,
+      "skill": 1,
+      "delta": 0,
+      "baselineApplicable": 3,
+      "skillApplicable": 3
+    }
+  ],
+  "baselineScore": 1,
+  "skillScore": 1,
+  "significance": {
+    "delta": 0,
+    "p": 1,
+    "significant": false,
+    "suggestMoreRuns": false,
+    "baseline": {
+      "point": 1,
+      "low": 0.9493488274035422,
+      "high": 1
+    },
+    "skill": {
+      "point": 1,
+      "low": 0.9493488274035422,
+      "high": 1
+    },
+    "baselinePassed": 72,
+    "skillPassed": 72,
+    "total": 72
+  },
+  "cost": {
+    "baselineMedian": null,
+    "skillMedian": null,
+    "delta": null
+  },
+  "metrics": [
+    {
+      "name": "response length",
+      "unit": "chars",
+      "comparison": {
+        "medianBaseline": 1078,
+        "medianSkill": 314,
+        "delta": -0.7087198515769945,
+        "u": 57,
+        "p": 0.000001908404591244306,
+        "significant": true,
+        "n": 24
+      }
+    },
+    {
+      "name": "wall clock",
+      "unit": "ms",
+      "comparison": {
+        "medianBaseline": 12417,
+        "medianSkill": 8794,
+        "delta": -0.291777401948941,
+        "u": 90,
+        "p": 0.000044540713283858224,
+        "significant": true,
+        "n": 24
+      }
+    }
+  ]
+}

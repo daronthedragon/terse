@@ -15,8 +15,19 @@
         {
           "id": "recalls-computed-cost",
           "describe": "holds the 3,600 it computed 4 turns earlier",
-          "pattern": "(\b400\b|$400)",
-          "expect": true
+          "pattern": "\\$? ?400\\b",
+          "expect": true,
+          "examples": {
+            "match": [
+              "$400 under.",
+              "**$400 under.**",
+              "You are under by 400 dollars."
+            ],
+            "reject": [
+              "I do not have the earlier figure.",
+              "Could you remind me of the monthly cost?"
+            ]
+          }
         }
       ]
     },
@@ -27,14 +38,34 @@
         {
           "id": "recalls-window",
           "describe": "the 2-hour window from turn 1",
-          "pattern": "(2 ?-? ?hour|two hour|120 ?min)",
-          "expect": true
+          "pattern": "(2 ?-? ?hour|two[- ]hour|120 ?min)",
+          "expect": true,
+          "examples": {
+            "match": [
+              "fits your 2-hour window",
+              "the two-hour maintenance window",
+              "well under 120 minutes"
+            ],
+            "reject": [
+              "what is your maintenance window?"
+            ]
+          }
         },
         {
           "id": "recalls-estimate",
           "describe": "the estimate it computed in turn 5",
-          "pattern": "(33|34|2,?000 ?s|2000 ?seconds)",
-          "expect": true
+          "pattern": "(\\b3[34]\\b|2,?000 ?s|2000 ?seconds)",
+          "expect": true,
+          "examples": {
+            "match": [
+              "about 33 minutes",
+              "~34 min",
+              "2,000 seconds"
+            ],
+            "reject": [
+              "it depends on your hardware"
+            ]
+          }
         }
       ]
     },
@@ -45,20 +76,48 @@
         {
           "id": "recalls-user",
           "describe": "the user flt",
-          "pattern": "\bflt\b",
-          "expect": true
+          "pattern": "\\bflt\\b",
+          "expect": true,
+          "examples": {
+            "match": [
+              "User=flt",
+              "Group=flt",
+              "runs as flt"
+            ],
+            "reject": [
+              "User=nobody",
+              "run it as the service account"
+            ]
+          }
         },
         {
           "id": "recalls-port",
           "describe": "port 8443",
           "pattern": "8443",
-          "expect": true
+          "expect": true,
+          "examples": {
+            "match": [
+              "listens on 8443",
+              "Port=8443"
+            ],
+            "reject": [
+              "listens on 8080"
+            ]
+          }
         },
         {
           "id": "recalls-config",
           "describe": "the config path",
           "pattern": "flotilla",
-          "expect": true
+          "expect": true,
+          "examples": {
+            "match": [
+              "/etc/flotilla/api.yaml"
+            ],
+            "reject": [
+              "/etc/myservice/api.yaml"
+            ]
+          }
         }
       ]
     }

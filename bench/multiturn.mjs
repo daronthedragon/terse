@@ -124,19 +124,28 @@ function cliCandidates() {
 function runTurn(args, cwd) {
   let lastErr = 'no candidate ran'
   for (const cli of cliCandidates()) {
-    for (let attempt = 0; attempt < 2; attempt++) {
+    // ENOENT is not always "this path does not exist". Launching the same
+    // 300MB binary from several processes at once produced intermittent ENOENT
+    // on Windows for a file that was demonstrably there, and treating the first
+    // one as final failed two runs of this benchmark - which then scored as the
+    // agent losing the conversation. Retry a path before disbelieving it.
+    for (let attempt = 0; attempt < 3; attempt++) {
       const res = spawnSync(cli, args, {
         encoding: 'utf8',
         maxBuffer: 32 * 1024 * 1024,
         shell: false,
         cwd,
       })
-      if (res.error?.code === 'ENOENT') {
-        lastErr = `ENOENT for ${cli}`
-        break // this path does not exist; try the next candidate, not again
-      }
       if (!res.error && res.status === 0) return { ok: true, stdout: res.stdout }
-      lastErr = res.error?.message ?? `exit ${res.status}: ${String(res.stderr).slice(0, 300)}`
+      lastErr = res.error ? `${res.error.code ?? res.error.message} for ${cli}` : `exit ${res.status}: ${String(res.stderr).slice(0, 300)}`
+      if (res.error?.code === 'ENOENT' && attempt === 0 && !existsSync(cli) && cli !== 'claude') {
+        break // a path that genuinely is not on disk; move to the next candidate
+      }
+      // Back off briefly: the failures cluster when several runs start together.
+      const until = Date.now() + 400 * (attempt + 1)
+      while (Date.now() < until) {
+        /* spawnSync is synchronous; a busy wait keeps this dependency-free */
+      }
     }
   }
   return { ok: false, error: lastErr }

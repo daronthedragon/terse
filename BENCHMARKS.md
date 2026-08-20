@@ -102,6 +102,21 @@ second pass also carried the wall-clock metric: **24,765 → 11,593 ms median,
 −53%, p = 4.6e-14** — the shorter reply is roughly 2.1× faster to produce, with
 the concurrency caveat above.
 
+### It is not a one-model result
+
+Every number above comes from one model, which is a weaker claim than it looks:
+a style that only bites on one model has found a quirk, not a behaviour. The
+same eight prompts, same harness, run against Sonnet:
+
+| model | median without | median with | change | pass rate |
+|---|---|---|---|---|
+| default | 2,170 | 662 | **−69%** | 100% both arms |
+| Sonnet | 1,078 | 314 | **−71%** | 100% both arms |
+
+Sonnet is markedly terser to begin with — its baseline reply is half the length
+— and terse still takes 71% out of what remains. The effect is not a quirk of
+one model's verbosity; it survives a model that was already brief.
+
 ### The three levels are a real gradient
 
 `lite`, `full` and `ultra` were three files making a claim about each other. Run
@@ -205,6 +220,34 @@ Turns 3 and 4 are deliberately off-topic — cache TTLs, Prometheus, log
 rotation, TLS termination — because the risk is not that an agent forgets the
 last thing said, it is that compression leaves nothing to come back to once
 other work has intervened.
+
+#### Result at six turns
+
+| scenario | what turn 6 requires | without | with terse |
+|---|---|---|---|
+| `deep-constraint` | the window from turn 1 and the estimate from turn 5 | 67% / 100% | **100% / 100%** |
+| `deep-identity` | three identifiers given once in turn 1 | 100% | **100%** |
+| `deep-budget` | a cost the agent computed in turn 2 | 100% | **100%** |
+
+`deep-budget` took a second pass to settle. The first run showed terse missing
+it once in three, on a reply that read `4200.0 200.0` — fourteen characters, no
+words, wrong numbers. At six repeats per arm it came back 100% against 100%,
+every terse reply carrying the 3,600 it had computed four turns earlier:
+
+```
+$400 under, with the cache.
+
+40% cache      3600  under by 400
+```
+
+The final turn was 69 characters against the baseline's 200, and the number
+survived. One miss in three is the sample size that has produced two false
+findings in this project already, which is why it was re-measured rather than
+written up.
+
+`deep-constraint` is the interesting row: the **baseline** lost the maintenance
+window one time in three, and terse did not. Nothing here suggests compression
+costs recall; the one direction the evidence points is mildly the other way.
 
 ### Preservation — the exemption holds
 
