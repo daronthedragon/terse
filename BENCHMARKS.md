@@ -140,6 +140,36 @@ each. It shows no degradation where a chain of computed values and a set of
 stated constraints have to survive two turns. It does not prove nothing is ever
 lost in a fifty-turn session, and no result here should be read that way.
 
+### A rule that did not earn its place
+
+An 80-run pass showed terse missing the `answered` check three times out of
+forty, and all three misses looked like one behaviour. Asked whether JSON keys
+can be numbers, terse answered by pointing at its own evidence — *"Receipt
+above: parser rejects `{1: 2}`"*, *"Confirmed by the parse above"* — instead of
+saying the answer. The baseline missed zero, so terse was causing it, and the
+final message had stopped being self-contained.
+
+The obvious fix was a fourth rule: *say the answer in words, even when a
+receipt proves it.* Measured against the same eight prompts, it looked right —
+the failing case went from 2/5 to 5/5 and the overall rate from 37/40 to 40/40.
+
+Neither difference was significant at that sample (answered p = 0.078, length
+p = 0.17), so it went to a focused test instead of into the file: the one
+decisive case, twelve repeats per arm, both versions.
+
+| | with the rule | without it |
+|---|---|---|
+| `json-number-keys` answered | 11/12 | 11/12 |
+| two-proportion | \- | delta 0.0pp, **p = 1.00** |
+
+**The rule changes nothing measurable, and it is not in the skill.** The
+original 2/5 was noise on a case that varies a lot run to run — the same
+version scored 11/12 when measured properly. This is the second time in this
+project a plausible mechanism with a real-looking first result dissolved under
+more data, and the reason every rule here has to survive a measurement rather
+than an argument. A prompt only holds so many instructions; one that buys
+nothing is not free.
+
 ### What a timeout taught the harness
 
 The first pass of the preservation half was invalid, and it is worth recording
