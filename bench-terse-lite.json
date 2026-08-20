@@ -1,10 +1,10 @@
 {
   "outputStyle": {
-    "name": "terse",
-    "file": "output-styles/terse.md"
+    "name": "terse-lite",
+    "file": "output-styles/terse-lite.md"
   },
   "runner": "cd {skill} && claude -p {prompt} --output-format text --dangerously-skip-permissions --no-session-persistence",
-  "repeat": 5,
+  "repeat": 3,
   "concurrency": 4,
   "timeoutMs": 180000,
   "cases": [
